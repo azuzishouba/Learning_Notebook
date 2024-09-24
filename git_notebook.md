@@ -51,6 +51,13 @@
 * git restore (filename) 恢复未暂存的更改
 * git restore --staged (filename) 恢复已暂存的更改，恢复到未暂存状态
 * git restore --source=(commitid) (filename) 特定提交中恢复文件
+### Git中分支的操作
+* git branch (branch-name) 创建分支
+* git switch (branch) 切换到分支
+* git switch -b (branch-name)
+* git branch 查看所有分支
+* git branch -d (branch-name)删除分支
+* git merge (branch-name) 将分支合并到当前分支
 ## GitHub笔记
 ### 复制GitHub项目到本地
 * git clone (repository-url) 克隆仓库到本地
