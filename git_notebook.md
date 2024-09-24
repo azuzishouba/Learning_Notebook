@@ -67,3 +67,5 @@
 ### Git push
 * git push origin master 推送到远程仓库默认的master分支
 * git push -u origin master 默认推送至origin master 以后直接git push即可 -u：这个选项会将本地的 master 分支与远程的 origin/master 分支关联。当你使用 git push 或 git pull 命令时，Git 会默认使用这个关联的远程分支。
+### Git fetch
+* git fetch 拉取远程更新，但不直接合并
