@@ -1,11 +1,13 @@
 # MySql笔记
 ## CREATE DATABASE
 * create database  (databasename) 创建数据库
+* -- 代表MySQL注释
 ## USE关键字
 * use (database_name) 使用哪一个数据库
 ## SELECT关键字
 * select (cloumn_name) 选择表中需要的列，通常要和from搭配使用
     >seletct (cloumn_name)
+
     >from (table_name)
 ### AS关键字
 * AS (cloumn_name)给指定列一个别名
@@ -16,7 +18,9 @@
 ## WHERE关键字
 *  WHERE用于过滤搜索的结果
     >seletct (cloumn_name)
+
     >from (table_name)
+
     >where (constraint_condition)
 ## 逻辑运算符
 * AND,OR,NOT 表示与或非
@@ -51,4 +55,145 @@
 >join customers c 要连接的表
 
 >>on o.customer_id=c.customer_id  两表中共有的列，这样才可以拼接
+## SELF JOIN自连接
+>select e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
 
+>from employee e 可以简写为e
+
+>join employee m 可以简写为m,连接自己本身
+
+>>on  e.reports_to=m.employee_id
+## 多表连接
+>select o.order_id,o.order_date,c.first_name,c.last_name,os.name AS status
+
+>from orders o 简写为o
+
+>join customers c 简写为c
+
+>>on  o.customer_id=c.customer_id 寻求两张表共同列
+
+>join order_status os 简写为os 
+
+>>on  o.status=os.order_status_id 
+
+需求拼接后的表共同列
+## 复合连接情况
+* 在某些情况下，一张表有两个主键，这类似于二维数组，两个数字才能代表唯一性
+> select *  
+
+>from order_items oi
+
+>join order_item_notes oin
+
+>>on oi.order_id=oin.order_id
+
+>>and oi.product.id=oin.product_id 
+
+当表中有两个主键时，都需要进行连接，使用and来指定两个连接条件
+## 隐式连接
+> select *  
+
+>from order o，customers c
+
+>where o.customer_id=c.customer_id
+
+尽量不使用隐式连接，忘记where条件后，就进行交叉连接，最好使用显示连接，join...on指定连接条件
+## 外连接
+OUTER JOIN 外连接分为左连接和右连接
+### 左连接
+LEFT JOIN 左连接:无论连接条件是否为真,无条件保留左表所有的数据再进行连接
+>select c.customer_id,c.first_name,o.order_id
+
+>from customers c 左连接保留左表所有记录，左表为customers
+
+>left join orders o 右表为orders
+
+>>on c.customer_id=o.customer_id
+order by c.customer_id
+### 右连接
+RIGHT JOIN 右连接:无论连接条件是否为真,无条件保留右表所有的数据再进行连接
+>select c.customer_id,c.first_name,o.order_id
+
+>from orders o 
+
+>left join customers c 右连接保留右表所有记录,右表为c
+
+>>on c.customer_id=o.customer_id
+order by c.customer_id
+## 多表进行外连接
+尽量都是用左连接,代码可读性更强
+## 自身外连接
+>select e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
+
+>from employee e 可以简写为e
+
+>left join employee m 这种情况下员工都有经理,但是没有经理的信息,所以进行左表外连接也就是左连接，来显示经理信息
+
+>>on  e.reports_to=m.employee_id
+## USING关键字
+如果两张表有相同的列名,可以用using来代替on
+>select o.order_id,c.first_name
+
+>from orders o 
+
+>join customers c
+
+>>using (customer_id)
+
+等同于on c.customer_id=o.customer_id
+>order by c.customer_id
+
+
+在需要多重连接的情况下同样可以使用using,using (column_name1,column_name2)
+> select *  
+
+>from order_items oi
+
+>join order_item_notes oin
+
+>>using (order_id,product_id)
+## 交叉连接
+进行交叉连接就是把两张表所有记录进行笛卡尔积,可以视作叉乘
+> select c.first_name as customer,p.name as product 
+
+>from customers c
+
+>cross join products p
+
+>order by c.first_name
+## UNION联合
+合并两个或多个查询的结果,默认去除重复行,想包含重复行可以UNION ALL,查询时须保持列数,列数据类型一致,第一个选择的列名会代表联合后的列名
+> select order_id,order_date,'Active' AS status
+
+>from orders
+
+>where order_date>='2019-01-01'
+
+>UNION 表示两者查询的合并
+
+> select order_id,order_date,'Archived' AS status
+
+>from orders
+
+>where order_date<'2019-01-01'
+## 列的属性
+* int 类型,表示数据是整形,不含小数点
+* varchar 类型,字符型,varchar(50),var代表variable,表示可变,最多可以有50个字节,当数据只有5个字节时,不会用空格填充,节省了空间
+* char 类型,字符型,和varchar不同的是分配好空间后,不足的会用空格填充
+* primary key 主键,代表数据的唯一标识
+* not null,表示不能为空
+* auto increment,表示自增
+* default,表示分配的默认值
+## 插入数据
+### 插入单行数据
+>insert into customers (first_name,last_name,birth_date,address,city,state) 可不指定列名,就需要给所有列数据
+
+>values('john','smith','1990-01-01','address','city','CA')
+
+### 插入多条数据
+>insert into shippers (name)
+
+>values('shippers1'),('shippers2'),('shippers3')
+
+插入多条数据时,用逗号分隔开
+### 插入历史数据
