@@ -196,4 +196,126 @@ order by c.customer_id
 >values('shippers1'),('shippers2'),('shippers3')
 
 插入多条数据时,用逗号分隔开
-### 插入历史数据
+### 插入层次行
+>insert into orders (customer_id,order_date,status)
+
+>values(1,'2019-01-02',1);
+
+>insert into order_items
+
+>values(LAST_INSERT_ID(),1,1,2.95),(LAST_INSERT_ID(),1,1,2.95)
+
+LAST_INSRET_ID()用来获取刚刚插入数据的id
+## 表格的浅复制
+浅复制只复制数据，表的结构不复制
+>create table orders_archived AS
+
+>select *
+
+>from orders
+
+## 子查询
+>insert into orders_archived
+
+>select *
+
+>from orders
+
+>where order_date < '2019-01-01'
+
+* exercies:
+    >create table invoices_archived AS  
+ 
+    >select *
+
+    >from invoices i
+
+    >join clients c
+
+    >>USING (client_id)
+
+    >where payment_date is not null
+## 更新数据
+### 更新单行数据
+>update invoices
+
+>set payment_total=70,payment_date=null
+
+>where invoice_id=1
+### 更新多行数据
+在mysql workbench中，不允许一下子更改多条数据，需要在preference,sql editor，取消safe mode,重新开启workbench就能更改多条数据
+### 利用子查询更新数据
+>update invoices
+
+>set payment_total=invoice_total*0.5,payment_date=due_date
+
+>where client_id=
+
+>>(select client_id
+
+>>from clients
+
+>>where name='myworks')
+
+>update invoices
+
+>set payment_total=invoice_total*0.5,payment_date=due_date
+
+>where client_id IN
+
+>>(select client_id
+
+>>from clients
+
+>>where status IN ('CA','NY')) 多条语句下用IN
+
+
+子查询的语句需要带括号,mysql会优先执行括号内语句
+## 删除数据
+>delete from 
+
+>where client_id=
+
+>>(select *
+
+>>from clients
+
+>>where name='myworks')
+
+## MYSQL中的事务
+* 事务的四个特性:
+  * 原子性：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。
+  * 一致性：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。
+  * 隔离性：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致。
+  * 持久性：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。
+
+*在 MySQL 命令行的默认设置下，事务都是自动提交的，即执行 SQL 语句后就会马上执行 COMMIT 操作。因此要显式地开启一个事务务须使用命令 BEGIN 或 START TRANSACTION，或者执行命令 SET AUTOCOMMIT=0，用来禁止使用当前会话的自动提交。*
+
+MYSQL 事务处理主要有两种方法：
+
+1. 用 BEGIN, ROLLBACK, COMMIT 来实现
+
+    BEGIN 或 START TRANSACTION：开用于开始一个事务。
+    ROLLBACK 事务回滚，取消之前的更改。
+    COMMIT：事务确认，提交事务，使更改永久生效。
+
+2. 直接用 SET 来改变 MySQL 的自动提交模式:
+
+    SET AUTOCOMMIT=0 禁止自动提交
+    SET AUTOCOMMIT=1 开启自动提交
+
+BEGIN 或 START TRANSACTION -- 用于开始一个事务：
+>BEGIN; -- 或者使用 START TRANSACTION;
+
+COMMIT -- 用于提交事务，将数据的更改永久提交：
+>COMMIT;
+
+ROLLBACK -- 用于回滚事务，撤销到未进行任何操作之前或者savepoint：
+>ROLLBACK;
+
+SAVEPOINT -- 用于在事务中设置保存点，以便稍后能够回滚到该点：
+>SAVEPOINT savepoint_name;
+
+ROLLBACK TO SAVEPOINT -- 用于回滚到之前设置的保存点：
+>ROLLBACK TO SAVEPOINT savepoint_name;
+
