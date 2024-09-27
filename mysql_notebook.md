@@ -1,6 +1,6 @@
 # MySql笔记
 ## CREATE DATABASE
-* create database  (databasename) 创建数据库
+* CREATE database  (databasename) 创建数据库
 * -- 代表MySQL注释
 ## USE关键字
 * use (database_name) 使用哪一个数据库
@@ -17,7 +17,7 @@
 * UNIQUE 用于表的定义当中,确保值唯一
 ## WHERE关键字
 *  WHERE用于过滤搜索的结果
-    >seletct (cloumn_name)
+    >SELECT (cloumn_name)
 
     >FROM (table_name)
 
@@ -249,7 +249,7 @@ ORDER BY c.customer_id
 LAST_INSRET_ID()用来获取刚刚插入数据的id
 ## 表格的浅复制
 浅复制只复制数据，表的结构不复制
->create table orders_archived AS
+>CREATE table orders_archived AS
 
 >SELECT *
 
@@ -265,7 +265,7 @@ LAST_INSRET_ID()用来获取刚刚插入数据的id
 >WHERE order_date < '2019-01-01'
 
 * exercies:
-    >create table invoices_archived AS  
+    >CREATE table invoices_archived AS  
  
     >SELECT *
 
