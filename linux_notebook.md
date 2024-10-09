@@ -60,11 +60,84 @@ Linux发行版是基于Linux内核的操作系统版本，通常包含内核、�
 * whereis (filename) 查找二进制文件、源代码和手册页
   >whereis gcc
 * grep "pattern" filename 命令用于在文件中搜索特定模式或字符串
->grep "error" file.txt
+  >grep "error" file.txt
 
->ls -l | grep "txt"
+  >ls -l | grep "txt"
   * | 表示前面命令的输出作为后面命令的输入，可以理解为执行两个命令
 ### 变更目录
 * pwd 展示当前目录
-*  
+* cd 切换工作目录
+  * cd ~ ~代表当前用户主目录
+  * cd .. 切换到父工作目录 ..代表父类
+  * cd - 切换到之前的工作目录 -代表之前
+* pushd /(directory name) 将当前目录压入堆栈并切换到当前目录
+* popd 将栈顶目录弹出并切换到弹出后栈顶目录
+* dirs 显示当前堆栈内容
+* dir 作用类似于ls，是简略版
+  > cd ~
+
+  切换到当前用户的主目录
+
+  > pwd
+
+  /homebrain
+
+  显示当前目录
+
+  >pushd /tmp 
+
+  将tmp目录压入堆栈中并切换到tmp目录
+
+  >dirs
+
+  /tmp ~
+
+  显示当前堆栈，tmp表示栈顶，~表示栈底
+
+  >popd
+
+  >pwd
+
+  ~ 显示的是弹出后栈顶的目录
+#### 绝对路径与相对路径
+绝对路径:路径的写法，由根目录 / 写起，例如： /usr/share/doc 这个目录。
+
+相对路径:路径的写法，不是由 / 写起，例如由 /usr/share/doc 要到 /usr/share/man 底下时，可以写成： cd ../man 这就是相对路径的写法。
+### 文件与目录的处理
+* pwd 显示当前目录
+* ls 列出目录的所有文件
+  * ls -a 列出所有文件，包括隐藏文件 -a代表all所有
+  * ls -d 只列出文件目录，-d代表directory目录
+  * ls -l 列出文件的长形式，-l代表long长形式
+  * tree 列出系统的目录结构
+  * mkdir (directory_name) 创建新的目录
+  * rmdir (directory_name) 删除目录
+  * cp (filename or directory_name) 复制文件或目录
+  * rm (filename or directory_name) 删除文件或目录
+    * rm -f -f代表强制
+    * rm -r -r代表递归
+    * rm-rf 强制递归删除，非常危险的选项
+  * mv (filename) (new directory) 移动文件到新目录
+    * mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
+#### Linux文件内容的查看
+* cat (filename) 从第一行显示文件的内容
+  * cat -b 列出行号，仅针对非空白行
+  * cat -n 列出行号，对所有行
+* tac (filename) 从文件的最后显示文件的内容
+* more (filename) 一页一页的显示内容
+* less (filename) 一页一页显示内容可以往前翻页，按q退出
+* head (filename) 只看头十行
+* tail (filename) 只看尾十行
+### 改变文件时间戳
+* touch (filename) 修改文件时间戳为当前系统时间戳,如果没有该文件将创建文件
+### 硬链接和软链接(符号链接)
+硬链接:硬链接指向文件的物理位置。使用硬链接时，两个文件共享相同的 inode。
+* ln (原文件) (链接名)
+* ln -i  -i代表interaction交互模式,文件存在则提示用户是否覆盖
+* ln -f -f代表force强制执行
+
+软链接(符号链接):符号链接是指向另一个文件或目录的引用，可以跨文件系统。
+* ln -s  (原文件) (链接名)
+### 输入输出重定向
+
 
