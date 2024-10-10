@@ -112,40 +112,40 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
 
 相对路径:路径的写法,不是由 / 写起,例如由 /usr/share/doc 要到 /usr/share/man 底下时,可以写成: cd ../man 这就是相对路径的写法。
 ### 文件与目录的处理
-* pwd 显示当前目录
-* ls 列出目录的所有文件
-  * ls -a 列出所有文件,包括隐藏文件 -a代表all所有
-  * ls -d 只列出文件目录,-d代表directory目录
-  * ls -l 列出文件的长形式,-l代表long长形式
-  * tree 列出系统的目录结构
-  * mkdir (directory_name) 创建新的目录
-  * rmdir (directory_name) 删除目录
-  * cp (filename or directory_name) 复制文件或目录
-  * rm (filename or directory_name) 删除文件或目录
-    * rm -f -f代表强制
-    * rm -r -r代表递归
-    * rm-rf 强制递归删除,非常危险的选项
-  * mv (filename) (new directory) 移动文件到新目录
-    * mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
+* >pwd 显示当前目录
+* >ls 列出目录的所有文件
+  * >ls -a 列出所有文件,包括隐藏文件 -a代表all所有
+  * >ls -d 只列出文件目录,-d代表directory目录
+  * >ls -l 列出文件的长形式,-l代表long长形式
+  * >tree 列出系统的目录结构
+  * >mkdir (directory_name) 创建新的目录
+  * >rmdir (directory_name) 删除目录
+  * >cp (filename or directory_name) 复制文件或目录
+  * >rm (filename or directory_name) 删除文件或目录
+    * >rm -f -f代表强制
+    * >rm -r -r代表递归
+    * >rm-rf 强制递归删除,非常危险的选项
+  * >mv (filename) (new directory) 移动文件到新目录
+    * >mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
 #### Linux文件内容的查看
-* cat (filename) 从第一行显示文件的内容
-  * cat -b 列出行号,仅针对非空白行
-  * cat -n 列出行号,对所有行
-* tac (filename) 从文件的最后显示文件的内容
-* more (filename) 一页一页的显示内容
-* less (filename) 一页一页显示内容可以往前翻页,按q退出
-* head (filename) 只看头十行
-* tail (filename) 只看尾十行
+* >cat (filename) 从第一行显示文件的内容
+  * >cat -b 列出行号,仅针对非空白行
+  * >cat -n 列出行号,对所有行
+* >tac (filename) 从文件的最后显示文件的内容
+* >more (filename) 一页一页的显示内容
+* >less (filename) 一页一页显示内容可以往前翻页,按q退出
+* >head (filename) 只看头十行
+* >tail (filename) 只看尾十行
 ### 改变文件时间戳
-* touch (filename) 修改文件时间戳为当前系统时间戳,如果没有该文件将创建文件
+* >touch (filename) 修改文件时间戳为当前系统时间戳,如果没有该文件将创建文件
 ### 硬链接和软链接(符号链接)
 硬链接:硬链接指向文件的物理位置。使用硬链接时,两个文件共享相同的 inode。
-* ln (原文件) (链接名)
-* ln -i  -i代表interaction交互模式,文件存在则提示用户是否覆盖
-* ln -f -f代表force强制执行
+* >ln (原文件) (链接名)
+* >ln -i  -i代表interaction交互模式,文件存在则提示用户是否覆盖
+* >ln -f -f代表force强制执行
 
 软链接(符号链接):符号链接是指向另一个文件或目录的引用,可以跨文件系统。
-* ln -s  (原文件) (链接名)
+* >ln -s  (原文件) (链接名)
 ### 输入输出重定向
 大多数 UNIX 系统命令从你的终端接受输入并将所产生的输出发送回​​到您的终端。
 一个命令通常从一个叫标准输入的地方读取输入,默认情况下,这恰好是你的终端。
@@ -248,3 +248,13 @@ Linux man 命令是 "manual" 单词的缩写，用于查看各种命令、函数
   * 6：游戏和演示
   * 7：杂项
   * 8：系统管理命令
+### help命令
+> (command) --help 查询命令行帮助
+### process进程相关命令
+* >ps 显示当前运行的进程信息
+  * >ps aux 显示所有用户的进程信息
+  * >ps -lf 显示进程的长格式信息 
+* >top 查看进程和资源使用情况
+* >htop 更加友好界面需要安装
+* >kill (pid) 杀死指定进程号的进程
+  * 
