@@ -288,3 +288,12 @@ Linux man 命令是 "manual" 单词的缩写，用于查看各种命令、函数
   * >用法:renice priority PID
 
     >>renice -10 4368 将进程号为4368的进程优先级设置为-10
+
+```mermaid
+graph LR
+A[方形] -->B(圆角)
+    B --> C{条件a}
+    C -->|a=1| D[结果1]
+    C -->|a=2| E[结果2]
+    F[横向流程图]
+```
