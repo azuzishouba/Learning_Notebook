@@ -117,16 +117,16 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
   * >ls -a 列出所有文件,包括隐藏文件 -a代表all所有
   * >ls -d 只列出文件目录,-d代表directory目录
   * >ls -l 列出文件的长形式,-l代表long长形式
-  * >tree 列出系统的目录结构
-  * >mkdir (directory_name) 创建新的目录
-  * >rmdir (directory_name) 删除目录
-  * >cp (filename or directory_name) 复制文件或目录
-  * >rm (filename or directory_name) 删除文件或目录
-    * >rm -f -f代表强制
-    * >rm -r -r代表递归
-    * >rm-rf 强制递归删除,非常危险的选项
-  * >mv (filename) (new directory) 移动文件到新目录
-    * >mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
+* >tree 列出系统的目录结构
+* >mkdir (directory_name) 创建新的目录
+* >rmdir (directory_name) 删除目录
+* >cp (filename or directory_name) 复制文件或目录
+* >rm (filename or directory_name) 删除文件或目录
+  * >rm -f -f代表强制
+  * >rm -r -r代表递归
+  * >rm-rf 强制递归删除,非常危险的选项
+* >mv (filename) (new directory) 移动文件到新目录
+  * >mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
 #### Linux文件内容的查看
 * >cat (filename) 从第一行显示文件的内容
   * >cat -b 列出行号,仅针对非空白行
@@ -289,4 +289,120 @@ Linux man 命令是 "manual" 单词的缩写，用于查看各种命令、函数
 
     >>renice -10 4368 将进程号为4368的进程优先级设置为-10
 ### Linux文件系统图示
-![系统文件结构][https://image.baidu.com/search/detail?ct=503316480&z=undefined&tn=baiduimagedetail&ipn=d&word=Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87&step_word=&lid=9315845612771150588&ie=utf-8&in=&cl=2&lm=-1&st=undefined&hd=undefined&latest=undefined&copyright=undefined&cs=2589106027,4202593476&os=3650427162,2531212261&simid=2589106027,4202593476&pn=0&rn=1&di=7410818322373017601&ln=1653&fr=&fmq=1728627783407_R&fm=&ic=undefined&s=undefined&se=&sme=&tab=0&width=undefined&height=undefined&face=undefined&is=0,0&istype=0&ist=&jit=&bdtype=0&spn=0&pi=0&gsm=1e&objurl=https%3A%2F%2Fdeveloper.qcloudimg.com%2Fhttp-save%2Fyehe-11039852%2Fa52d0e5bcc6e3d129e0a5a7b158ea783.png&rpstart=0&rpnum=0&adpicid=0&nojc=undefined&dyTabStr=MCwzLDEsMiwxMyw3LDYsNSwxMiw5&ctd=1728627785229^3_1920X919%1]
+* /
+  * bin
+  * boot
+  * dev
+  * etc
+  * home
+    * eve
+    * bob
+    * alice
+  * root
+  * run
+  * sbin
+  * tmp
+  * usr
+    * bin
+    * local
+    * sbin
+    * tmp
+  * var
+    * tmp
+1. /bin：
+  bin 是 Binaries (二进制文件) 的缩写, 这个目录存放着最经常使用的命令。
+
+2. /boot：
+    这里存放的是启动 Linux 时使用的一些核心文件，包括一些连接文件以及镜像文件。
+
+3. /dev ：
+    dev 是 Device(设备) 的缩写, 该目录下存放的是 Linux 的外部设备，在 Linux 中访问设备的方式和访问文件的方式是相同的。
+
+4. /etc：
+    etc 是 Etcetera(等等) 的缩写,这个目录用来存放所有的系统管理所需要的配置文件和子目录。
+
+5. /home：
+    用户的主目录，在 Linux 中，每个用户都有一个自己的目录，一般该目录名是以用户的账号命名的，如上图中的 alice、bob 和 eve。
+
+6. /lib：
+    lib 是 Library(库) 的缩写这个目录里存放着系统最基本的动态连接共享库，其作用类似于 Windows 里的 DLL 文件。几乎所有的应用程序都需要用到这些共享库。
+
+7. /lost+found：
+    这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。
+
+8. /media：
+    linux 系统会自动识别一些设备，例如U盘、光驱等等，当识别后，Linux 会把识别的设备挂载到这个目录下。
+
+9. /mnt：
+    系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将光驱挂载在 /mnt/ 上，然后进入该目录就可以查看光驱里的内容了。
+
+10. /opt：
+    opt 是 optional(可选) 的缩写，这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。
+
+11. /proc：
+    proc 是 Processes(进程) 的缩写，/proc 是一种伪文件系统（也即虚拟文件系统），存储的是当前内核运行状态的一系列特殊文件，这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。
+    这个目录的内容不在硬盘上而是在内存里，我们也可以直接修改里面的某些文件，比如可以通过下面的命令来屏蔽主机的ping命令，使别人无法ping你的机器：
+
+    echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all
+
+12. /root：
+    该目录为系统管理员，也称作超级权限者的用户主目录。
+
+13. /sbin：
+    s 就是 Super User 的意思，是 Superuser Binaries (超级用户的二进制文件) 的缩写，这里存放的是系统管理员使用的系统管理程序。
+
+14. /selinux：
+   这个目录是 Redhat/CentOS 所特有的目录，Selinux 是一个安全机制，类似于 windows 的防火墙，但是这套机制比较复杂，这个目录就是存放selinux相关的文件的。
+
+15. /srv：
+    该目录存放一些服务启动之后需要提取的数据。
+
+16. /sys：
+    这是 Linux2.6 内核的一个很大的变化。该目录下安装了 2.6 内核中新出现的一个文件系统 sysfs 。
+    sysfs 文件系统集成了下面3种文件系统的信息：针对进程信息的 proc 文件系统、针对设备的 devfs 文件系统以及针对伪终端的 devpts 文件系统。
+
+    该文件系统是内核设备树的一个直观反映。
+
+    当一个内核对象被创建的时候，对应的文件和目录也在内核对象子系统中被创建。
+
+17. /tmp：
+    tmp 是 temporary(临时) 的缩写这个目录是用来存放一些临时文件的。
+
+18. /usr：
+    usr 是 unix system resources(unix 系统资源) 的缩写，这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于 windows 下的 program files 目录。
+
+19. /usr/bin：
+    系统用户使用的应用程序。
+
+20. /usr/sbin：
+    超级用户使用的比较高级的管理程序和系统守护程序。
+
+21. /usr/src：
+    内核源代码默认的放置目录。
+
+22. /var：
+    var 是 variable(变量) 的缩写，这个目录中存放着在不断扩充着的东西，我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件。
+
+23. /run：
+    是一个临时文件系统，存储系统启动以来的信息。当系统重启时，这个目录下的文件应该被删掉或清除。如果你的系统上有 /var/run 目录，应该让它指向 run。
+### Linux 磁盘管理
+* df（英文全称：disk free）：列出文件系统的整体磁盘使用量
+>df 列出文件系统的整体磁盘使用量
+>>df -h 更友好的界面显示磁盘使用量
+>>df -h /etc 将etc底下的可用磁盘容量以易读的格式显示
+* du（英文全称：disk used）：检查磁盘空间使用量
+>du 列出当前目录所有文件夹容量(包括隐藏文件夹)
+>>du -h 更友好的容量格式显示
+>>du / 显示根目录所占用容量
+### Linux用户管理
+* who:
+Linux who命令用于显示系统中有哪些使用者正在上面，显示的资料包含了使用者 ID、使用的终端机、从哪边连上来的、上线时间、呆滞时间、CPU 使用量、动作等等。
+>who 显示所有用户的信息
+>>who -H 显示标题栏
+* whoami： 
+Linux whoami命令用于显示自身用户名称。
+>whoami
+* alias：Linux alias 命令用于设置指令的别名，用户可利用 alias，自定指令的别名。
+  >alias 查看当前别名
+  >alias alias_name='command'设置别名语法
+
