@@ -288,12 +288,5 @@ Linux man 命令是 "manual" 单词的缩写，用于查看各种命令、函数
   * >用法:renice priority PID
 
     >>renice -10 4368 将进程号为4368的进程优先级设置为-10
-
-```mermaid
-graph LR
-A[方形] -->B(圆角)
-    B --> C{条件a}
-    C -->|a=1| D[结果1]
-    C -->|a=2| E[结果2]
-    F[横向流程图]
-```
+### Linux文件系统图示
+![系统文件结构][https://image.baidu.com/search/detail?ct=503316480&z=undefined&tn=baiduimagedetail&ipn=d&word=Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87&step_word=&lid=9315845612771150588&ie=utf-8&in=&cl=2&lm=-1&st=undefined&hd=undefined&latest=undefined&copyright=undefined&cs=2589106027,4202593476&os=3650427162,2531212261&simid=2589106027,4202593476&pn=0&rn=1&di=7410818322373017601&ln=1653&fr=&fmq=1728627783407_R&fm=&ic=undefined&s=undefined&se=&sme=&tab=0&width=undefined&height=undefined&face=undefined&is=0,0&istype=0&ist=&jit=&bdtype=0&spn=0&pi=0&gsm=1e&objurl=https%3A%2F%2Fdeveloper.qcloudimg.com%2Fhttp-save%2Fyehe-11039852%2Fa52d0e5bcc6e3d129e0a5a7b158ea783.png&rpstart=0&rpnum=0&adpicid=0&nojc=undefined&dyTabStr=MCwzLDEsMiwxMyw3LDYsNSwxMiw5&ctd=1728627785229^3_1920X919%1]
