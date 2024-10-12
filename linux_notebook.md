@@ -405,4 +405,43 @@ Linux whoami命令用于显示自身用户名称。
 * alias：Linux alias 命令用于设置指令的别名，用户可利用 alias，自定指令的别名。
   >alias 查看当前别名
   >alias alias_name='command'设置别名语法
+### Linux用户和用户组管理
+* useradd:添加新的用户账号
+  >useradd option username
+  * option:
+    * -d 目录 指定用户主目录，如果此目录不存在，则同时使用-m选项，可以创建主目录。
+    * g 用户组 指定用户所属的用户组。
+    * -G 用户组，用户组 指定用户所属的附加组。
+    * -s Shell文件 指定用户的登录Shell。        
 
+  实例1
+  >useradd –d  /home/sam -m sam
+
+  此命令创建了一个用户sam，其中-d和-m选项用来为登录名sam产生一个主目录 /home/sam（/home为默认的用户主目录所在的父目录）。
+
+  实例2
+
+  >useradd -s /bin/sh -g group –G adm,root gem
+
+  此命令新建了一个用户gem，该用户的登录Shell是 /bin/sh，它属于group用户组，同时又属于adm和root用户组，其中group用户组是其主组。
+
+  这里可能新建组：#groupadd group及groupadd adm
+
+  增加用户账号就是在/etc/passwd文件中为新用户增加一条记录，同时更新其他系统文件如/etc/shadow, /etc/group等。
+* userdel:删除用户
+  > userdel option username
+
+  常用的选项是 -r，它的作用是把用户的主目录一起删除。
+* usermod:修改用户有关属性
+  >usermod option username
+
+常用的选项包括-c, -d, -m, -g, -G, -s, -u以及-o等，这些选项的意义与useradd命令中的选项一样，可以为用户指定新的资源值。
+#### Linux系统用户组的管理
+* groupadd:增加新的用户组
+  >groupadd option groupname
+  * option:
+    * -g GID 指定新用户组的组标识号（GID）。     
+* groupdel:删除用户组
+  >groupdel groupname
+* groupmod:修改用户组
+  >groupmod groupname
