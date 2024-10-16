@@ -137,11 +137,11 @@ echo $greeting_2  $greeting_3
 >echo `expr index "$string" io`  # 输出 4
 
 注意： 以上脚本中 ` 是反引号，而不是单引号 '，不要看错了哦。
-#### Shell数组
+### Shell数组
 bash支持一维数组（不支持多维数组），并且没有限定数组的大小。
 
 类似于 C 语言，数组元素的下标由 0 开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于 0。 
-##### 定义数组
+#### 定义数组
 在 Shell 中，用括号来表示数组，数组元素用"空格"符号分割开。定义数组的一般形式为： 
 >数组名=(值1 值2 ... 值n)
 例如:
@@ -168,7 +168,7 @@ array_name[1]=value1
 array_name[n]=valuen
 ```
 可以不使用连续的下标，而且下标的范围没有限制。
-##### 读取数组
+#### 读取数组
 读取数组元素值的一般格式是：
 >${数组名[下标]}
 
@@ -177,7 +177,7 @@ array_name[n]=valuen
 
 使用 @ 符号可以获取数组中的所有元素，例如：
 >echo ${array_name[@]}
-##### 获取数组的长度
+#### 获取数组的长度
 获取数组长度的方法与获取字符串长度的方法相同，例如：
 ```shell
 # 取得数组元素的个数
@@ -189,7 +189,7 @@ length=${#array_name[*]}
 # 取得数组单个元素的长度
 length=${#array_name[n]}
 ```
-#### Shell 注释
+### Shell 注释
 以 # 开头的行就是注释，会被解释器忽略。
 通过每一行加一个 # 号设置多行注释，像这样：
 ```shell
@@ -210,7 +210,7 @@ length=${#array_name[n]}
 如果在开发过程中，遇到大段的代码需要临时注释起来，过一会儿又取消注释，怎么办呢？
 
 每一行加个#符号太费力了，可以把这一段要注释的代码用一对花括号括起来，定义成一个函数，没有地方调用这个函数，这块代码就不会执行，达到了和注释一样的效果。
-##### 多行注释
+#### 多行注释
 使用 Here 文档
 
 多行注释还可以使用以下格式： 
@@ -243,4 +243,246 @@ COMMENT
 注释内容...
 注释内容...
 !
+```
+## Shell传递参数
+我们可以在执行 Shell 脚本时，向脚本传递参数，脚本内获取参数的格式为 <kbd>$n</kbd>，<kbd>n</kbd> 代表一个数字，<kbd>1</kbd>为执行脚本的第一个参数，<kbd>2</kbd> 为执行脚本的第二个参数。
+
+例如可以使用 <kbd>$1</kbd>、<kbd>$2</kbd> 等来引用传递给脚本的参数，其中<kbd>$1</kbd>表示第一个参数,<kbd>$2</kbd>表示第二个参数，依此类推。
+
+以下实例我们向脚本传递三个参数，并分别输出，其中 $0 为执行的文件名（包含文件路径）：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+echo "Shell 传递参数实例！";
+echo "执行的文件名：$0";
+echo "第一个参数为：$1";
+echo "第二个参数为：$2";
+echo "第三个参数为：$3";
+```
+为脚本设置可执行权限，并执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh 1 2 3
+Shell 传递参数实例！
+执行的文件名：./test.sh
+第一个参数为：1
+第二个参数为：2
+第三个参数为：3
+```
+|参数处理|说明|
+|:--:|:--:|
+|$#|传递到脚本的参数个数|
+|$*|以一个单字符串显示所有向脚本传递的参数。如"$*"用「"」括起来的情况、以"$1 $2 … $n"的形式输出所有参数。|
+|$@|与\$*相同，但是使用时加引号，并在引号中返回每个参数。如"$@"用「"」括起来的情况、以"$1" "$2" … "$n" 的形式输出所有参数。|
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+echo "Shell 传递参数实例！";
+echo "第一个参数为：$1";
+
+echo "参数个数为：$#";
+echo "传递的参数作为一个字符串显示：$*";
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh 1 2 3
+Shell 传递参数实例！
+第一个参数为：1
+参数个数为：3
+传递的参数作为一个字符串显示：1 2 3
+```
+$* 与 $@ 区别：
+  * 相同点：都是引用所有参数。
+  * 不同点：只有在双引号中体现出来。假设在脚本运行时写了三个参数 1、2、3，则 " * " 等价于 "1 2 3"（传递了一个参数），而 "@" 等价于 "1" "2" "3"（传递了三个参数）。
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+echo "-- \$* 演示 ---"
+for i in "$*"; do
+    echo $i
+done
+
+echo "-- \$@ 演示 ---"
+for i in "$@"; do
+    echo $i
+done
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh 1 2 3
+-- $* 演示 ---
+1 2 3
+-- $@ 演示 ---
+1
+2
+3
+```
+## Shell数组
+数组中可以存放多个值。Bash Shell 只支持一维数组（不支持多维数组），初始化时不需要定义数组大小（与 PHP 类似）。
+
+与大部分编程语言类似，数组元素的下标由 0 开始。
+
+Shell 数组用括号来表示，元素用"空格"符号分割开，语法格式如下：
+```shell
+array_name=(value1 value2 ... valuen)
+```
+创建一个简单的数组 my_array：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+my_array=(A B "C" D)
+```
+我们也可以使用数字下标来定义数组:
+```shell
+array_name[0]=value0
+array_name[1]=value1
+array_name[2]=value2
+```
+以下实例通过数字索引读取数组元素：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+my_array=(A B "C" D)
+
+echo "第一个元素为: ${my_array[0]}"
+echo "第二个元素为: ${my_array[1]}"
+echo "第三个元素为: ${my_array[2]}"
+echo "第四个元素为: ${my_array[3]}"
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh
+第一个元素为: A
+第二个元素为: B
+第三个元素为: C
+第四个元素为: D
+```
+### 关联数组
+Bash 支持关联数组，可以使用任意的字符串、或者整数作为下标来访问数组元素。
+
+关联数组使用 declare 命令来声明，语法格式如下：
+```shell
+declare -A array_name
+```
+-A 选项就是用于声明一个关联数组。
+
+关联数组的键是唯一的。
+
+以下实例我们创建一个关联数组 site，并创建不同的键值：
+```shell
+declare -A site=(["google"]="www.google.com" ["runoob"]="www.runoob.com" ["taobao"]="www.taobao.com")
+```
+我们也可以先声明一个关联数组，然后再设置键和值：
+```shell
+declare -A site
+site["google"]="www.google.com"
+site["runoob"]="www.runoob.com"
+site["taobao"]="www.taobao.com"
+```
+也可以在定义的同时赋值：
+
+访问关联数组元素可以使用指定的键，格式如下：
+```shell
+array_name["index"]
+```
+以下实例我们通过键来访问关联数组的元素：
+```shell
+declare -A site
+site["google"]="www.google.com"
+site["runoob"]="www.runoob.com"
+site["taobao"]="www.taobao.com"
+
+echo ${site["runoob"]}
+```
+执行脚本，输出结果如下所示：
+```shell
+www.runoob.com
+```
+### 获取数组中的所有元素
+
+使用<kbd>@</kbd> 或<kbd>*</kbd>可以获取数组中的所有元素，例如：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+my_array[0]=A
+my_array[1]=B
+my_array[2]=C
+my_array[3]=D
+
+echo "数组的元素为: ${my_array[*]}"
+echo "数组的元素为: ${my_array[@]}"
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh
+数组的元素为: A B C D
+数组的元素为: A B C D
+```
+```shell
+declare -A site
+site["google"]="www.google.com"
+site["runoob"]="www.runoob.com"
+site["taobao"]="www.taobao.com"
+
+echo "数组的元素为: ${site[*]}"
+echo "数组的元素为: ${site[@]}"
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh
+数组的元素为: www.google.com www.runoob.com www.taobao.com
+数组的元素为: www.google.com www.runoob.com www.taobao.com
+```
+在数组前加一个感叹号<kbd>!</kbd>可以获取数组的所有键，例如：
+```shell
+declare -A site
+site["google"]="www.google.com"
+site["runoob"]="www.runoob.com"
+site["taobao"]="www.taobao.com"
+
+echo "数组的键为: ${!site[*]}"
+echo "数组的键为: ${!site[@]}"
+```
+执行脚本，输出结果如下所示：
+```shell
+数组的键为: google runoob taobao
+数组的键为: google runoob taobao
+```
+### 获取数组的长度
+获取数组长度的方法与获取字符串长度的方法相同，例如：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+my_array[0]=A
+my_array[1]=B
+my_array[2]=C
+my_array[3]=D
+
+echo "数组元素个数为: ${#my_array[*]}"
+echo "数组元素个数为: ${#my_array[@]}"
+```
+执行脚本，输出结果如下所示：
+```shell
+$ chmod +x test.sh 
+$ ./test.sh
+数组元素个数为: 4
+数组元素个数为: 4
 ```
