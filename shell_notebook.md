@@ -1005,6 +1005,7 @@ Shell 的 echo 指令与 PHP 的 echo 指令类似，都是用于字符串的输
       echo "$name It is a test"
    ```
    read 命令有几个常用选项，包括：
+   * <kbd>-p</kbd>：<kbd>-p</kbd>后面跟着你想要显示的提示文本，这样用户在输入时就会看到这个提示。将提示显示在同一行
    * <kbd>-a</kbd>：将输入读入数组。
    * <kbd>-d</kbd>：设置输入结束的定界符。
    * <kbd>-e</kbd>：使用命令行编辑功能。
@@ -1664,4 +1665,346 @@ do
     esac
 done
 ```
-运行代码发现，当输入大于5的数字时，该例中的循环不会结束，语句 echo "游戏结束" 永远不会被执行。 
+运行代码发现，当输入大于5的数字时，该例中的循环不会结束，语句 echo "游戏结束" 永远不会被执行。
+## shell 函数
+linux shell 可以用户定义函数，然后在shell脚本中可以随便调用。
+
+shell中函数的定义格式如下： 
+```shell
+[ function ] funname [()]
+
+{
+
+    action;
+
+    [return int;]
+
+}
+``` 
+说明：
+   * 1.可以带 <kbd>function fun()</kbd> 定义，也可以直接 fun() 定义,不带任何参数。
+   * 2.参数返回，可以显示加：<kbd>return</kbd> 返回，如果不加，将以最后一条命令运行结果，作为返回值。 return 后跟数值 n(0-255). 
+
+下面的例子定义了一个函数并进行调用：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+demoFun(){
+    echo "这是我的第一个 shell 函数!"
+}
+echo "-----函数开始执行-----"
+demoFun
+echo "-----函数执行完毕-----"
+``` 
+输出结果:
+```shell
+-----函数开始执行-----
+这是我的第一个 shell 函数!
+-----函数执行完毕-----
+```
+下面定义一个带有 <kbd>return</kbd> 语句的函数：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+funWithReturn(){
+    echo "这个函数会对输入的两个数字进行相加运算..."
+    echo "输入第一个数字: "
+    read aNum
+    echo "输入第二个数字: "
+    read anotherNum
+    echo "两个数字分别为 $aNum 和 $anotherNum !"
+    return $(($aNum+$anotherNum))
+}
+funWithReturn
+echo "输入的两个数字之和为 $? !"
+```
+输出类似下面： 
+```shell
+这个函数会对输入的两个数字进行相加运算...
+输入第一个数字: 
+1
+输入第二个数字: 
+2
+两个数字分别为 1 和 2 !
+输入的两个数字之和为 3 !
+``` 
+ 函数返回值在调用该函数后通过<kbd> $?</kbd> 来获得。
+
+注意：所有函数在使用前必须定义。这意味着必须将函数放在脚本开始部分，直至shell解释器首次发现它时，才可以使用。调用函数仅使用其函数名即可。
+
+注意： <kbd>return</kbd> 语句只能返回一个介于 0 到 255 之间的整数，而两个输入数字的和可能超过这个范围。
+
+要解决这个问题，您可以修改 return 语句，直接使用 echo 输出和而不是使用 return：
+```shell
+funWithReturn(){
+    echo "这个函数会对输入的两个数字进行相加运算..."
+    echo "输入第一个数字: "
+    read aNum
+    echo "输入第二个数字: "
+    read anotherNum
+    sum=$(($aNum + $anotherNum))
+    echo "两个数字分别为 $aNum 和 $anotherNum !"
+    echo $sum  # 输出两个数字的和
+}
+```
+### 函数参数
+
+在Shell中，调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数...
+
+带参数的函数示例：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+funWithParam(){
+    echo "第一个参数为 $1 !"
+    echo "第二个参数为 $2 !"
+    echo "第十个参数为 $10 !"
+    echo "第十个参数为 ${10} !"
+    echo "第十一个参数为 ${11} !"
+    echo "参数总数有 $# 个!"
+    echo "作为一个字符串输出所有参数 $* !"
+}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+```
+输出结果：
+```shell
+第一个参数为 1 !
+第二个参数为 2 !
+第十个参数为 10 !
+第十个参数为 34 !
+第十一个参数为 73 !
+参数总数有 11 个!
+作为一个字符串输出所有参数 1 2 3 4 5 6 7 8 9 34 73 !
+```
+注意，$10 不能获取第十个参数，获取第十个参数需要${10}。当n>=10时，需要使用${n}来获取参数。
+
+另外，还有几个特殊字符用来处理参数：
+|参数|说明|
+|:--|:--|
+|$#| 	传递到脚本或函数的参数个数|
+|$*| 	以一个单字符串显示所有向脚本传递的参数|
+|$$| 	脚本运行的当前进程ID号|
+|$!| 	后台运行的最后一个进程的ID号|
+|$@| 	与$*相同，但是使用时加引号，并在引号中返回每个参数。|
+|$-| 	显示Shell使用的当前选项，与set命令功能相同。|
+|$?| 	显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。 |
+## Shell输入/输出重定向
+大多数 UNIX 系统命令从你的终端接受输入并将所产生的输出发送回​​到您的终端。
+一个命令通常从一个叫标准输入的地方读取输入,默认情况下,这恰好是你的终端。
+同样,一个命令通常将其输出写入到标准输出,默认情况下,这也是你的终端。
+重定向命令列表如下:
+|命令|说明|
+|:--:|:--|
+|command > file|将输出重定向到 file。|
+|command < file |将输入重定向到 file。|
+|command >> file |将输出以追加的方式重定向到 file。|
+|n > file|将文件描述符为 n 的文件重定向到 file。|
+|n >> file|将文件描述符为 n 的文件以追加的方式重定向到 file。|
+|n >& m |将输出文件 m 和 n 合并。|
+|n <& m |将输入文件 m 和 n 合并。|
+*需要注意的是文件描述符 0 通常是标准输入(STDIN),1 是标准输出(STDOUT),2 是标准错误输出(STDERR)。*
+### 输出重定向
+重定向一般通过在命令间插入特定的符号来实现。特别的，这些符号的语法如下所示:
+```shell
+command1 > file1
+```
+上面这个命令执行command1然后将输出的内容存入file1。
+
+注意任何file1内的已经存在的内容将被新内容替代。如果要将新内容添加在文件末尾，请使用>>操作符。
+
+执行下面的 who 命令，它将命令的完整的输出重定向在用户文件中(users):
+```shell
+$ who > users
+```
+
+执行后，并没有在终端输出信息，这是因为输出已被从默认的标准输出设备（终端）重定向到指定的文件。
+
+你可以使用 cat 命令查看文件内容：
+```shell
+$ cat users
+_mbsetupuser console  Oct 31 17:35 
+tianqixin    console  Oct 31 17:35 
+tianqixin    ttys000  Dec  1 11:33 
+```
+输出重定向会覆盖文件内容，请看下面的例子：
+```shell
+$ echo "菜鸟教程：www.runoob.com" > users
+$ cat users
+菜鸟教程：www.runoob.com
+$
+```
+如果不希望文件内容被覆盖，可以使用 >> 追加到文件末尾，例如：
+```shell
+$ echo "菜鸟教程：www.runoob.com" >> users
+$ cat users
+菜鸟教程：www.runoob.com
+菜鸟教程：www.runoob.com
+$
+```
+### 输入重定向
+和输出重定向一样，Unix 命令也可以从文件获取输入，语法为：
+```shell
+command1 < file1
+```
+这样，本来需要从键盘获取输入的命令会转移到文件读取内容。
+
+注意：输出重定向是大于号(>)，输入重定向是小于号(<)。
+
+接着以上实例，我们需要统计 users 文件的行数,执行以下命令：
+```shell
+$ wc -l users
+       2 users
+```
+也可以将输入重定向到 users 文件：
+```shell
+$  wc -l < users
+       2 
+```
+注意：上面两个例子的结果不同：第一个例子，会输出文件名；第二个不会，因为它仅仅知道从标准输入读取内容。
+```shell
+command1 < infile > outfile
+```
+同时替换输入和输出，执行command1，从文件infile读取内容，然后将输出写入到outfile中。
+### 重定向深入讲解
+一般情况下，每个 Unix/Linux 命令运行时都会打开三个文件：
+
+   * 标准输入文件(stdin)：stdin的文件描述符为0，Unix程序默认从stdin读取数据。
+   * 标准输出文件(stdout)：stdout 的文件描述符为1，Unix程序默认向stdout输出数据。
+   * 标准错误文件(stderr)：stderr的文件描述符为2，Unix程序会向stderr流中写入错误信息。
+
+默认情况下，command > file 将 stdout 重定向到 file，command < file 将stdin 重定向到 file。
+
+如果希望 stderr 重定向到 file，可以这样写：
+```shell
+$ command 2>file
+```
+如果希望 stderr 追加到 file 文件末尾，可以这样写：
+```shell
+$ command 2>>file
+```
+2 表示标准错误文件(stderr)。
+
+如果希望将 stdout 和 stderr 合并后重定向到 file，可以这样写：
+```shell
+$ command > file 2>&1
+```
+或者
+```shell
+$ command >> file 2>&1
+```
+如果希望对 stdin 和 stdout 都重定向，可以这样写：
+```shell
+$ command < file1 >file2
+```
+command 命令将 stdin 重定向到 file1，将 stdout 重定向到 file2。
+### Here Document
+
+Here Document 是 Shell 中的一种特殊的重定向方式，用来将输入重定向到一个交互式 Shell 脚本或程序。
+
+它的基本的形式如下：
+```shell
+command << delimiter
+    document
+delimiter
+```
+它的作用是将两个 delimiter 之间的内容(document) 作为输入传递给 command。
+
+ 注意：
+
+   * 结尾的delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。
+   * 开始的delimiter前后的空格会被忽略掉。
+
+在命令行中通过 wc -l 命令计算 Here Document 的行数：
+```shell
+$ wc -l << EOF
+    欢迎来到
+    菜鸟教程
+    www.runoob.com
+EOF
+3          # 输出结果为 3 行
+$
+```
+我们也可以将 Here Document 用在脚本中，例如：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+cat << EOF
+欢迎来到
+菜鸟教程
+www.runoob.com
+EOF
+```
+执行以上脚本，输出结果：
+```shell
+欢迎来到
+菜鸟教程
+www.runoob.com 
+```
+### /dev/null 文件
+
+如果希望执行某个命令，但又不希望在屏幕上显示输出结果，那么可以将输出重定向到 /dev/null：
+```shell
+$ command > /dev/null
+```
+/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到"禁止输出"的效果。
+
+如果希望屏蔽 stdout 和 stderr，可以这样写：
+```shell
+$ command > /dev/null 2>&1
+```
+
+   *注意：0 是标准输入（STDIN），1 是标准输出（STDOUT），2 是标准错误输出（STDERR）。*
+
+   *这里的 2 和 > 之间不可以有空格，2> 是一体的时候才表示错误输出。*
+## Shell 文件包含
+
+和其他语言一样，Shell 也可以包含外部脚本。这样可以很方便的封装一些公用的代码作为一个独立的文件。
+
+Shell 文件包含的语法格式如下：
+```shell
+. filename   # 注意点号(.)和文件名中间有一空格
+
+或
+
+source filename
+```
+创建两个 shell 脚本文件。
+
+test1.sh 代码如下：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+url="http://www.runoob.com"
+```
+test2.sh 代码如下：
+```shell
+#!/bin/bash
+# author:菜鸟教程
+# url:www.runoob.com
+
+#使用 . 号来引用test1.sh 文件
+. ./test1.sh
+
+# 或者使用以下包含文件代码
+# source ./test1.sh
+
+echo "菜鸟教程官网地址：$url"
+```
+接下来，我们为 test2.sh 添加可执行权限并执行：
+```shell
+$ chmod +x test2.sh 
+$ ./test2.sh 
+菜鸟教程官网地址：http://www.runoob.com
+```
+
+*注：被包含的文件 test1.sh 不需要可执行权限。*
