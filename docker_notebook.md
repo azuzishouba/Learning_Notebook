@@ -1,4 +1,5 @@
 # docker笔记
+![docker](https://www.runoob.com/wp-content/uploads/2016/04/docker01.png)
 ## docker的安装
 1. 启用Windows功能：
    * 打开“控制面板”，选择“程序”，然后点击“启用或关闭Windows功能”。
@@ -26,7 +27,14 @@
    * 镜像：包含了运行某个应用所需的一切内容，比如操作系统层、应用代码、库和依赖等。它是静态的，只读的。
 
    * 容器：是从镜像启动出来的运行实例，才是真正的运行环境。每个容器都有自己的进程、文件系统和网络接口，可以在其中执行代码。
-## docker 拉取和运行容器
+## docker 镜像的使用
+* 查看docker所有的镜像:
+    >docker images
+* 拉取镜像:
+    >docker pull (images_name)
+
+    > docker pull (images_name):(tag_name) 下载特定版本的镜像
+## docker容器的使用
 * 查看docker所有的镜像:
     >docker images
 * 拉取镜像:
@@ -43,3 +51,50 @@
     >docker ps
 
     >docker ps -a  查看所有的容器包括不运行的
+* 停止容器
+    >docker stop (container_id)
+
+    >docker restart (container_id) 停止的容器可以通过restart重启
+* 进入容器
+    在使用 -d 参数时，容器启动后会进入后台。此时想要进入容器，可以通过以下指令进入：
+    * docker attach :退出容器时会导致容器的停止
+    * docker exec:推荐大家使用 docker exec 命令，因为此命令会退出容器终端，但不会导致容器的停止。
+#### attach 命令
+下面演示了使用 docker attach 命令。
+```shell
+$ docker attach 1e560fca3906
+```
+![attch命令](https://www.runoob.com/wp-content/uploads/2016/05/docker-attach.png)
+注意： 如果从这个容器退出，会导致容器的停止。
+#### exec 命令
+下面演示了使用 docker exec 命令。
+```shell
+docker exec -it 243c32535da7 /bin/bash
+```
+![exec命令](https://www.runoob.com/wp-content/uploads/2016/05/docker-exec.png)
+注意： 如果从这个容器退出，容器不会停止，这就是为什么推荐大家使用 docker exec 的原因。
+
+更多参数说明请使用 <kbd>docker exec --help</kbd> 命令查看。
+### docker容器的连接
+#### docker容器的互联
+##### 容器命名
+当我们创建一个容器的时候，docker 会自动对它进行命名。另外，我们也可以使用 **--name** 标识来命名容器，例如：
+```shell
+runoob@runoob:~$  docker run -d -P --name runoob training/webapp python app.py
+43780a6eabaaf14e590b6e849235c75f3012995403f97749775e38436db9a441
+```
+我们可以使用 docker ps 命令来查看容器名称。
+```shell
+runoob@runoob:~$ docker ps -l
+CONTAINER ID     IMAGE            COMMAND           ...    PORTS                     NAMES
+43780a6eabaa     training/webapp   "python app.py"  ...     0.0.0.0:32769->5000/tcp   runoob
+```
+#### docker容器网络端口映射
+* 将容器内部端口映射到本地主机中:
+    >docker run -d -p 9000:80 nginx:1.23
+    ```shell
+    $ docker ps
+    CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                  NAMES
+    a4251c3f32b9   nginx:1.23   "/docker-entrypoint.…"   18 minutes ago   Up 18 minutes   0.0.0.0:9000->80/tcp   beautiful_ardinghelli
+    ```
+

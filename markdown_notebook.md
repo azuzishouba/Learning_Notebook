@@ -1,4 +1,5 @@
 # Markdown 笔记
+![Markdown](https://www.runoob.com/wp-content/uploads/2019/03/iconfinder_markdown_298823.png)
 ## Markdown 标题
 ### Markdown 标题
 #### 使用 # 号标记
@@ -87,6 +88,25 @@ Markdown 制作表格使用 | 来分隔不同的单元格，使用 - 来分隔�
 | :-----| ----: | :----: |
 | 单元格 | 单元格 | 单元格 |
 | 单元格 | 单元格 | 单元格 |
+## Markdown图片
+Markdown 图片语法格式如下：
+```markdown
+![alt 属性文本](图片地址)
+
+![alt 属性文本](图片地址 "可选标题")
+```
+  * 开头一个感叹号 !
+  *  接着一个方括号，里面放上图片的替代文字
+  *  接着一个普通括号，里面放上图片的网址，最后还可以用引号包住并加上选择性的 'title' 属性的文字。
+使用实例:
+```markdown
+![RUNOOB 图标](https://static.jyshare.com/images/runoob-logo.png)
+
+![RUNOOB 图标](https://static.jyshare.com/images/runoob-logo.png "RUNOOB")
+```
+显示结果如下:
+
+![RUNOOB 图标](https://static.jyshare.com/images/runoob-logo.png "RUNOOB")
 ## Markdown高级技巧
 ### Markdown支持的html元素
 不在 Markdown 涵盖范围之内的标签，都可以直接在文档里面用 HTML 撰写。
