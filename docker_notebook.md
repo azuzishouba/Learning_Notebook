@@ -44,6 +44,18 @@
 *  运行容器:
     >docker run (images_name):(tag_name) 镜像可以存在也可以不存在，不存在直接拉取并运行容器
 
+    >docker run -it (images_name):(tag_name) /bin/bash 进入容器并且以命令行模式进入容器
+    
+    参数说明：
+    * -i: 交互式操作。
+    * -t: 终端。
+    * ubuntu: ubuntu 镜像。
+    * /bin/bash：放在镜像名后的是命令，这里我们希望有个交互式 Shell，因此用的是 /bin/bash。
+
+    要退出终端，直接输入 exit:
+    ```shell
+    root@ed09e4490c57:/# exit
+    ```
     >docker run -d (images_name):(tag_name) 在后台运行程序不显示运行信息，只显示运行ID
 
     >docker logs ID 显示容器的运行日志
@@ -67,6 +79,7 @@ $ docker attach 1e560fca3906
 ![attch命令](https://www.runoob.com/wp-content/uploads/2016/05/docker-attach.png)
 注意： 如果从这个容器退出，会导致容器的停止。
 #### exec 命令
+exec命令相当于进入容器的内部可以执行一些命令，可以改环境变量等，dockers用的是轻量化Linux，输入exit退出
 下面演示了使用 docker exec 命令。
 ```shell
 docker exec -it 243c32535da7 /bin/bash
@@ -97,4 +110,39 @@ CONTAINER ID     IMAGE            COMMAND           ...    PORTS                
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                  NAMES
     a4251c3f32b9   nginx:1.23   "/docker-entrypoint.…"   18 minutes ago   Up 18 minutes   0.0.0.0:9000->80/tcp   beautiful_ardinghelli
     ```
+## docker dockerfile
+### 指令详解
+|Dockerfile指令|说明|
+|:--|:--|
+|FROM|指定基础镜像，用于后续的指令构建。|
+|LABEL|添加镜像的元数据，使用键值对的形式。|
+|RUN|在构建过程中在镜像中执行命令。|
+|CMD|指定容器创建时的默认命令。|
+|ENTRYPOINT|设置容器创建时的主要命令。|
+|EXPOSE|声明容器运行时监听的特定网络端口。|
+|ENV|在容器内部设置环境变量。|
+|ADD|将文件、目录或远程URL复制到镜像中。|
+|COPY|将文件或目录复制到镜像中。|
+|VOLUME|为容器创建挂载点或声明卷。|
+|WORKDIR|设置后续指令的工作目录。|
+|USER|指定后续指令的用户上下文。|
+|ARG|定义在构建过程中传递给构建器的变量，可使用 "docker build" 命令设置。|
+|ONBUILD|当该镜像被用作另一个构建过程的基础时，添加触发器。|
+|STOPSIGNAL|设置发送给容器以退出的系统调用信号。|
+|HEALTHCHECK|定义周期性检查容器健康状态的命令。|
+|SHELL|覆盖Docker中默认的shell，用于RUN、CMD和ENTRYPOINT指令。|
 
+```dockerfile
+#通常指定语言依赖包
+FROM (language):(verision)
+# 设置工作目录
+WORKDIR /app
+#构建中执行的命令，通常安装依赖包
+RUN 
+#指定需要的文件
+COPY
+# 暴露应用运行的端口
+EXPOSE 3000
+#指定容器创建最终执行的命令
+CMD
+```
