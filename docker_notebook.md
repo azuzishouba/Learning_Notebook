@@ -34,6 +34,35 @@
     >docker pull (images_name)
 
     > docker pull (images_name):(tag_name) 下载特定版本的镜像
+## docker 镜像的推送
+镜像推送将本地的镜像推送到远程网络仓库中
+1. 登录 Docker Hub
+
+    首先，确保你已登录到 Docker Hub：
+    ```bash
+    docker login
+    ```
+    输入你的 Docker Hub 用户名和密码。
+
+2. 需要在Docker Hub创建好仓库类似于GitHub仓库
+    repositoies->create repositoies
+ 
+3. 标记镜像
+
+    将 app 镜像标记为目标仓库的格式：
+    ```bash
+    docker tag target_app:tag_name username/repository_name:tag_name
+    ```
+    app的标签名尽量要和仓库的标签名保持一致
+
+4. 推送镜像
+
+    使用 docker push 命令将镜像推送到 azuzishouba/test 仓库：
+
+    ```bash
+    docker push username/repository_name:tag_name
+    ```
+
 ## docker容器的使用
 * 查看docker所有的镜像:
     >docker images
