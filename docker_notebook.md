@@ -34,7 +34,7 @@
     >docker pull (images_name)
 
     > docker pull (images_name):(tag_name) 下载特定版本的镜像
-## docker 镜像的推送
+### docker 镜像的推送
 镜像推送将本地的镜像推送到远程网络仓库中
 1. 登录 Docker Hub
 
@@ -62,7 +62,14 @@
     ```bash
     docker push username/repository_name:tag_name
     ```
+### docker镜像的构建
+生成dockerfile后,需要对镜像进行构建
+>docker build -t images_name:tag_name dockerfile_position
+   * -t:tag,标签
+例如：
+>docker build  -t python-app:1.0 .
 
+.代表当前dockerfile位置 .在Linux中表示当前文件夹位置
 ## docker容器的使用
 * 查看docker所有的镜像:
     >docker images
@@ -119,8 +126,60 @@ docker exec -it 243c32535da7 /bin/bash
 更多参数说明请使用 <kbd>docker exec --help</kbd> 命令查看。
 ### docker容器的连接
 #### docker容器的互联
+端口映射并不是唯一把 docker 连接到另一个容器的方法。
+
+docker 有一个连接系统允许将多个容器连接在一起，共享连接信息。
+
+docker 连接会创建一个父子关系，其中父容器可以看到子容器的信息。
+1. 新建网络：
+    首先查看dockers的所有网络:
+    >docker network ls
+
+    下面先创建一个新的 Docker 网络。
+    > docker network create mongo-network
+
+    Docker 默认创建的网络类型就是桥接网络
+2. 两个容器的连接
+    连接容器之前两个容器都需要在运行状态
+
+    运行容器1(mongo):
+    ```shell
+    docker run -d\  #后台运行容器
+    -p 27017:27017\  #端口的映射
+    -e MONGO_INITDB-ROOT-USERNAME=admin\  #mongo的环境变量需要在前面加-e，代表environment,可在dockerhub文档查看
+    -e MONGO_INITDB-ROOT-PASSWORD=password\
+    --name mongodb\  #为容器指定名字，未指定dockers也会自动生成  
+    --net mongo-network\  #指定哪个网络连接
+    mongo #指定启动的映像，没有tag_name代表使用latest
+    ```
+    运行容器2(mongo_express):
+    ```shell
+    docker run -d\  #后台运行容器
+    -p 8081:8081\  #端口的映射
+    -e MONGO_INITDB-ROOT-USERNAME=admin\  #mongo的环境变量需要在前面加-e，代表environment,可在dockerhub文档查看
+    -e MONGO_INITDB-ROOT-PASSWORD=password\  
+    --name mongoexpress\  #为容器指定名字，未指定dockers也会自动生成 
+    -e ME_CONFIG_MONGODB_SERVER=mongodb\  #mongoexperss的环境变量，需要指定监听的服务器容器名字 
+    --net mongo-network\  #指定哪个网络连接
+    mongo-express #指定启动的映像，没有tag_name代表使用latest
+    ```
+3. 检查两个容器是否连接成功
+   * 成功启动容器2后输入以下命令:
+    >docker logs (container_id)
+    
+    成功会显示mongo experss server listening at 8081，database conneted，mongo服务监听8081端口
+    * 使用ping命令:
+    1. 首先确保安装了ping(linux环境下安装):
+        >apt-get update
+
+        >apt install iputils-ping
+    2. 进入容器1或容器2:
+        >ping (container2)
+        
+        显示图片显示连接成功:
+        ![docker连接成功](https://www.runoob.com/wp-content/uploads/2016/05/docker-net4.png)
 ##### 容器命名
-当我们创建一个容器的时候，docker 会自动对它进行命名。另外，我们也可以使用 **--name** 标识来命名容器，例如：
+当我们创建一个容器的时候,docker 会自动对它进行命名。另外，我们也可以使用 **--name** 标识来命名容器，例如：
 ```shell
 runoob@runoob:~$  docker run -d -P --name runoob training/webapp python app.py
 43780a6eabaaf14e590b6e849235c75f3012995403f97749775e38436db9a441
@@ -167,11 +226,12 @@ FROM (language):(verision)
 # 设置工作目录
 WORKDIR /app
 #构建中执行的命令，通常安装依赖包
-RUN 
+RUN pip install
 #指定需要的文件
-COPY
+COPY . . 
+第一个.代表当前文件夹 第二个.代表所有文件 这句话意思就是需要当前文件夹的所有文件
 # 暴露应用运行的端口
 EXPOSE 3000
 #指定容器创建最终执行的命令
-CMD
+CMD ["language","filename"]
 ```
