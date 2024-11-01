@@ -235,3 +235,33 @@ EXPOSE 3000
 #指定容器创建最终执行的命令
 CMD ["language","filename"]
 ```
+## docker compose
+docker compose主要进行多个容器的连接，可以直接在yaml文件中直接进行编辑配置，更加灵活
+1. 创建compose文件，后缀为yaml或yml
+```yaml
+#mongo.yaml
+version:'3' #compose版本
+services:
+    mongodb:
+        image: mongo #镜像的版本
+        ports:
+        - 27017:27017 #端口的映射
+        environment:
+        - MONGO_INITDB_ROOT_USERNAME=admin #环境变量
+        - MONGO_INITDB_ROOT_PASSWORD=password
+    mongo-express:
+        image: mongo-express
+        ports:
+        - 8080:8081
+        environment:
+        - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+        - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+        - ME_CONFIG_MONGODB_SERVER=mongodb
+```
+2. 启动compose容器
+>docker-compose -f mongo.yaml up
+-f代表启动文件，up代表启动，compose内会同时启动里面的容器
+>docker-compose -f mongo.yaml down
+down代表关闭一个个容器
+3. 关闭compose容器
+>docker-compose -f mongo.yaml down
