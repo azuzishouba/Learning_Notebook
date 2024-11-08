@@ -107,6 +107,8 @@
     在使用 -d 参数时，容器启动后会进入后台。此时想要进入容器，可以通过以下指令进入：
     * docker attach :退出容器时会导致容器的停止
     * docker exec:推荐大家使用 docker exec 命令，因为此命令会退出容器终端，但不会导致容器的停止。
+* 检查容器的各项参数
+    >docker inspect (container_id or container_name)
 #### attach 命令
 下面演示了使用 docker attach 命令。
 ```shell

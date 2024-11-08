@@ -56,7 +56,38 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 >docker exec -it container_id /bin/bash (在容器内或在Linux系统下)
 
 >winpty docker exec -it container_id /bin/bash (在windows系统下)
+* git bash只是一个类似于Linux系统的软件,不能直接代替Linux命令行,可以看作是Windows系统
 2. 进入/var/jenkins_home文件夹
 >cd /var/jenkins_home
 3. 进入workspace
 >cd workspace
+## Jenkins构建并运行python文件
+1. 进入Jenkins主界面
+2. 创建python的自由项目
+3. 填写git repository
+![code_management](/screnn_shot/code_management.png)
+4. 构建步骤选择执行shell,参数写python3,和执行文件
+![shell_python](/screnn_shot/shell_python.png)
+5. 点击构建
+
+***注意:如果无法运行python文件说明Jenkins容器内没有安装python3***
+
+* 在dockers版本Jenkins 容器内安装python3:
+  1. 在windows版本git bash运行:
+        >winpty docker exec -it --user root jenkins-latest bash(需要管理员权限)
+  2. 执行安装命令:
+        >apt-get update
+        
+        >apt-get install -y python3 python3-pip
+  3. 在容器内部检查是否安装好python3:
+        >python3 --version
+## 使用docker设置Jenkins代理
+1. 首先安装docker插件,在管理插件里安装docker
+2. 选择云服务器,创建一个新的云服务器
+![cloud_interface](/screnn_shot/cloud_interface.png)
+3. 选择docker云服务器,输入名字
+![new_cloud_interface](/screnn_shot/new_cloud_interface.png)
+* docker host url通过以下命令查看:
+    >docker inspect (container_id or container_name) 
+
+    ipaddress的值就是docker host url
