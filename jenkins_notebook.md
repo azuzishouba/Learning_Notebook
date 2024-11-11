@@ -56,6 +56,8 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 >docker exec -it container_id /bin/bash (在容器内或在Linux系统下)
 
 >winpty docker exec -it container_id /bin/bash (在windows系统下)
+
+>exit (容器的退出)
 * git bash只是一个类似于Linux系统的软件,不能直接代替Linux命令行,可以看作是Windows系统
 2. 进入/var/jenkins_home文件夹
 >cd /var/jenkins_home
@@ -91,3 +93,6 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
     >docker inspect (container_id or container_name) 
 
     ipaddress的值就是docker host url
+
+    输入格式为tcp://172.19.0.3:2375
+4. 完成后点击保存,点击管理节点
