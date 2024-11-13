@@ -102,3 +102,10 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 1. 进入bule ocean,创建流水线
 2. 选择代码仓库,输入token,若没有需要生成
 3. 选择授权的组织和代码仓库
+4. 创建流水线,添加步骤,保存并运行
+![pipeline_interface](/screnn_shot/pipeline_interface.png)
+
+***注意:如果GitHub api请求超过限制按照以下方法解决:***
+***jekins配置->系统设置->github api usage->github api usage rate limiting strategy 调整为never check rate limit***
+
+***需要生成github token时候,选择settings->Developer settings->Personal access tokens->token生成新的token***

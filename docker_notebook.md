@@ -225,15 +225,20 @@ CONTAINER ID     IMAGE            COMMAND           ...    PORTS                
 ```dockerfile
 #通常指定语言依赖包
 FROM (language):(verision)
+
 # 设置工作目录
 WORKDIR /app
+
 #构建中执行的命令，通常安装依赖包
 RUN pip install
+
 #指定需要的文件
 COPY . . 
 第一个.代表当前文件夹 第二个.代表所有文件 这句话意思就是需要当前文件夹的所有文件
+
 # 暴露应用运行的端口
 EXPOSE 3000
+
 #指定容器创建最终执行的命令
 CMD ["language","filename"]
 ```
