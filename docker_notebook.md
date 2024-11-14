@@ -34,6 +34,14 @@
     >docker pull (images_name)
 
     > docker pull (images_name):(tag_name) 下载特定版本的镜像
+### docker镜像的构建
+生成dockerfile后,需要对镜像进行构建
+>docker build -t images_name:tag_name dockerfile_position
+   * -t:tag,标签
+例如：
+>docker build  -t python-app:1.0 .
+
+.代表当前dockerfile位置 .在Linux中表示当前文件夹位置
 ### docker 镜像的推送
 镜像推送将本地的镜像推送到远程网络仓库中
 1. 登录 Docker Hub
@@ -62,14 +70,7 @@
     ```bash
     docker push username/repository_name:tag_name
     ```
-### docker镜像的构建
-生成dockerfile后,需要对镜像进行构建
->docker build -t images_name:tag_name dockerfile_position
-   * -t:tag,标签
-例如：
->docker build  -t python-app:1.0 .
 
-.代表当前dockerfile位置 .在Linux中表示当前文件夹位置
 ## docker容器的使用
 * 查看docker所有的镜像:
     >docker images

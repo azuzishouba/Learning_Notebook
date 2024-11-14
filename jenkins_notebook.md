@@ -13,7 +13,7 @@
 ```shell
 docker run --name jenkins-latest --restart=on-failure --detach \
 --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
---env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
+--env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=0 \
 --publish 8080:8080 --publish 50000:50000 \
 --volume jenkins-data:/var/jenkins_home \
 --volume jenkins-docker-certs:/certs/client:ro \
@@ -87,7 +87,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 1. 首先安装docker插件,在管理插件里安装docker
 2. 选择云服务器,创建一个新的云服务器
 ![cloud_interface](/screnn_shot/cloud_interface.png)
-3. 选择docker云服务器,输入名字
+1. 选择docker云服务器,输入名字
 ![new_cloud_interface](/screnn_shot/new_cloud_interface.png)
 * docker host url通过以下命令查看:
     >docker inspect (container_id or container_name) 
@@ -95,7 +95,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
     ipaddress的值就是docker host url
 
     输入格式为tcp://172.19.0.3:2375
-4. 完成后点击保存,点击管理节点
+1. 完成后点击保存,点击管理节点
 
 ***注意:功能不完善***
 ## 创建流水线(blue-ocean)
@@ -109,3 +109,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 ***jekins配置->系统设置->github api usage->github api usage rate limiting strategy 调整为never check rate limit***
 
 ***需要生成github token时候,选择settings->Developer settings->Personal access tokens->token生成新的token***
+## 创建构建触发器(Poll SCM-poll source code management)
+当你选择了 Poll SCM 并设置了扫描间隔后，Jenkins会按照你配置的时间间隔定期检查源代码仓库是否有新的提交。如果仓库有变动，Jenkins就会自动触发构建。
+1. 进入blue ocean,选择项目,点击configuration
+2. 选择扫描仓库触发器,选择间隔
