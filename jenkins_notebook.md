@@ -113,3 +113,13 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 当你选择了 Poll SCM 并设置了扫描间隔后，Jenkins会按照你配置的时间间隔定期检查源代码仓库是否有新的提交。如果仓库有变动，Jenkins就会自动触发构建。
 1. 进入blue ocean,选择项目,点击configuration
 2. 选择扫描仓库触发器,选择间隔
+## 在流水线里执行自动化测试(pytest)
+1. 创建test stage
+2. 执行shell命令
+3. 输入shell命令
+```shell
+pytest --maxfail=1 --disable-warnings -q
+```
+* <kbd>--maxfail=1</kbd>:设置最大失败数为 1，一旦有一个测试失败就停止执行。
+* <kbd>--disable-warnings</kbd>:禁用警告输出。
+* <kbd>-q</kbd>:启用安静模式，减少输出的冗余信息。

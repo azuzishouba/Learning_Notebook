@@ -41,7 +41,14 @@
 例如：
 >docker build  -t python-app:1.0 .
 
-.代表当前dockerfile位置 .在Linux中表示当前文件夹位置
+<kbd>.</kbd>代表当前dockerfile位置 <kbd>.</kbd>在Linux中表示当前文件夹位置 由于-t没有指定dockerfile文件的位置,就默认用<kbd>.</kbd>来代替dockerfile的位置
+
+同时也可以利用<kbd>-f</kbd>
+
+>docker build -f filepath .
+
+<kbd>.</kbd> 代表当前dockerfile位置,在-f算是多余，因为指定了dockerfile的位置,如果没有找到dockerfile的位置就在当前目录找dockerfile
+
 ### docker 镜像的推送
 镜像推送将本地的镜像推送到远程网络仓库中
 1. 登录 Docker Hub
@@ -125,7 +132,16 @@ docker exec -it 243c32535da7 /bin/bash
 ```
 ![exec命令](https://www.runoob.com/wp-content/uploads/2016/05/docker-exec.png)
 注意： 如果从这个容器退出，容器不会停止，这就是为什么推荐大家使用 docker exec 的原因。
-
+如果想要以root身份进入容器(Jenkins-container)可以输入以下命令:
+```shell
+docker exec -u 0 -it (container_id or container_name) bin/bash
+```
+如果在Windows环境下git bash输入需要加winpty
+```shell
+winpty docker exec -u 0 -it (container_id or container_name) bin/bash
+```
+* <kbd>-u</kbd>:代表的是user
+* <kbd>0</kbd>:0代表root用户
 更多参数说明请使用 <kbd>docker exec --help</kbd> 命令查看。
 ### docker容器的连接
 #### docker容器的互联
