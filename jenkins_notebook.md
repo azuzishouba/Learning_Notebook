@@ -37,7 +37,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 4. 设置任务名称
     在弹出的对话框中，首先输入项目名称（例如：my-first-job）。确保您选择了 “自由风格项目”（Freestyle project）选项。然后，点击 “OK” 按钮。
 5. 配置任务
-![item_configure](screnn_shot/item_configure.png)
+![item_configure](screen_shot/item_configure.png)
 在打开的项目配置页面，您可以对项目进行详细配置。常见的配置项包括：
    * 描述：为项目提供一个简短的描述，帮助您更好地理解项目的功能。
    * 源码管理：如果项目需要从版本控制系统（如 Git、SVN 等）获取代码，您可以在这里配置源码管理选项。对于 Git，您可以输入仓库 URL 和分支名。
@@ -45,7 +45,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
    * 定时构建（例如每天凌晨构建一次）
    * 通过 webhook 触发（如 GitHub 提交代码时触发）
    * 构建环境：在这里，您可以配置构建环境，例如设置构建前或构建后的步骤。
-    ![alt text](/screnn_shot/build_environment_variables.png)
+    ![alt text](/screen_shot/build_environment_variables.png)
    * 构建：在此区域设置实际的构建步骤。例如，选择 “执行 Shell” 来执行一段 Shell 脚本，或选择 “构建 Maven 项目” 来执行 Maven 构建。
 6. 保存配置
     配置完成后，点击页面底部的 “保存”（Save）按钮。
@@ -67,9 +67,9 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 1. 进入Jenkins主界面
 2. 创建python的自由项目
 3. 填写git repository
-![code_management](/screnn_shot/code_management.png)
+![code_management](/screen_shot/code_management.png)
 4. 构建步骤选择执行shell,参数写python3,和执行文件
-![shell_python](/screnn_shot/shell_python.png)
+![shell_python](/screen_shot/shell_python.png)
 5. 点击构建
 
 ***注意:如果无法运行python文件说明Jenkins容器内没有安装python3***
@@ -86,9 +86,9 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 ## 使用docker设置Jenkins代理
 1. 首先安装docker插件,在管理插件里安装docker
 2. 选择云服务器,创建一个新的云服务器
-![cloud_interface](/screnn_shot/cloud_interface.png)
+![cloud_interface](/screen_shot/cloud_interface.png)
 1. 选择docker云服务器,输入名字
-![new_cloud_interface](/screnn_shot/new_cloud_interface.png)
+![new_cloud_interface](/screen_shot/new_cloud_interface.png)
 * docker host url通过以下命令查看:
     >docker inspect (container_id or container_name) 
 
@@ -103,7 +103,7 @@ http://localhost:8080/ 输入获取到的密码进行安装配置
 2. 选择代码仓库,输入token,若没有需要生成
 3. 选择授权的组织和代码仓库
 4. 创建流水线,添加步骤,保存并运行
-![pipeline_interface](/screnn_shot/pipeline_interface.png)
+![pipeline_interface](/screen_shot/pipeline_interface.png)
 
 ***注意:如果GitHub api请求超过限制按照以下方法解决:***
 ***jekins配置->系统设置->github api usage->github api usage rate limiting strategy 调整为never check rate limit***
