@@ -226,3 +226,86 @@ JSON(全称 JavaScript Object Notation)是一种轻量级的数据交换格式�
   "profilePic": null           // null
 }
 ```
+***[]数组可以看作是一对多,{}可以看作是一个对象实例，一对一的字典***
+```json
+{
+    "students":[
+        {
+            "sid":1,
+            "name":"alice",
+            "grade":4
+        },
+        {
+            "sid":2,
+            "name":"brain",
+            "grade":3
+        },
+    ]
+}
+```
+***字符串用<kbd>""</kbd>,属性赋值不能用<kbd>=</kbd>,用<kbd>:</kbd>赋值,属性结束用<kbd>,</kbd>结尾,对象与对象之间用<kbd>,</kbd>隔开***
+### JSON path
+json path主要的作用是定位元素,找到想要的数据,类似与XPATH
+1. 数组取值类似于python,根据索引来取值,从0开始
+    eg:
+    >students[0]
+2. 字典取值用<kbd>.</kbd>来取变量名值
+    eg:
+    >students[0].sid
+    
+    这代表值取到了students第一个对象的sid
+3. ***<kbd>x</kbd>代表根节点,可以写可以不写***
+    >x.students[0].sid
+
+***复杂的json文件可以使用jsonpathfinder:https://jsonpathfinder.com/ 或者jsonpath:https://jsonpath.com/***
+## postman api 返回体验证(自动化测试api)
+1. 点击test进入编写测试脚本界面
+![post-response_interface](/screen_shot/post-response_interface.png)
+***post-response就是返回后写的脚本,即使测试用例***
+2. 编写测试用例
+### 测试用例的编写
+1. 测试用例模板
+```javascript
+pm.test("测试描述", function () {
+    // 测试内容
+});
+```
+#### 常用测试用例
+* 检查状态码
+```javascript
+pm.test("status code is 200",function(){
+    pm.response.to.have.status(200);
+});
+```
+* 检查状态文本
+```javascript
+pm.test("status is OK",function(){
+	pm.response.to.have.status("OK");
+});
+```
+* 检查返回的HEAD
+```javascript
+pm.test("content-type 为 json",function(){
+	pm.response.to.have.header("Content-Type","application/json");
+});
+```
+* 检查响应时间
+```javascript
+pm.test("response time below 200ms", function () {
+    pm.response.to.have.responseTime.below(200);  
+});
+```
+* 检查响应体数据类型
+```javascript
+pm.test("id is a number", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.id).to.be.a("number");  
+});
+```
+* 检查响应体数据的值
+```javascript
+pm.test("name is John Doe", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.name).to.equal("John Doe"); 
+});
+```
