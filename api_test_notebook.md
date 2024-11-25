@@ -309,3 +309,30 @@ pm.test("name is John Doe", function () {
     pm.expect(jsonData.name).to.equal("John Doe"); 
 });
 ```
+## JSON schema(json数据结构)
+JSON Schema 是用于描述 JSON 数据结构的标准化格式，它可以帮助验证 JSON 数据是否符合预期的结构。通过 JSON Schema，开发者可以定义一个 JSON 对象应该有哪些属性、这些属性的数据类型、属性值的约束等。
+* 生成json schema:
+  * free online json to json schema converter
+```javascript
+// 获取响应体
+var jsonData = pm.response.json();
+
+// 定义 JSON Schema
+var schema = {
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "age": { "type": "integer" },
+    "email": { "type": "string", "format": "email" }
+  },
+  "required": ["name", "age", "email"]
+};
+
+// 使用 tv4 进行验证
+var valid = tv4.validate(jsonData, schema);
+
+// 编写测试，检查响应是否符合 Schema
+pm.test("响应数据符合 JSON Schema", function() {
+    pm.expect(valid).to.be.true;
+});
+```
