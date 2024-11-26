@@ -188,11 +188,11 @@ HTTP 状态码(HTTP Status Codes)是由服务器返回给客户端(通常是浏�
 ## JSON
 ### JSON定义
 * 什么是json？
-JSON(全称 JavaScript Object Notation)是一种轻量级的数据交换格式，它是基于文本的、易于人类阅读和编写，同时也易于机器解析和生成。JSON 主要用于 在服务器和客户端之间交换数据，尤其在 Web 开发 和 API 中非常常见。
+JSON(全称 JavaScript Object Notation)是一种轻量级的数据交换格式,它是基于文本的、易于人类阅读和编写,同时也易于机器解析和生成。JSON 主要用于 在服务器和客户端之间交换数据,尤其在 Web 开发 和 API 中非常常见。
 ### JSON数据类型
 1. 字符串(String)
    * 以双引号包围的字符序列。
-   * 例如："Hello, world!"
+   * 例如:"Hello, world!"
 
 2. 数字(Number)
    * 可以是整数或浮动的数字。
@@ -203,16 +203,16 @@ JSON(全称 JavaScript Object Notation)是一种轻量级的数据交换格式�
    * 例如:true
 
 4. 数组(Array)
-   * 由多个值组成，值可以是任何类型，且用中括号 [] 包围。
-   * 例如：[1, 2, 3]、["apple", "banana", "cherry"]
+   * 由多个值组成,值可以是任何类型,且用中括号 [] 包围。
+   * 例如:[1, 2, 3]、["apple", "banana", "cherry"]
 
 5. 对象(Object)
-   * 键值对集合，键是字符串，值可以是任意数据类型，且用花括号 {} 包围。
-   * 例如：{"name": "John", "age": 30}
+   * 键值对集合,键是字符串,值可以是任意数据类型,且用花括号 {} 包围。
+   * 例如:{"name": "John", "age": 30}
 
 6. null
-   * 一个空值，表示无数据或空值。
-   * 例如："profilePic": null
+   * 一个空值,表示无数据或空值。
+   * 例如:"profilePic": null
 ```json
 {
   "name": "John",              // 字符串
@@ -226,7 +226,7 @@ JSON(全称 JavaScript Object Notation)是一种轻量级的数据交换格式�
   "profilePic": null           // null
 }
 ```
-***[]数组可以看作是一对多,{}可以看作是一个对象实例，一对一的字典***
+***[]数组可以看作是一对多,{}可以看作是一个对象实例,一对一的字典***
 ```json
 {
     "students":[
@@ -309,8 +309,8 @@ pm.test("name is John Doe", function () {
     pm.expect(jsonData.name).to.equal("John Doe"); 
 });
 ```
-## JSON schema(json数据结构)
-JSON Schema 是用于描述 JSON 数据结构的标准化格式，它可以帮助验证 JSON 数据是否符合预期的结构。通过 JSON Schema，开发者可以定义一个 JSON 对象应该有哪些属性、这些属性的数据类型、属性值的约束等。
+### JSON schema(json数据结构)
+JSON Schema 是用于描述 JSON 数据结构的标准化格式,它可以帮助验证 JSON 数据是否符合预期的结构。通过 JSON Schema,开发者可以定义一个 JSON 对象应该有哪些属性、这些属性的数据类型、属性值的约束等。
 * 生成json schema:
   * free online json to json schema converter
 ```javascript
@@ -331,8 +331,71 @@ var schema = {
 // 使用 tv4 进行验证
 var valid = tv4.validate(jsonData, schema);
 
-// 编写测试，检查响应是否符合 Schema
+// 编写测试,检查响应是否符合 Schema
 pm.test("响应数据符合 JSON Schema", function() {
     pm.expect(valid).to.be.true;
 });
 ```
+### variable(变量)
+在 Postman 中,Variables(变量) 是一种非常有用的功能,可以帮助你在多个请求中动态地使用值,减少重复代码,提高请求的灵活性。你可以在请求的 URL、请求体、请求头等地方使用变量,以便在测试、环境、或请求中灵活地管理数据。
+* 变量的分类:
+  1. Global Variables(全局变量)
+
+    全局变量在 Postman 的所有集合和环境中都可用。它们可以在任何地方使用,适用于整个postman软件,是跨workspace的。
+
+    * 作用域:所有集合和环境
+    * 定义:在 Postman 的“环境”选项中或直接在“Manage Environments”(管理环境)中设置。
+
+2. Environment Variables(环境变量)
+
+    环境变量用于特定的环境(如开发环境、生产环境等)。它们仅在当前激活的环境中有效,可以用于根据不同的环境切换不同的值。
+
+    * 作用域:仅限当前环境
+    * 定义:可以在“Manage Environments”中设置,或者通过 Postman 界面为特定环境创建变量。
+
+3. Collection Variables(集合变量)
+
+    集合变量是集合级别的变量,只在特定集合的请求中有效。它们优先级高于环境变量和全局变量。
+
+    * 作用域:仅限当前集合
+    * 定义:在集合的“Variables”选项卡中定义。
+
+4. Local Variables(局部变量)
+
+    局部变量在单个请求的执行过程中使用,仅在该请求的生命周期内有效。你可以在请求中动态创建并在脚本中使用。
+
+    * 作用域:仅限当前请求
+    * 定义:在请求的脚本中(Pre-request Script 或 Tests)定义。
+
+5. Data Variables(数据变量)
+
+    数据变量在使用 Postman Collection Runner 时非常有用。你可以从 CSV 或 JSON 文件中导入数据,并将这些数据作为变量用于多个请求。
+
+    * 作用域:Collection Runner 中的请求
+    * 定义:通过 CSV 或 JSON 数据文件中的列来定义。
+#### 变量的使用
+1. 全局变量的创建和使用
+   1. 创建全局变量
+    ![global_variable](screen_shot/global_variable.png)
+   2. 编辑全局变量
+    ![global_variable_interface](/screen_shot/global_variable_interface.png)
+
+    ***注意:initial value 初始值 通常代表团队共享的默认值, current value 当前值 通常代表的是自己可以根据不同测试环境修改的值***
+    
+    3. 使用全局变量
+    使用变量直接引用<kbd>{{}}</kbd>
+    eg:
+    https://reqres.in=url_global
+    {{url_global}}
+2. 集合变量的创建与使用
+    1. 创建集合变量
+    ![collection_variable](/screen_shot/collection_variable.png)
+    2. 编辑集合变量
+    3. 使用方法与全局变量相同
+    ***注意的是集合变量只能在当前集合使用***
+3. 环境变量的创建与使用
+   1. 创建环境变量
+    ![env_variable](/screen_shot/env_variable.png)
+   2. 编辑环境变量
+   3. ***使用变量的时候需要切换到相应的环境才能使用***
+4.  
