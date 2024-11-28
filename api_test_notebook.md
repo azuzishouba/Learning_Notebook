@@ -381,8 +381,11 @@ pm.test("响应数据符合 JSON Schema", function() {
     ![global_variable_interface](/screen_shot/global_variable_interface.png)
 
     ***注意:initial value 初始值 通常代表团队共享的默认值, current value 当前值 通常代表的是自己可以根据不同测试环境修改的值***
-    
-    3. 使用全局变量
+    3. 在请求前脚本创建全局变量
+    ```javascript
+    pm.globals.set("url_global_variables","https://reqres.in")
+    ```
+    4. 使用全局变量
     使用变量直接引用<kbd>{{}}</kbd>
     eg:
     https://reqres.in=url_global
@@ -391,11 +394,83 @@ pm.test("响应数据符合 JSON Schema", function() {
     1. 创建集合变量
     ![collection_variable](/screen_shot/collection_variable.png)
     2. 编辑集合变量
-    3. 使用方法与全局变量相同
+    3. 在请求前脚本中创建集合变量
+    ```javascript
+    pm.collectionVariables.set("url_collection","https://reqres.in")
+    ```
+    4. 使用方法与全局变量相同
     ***注意的是集合变量只能在当前集合使用***
 3. 环境变量的创建与使用
    1. 创建环境变量
     ![env_variable](/screen_shot/env_variable.png)
    2. 编辑环境变量
-   3. ***使用变量的时候需要切换到相应的环境才能使用***
-4.  
+   3. 在请求前脚本中创建环境变量(同样需要在对应的环境中才能使用)
+    ```javascript
+    pm.environment.set("url_qa_env","https://reqres.in")
+    ```
+   4. ***使用变量的时候需要切换到相应的环境才能使用***
+4. 局部变量的创建与使用
+   1. 创建局部变量
+    ![local_variables_interface](/screen_shot/local_variables_interface.png)
+    2. 在请求前编写脚本
+    ```javascript
+    pm.variables.set("url_local_variables","https://reqres.in")
+    ```
+    3. 使用方法和变量的使用相同(只在当前的请求生效)
+#### 变量的移除
+***变量的移除通常是在请求之后的,所以在请求后的脚本(test)里面编写***
+1. 移除全局变量
+    ```javascript
+    pm.globals.unset("variables_globals");
+    ```
+2. 移除集合变量
+    ```javascript
+    pm.collectionVariables.unset("variables_collections");
+    ```
+3. 移除环境变量
+    ```javascript
+    pm.environment.unset("variables_environment");
+    ```
+4. 移除局部变量
+    ```javascript
+    pm.variables.unset("variables_locals") 
+    ```
+#### 变量的获取
+1. 获取变量
+    ```javascript
+    pm.globals.get("variables_globals")
+    pm.collectionVariables.get("variables_collections");
+    pm.variables.get("variables_locals") 
+    pm.environment.get("variables_environment");
+    ```
+2. 控制台输出变量
+    ```javascript
+    console.log(pm.globals.get("variables_globals")) 
+    console.log(pm.variables.get("variables_locals")) 
+    console.log(pm.collection_variable.get("variables_collections")) 
+    console.log(pm.environment.get("variables_environment")) 
+    ```
+### postman api链式调用
+1. 在post请求body体里填写需要提交的数据后,在请求后编写脚本,用于获取创建后的id
+    ![created_id_get](/screen_shot/created_id_get.png)
+```javascript
+var jsonData=pm.response.json();
+pm.collectionVariables.set("response_id",jsonData.id)
+```
+    这里将id设置为了集合变量
+### token的设置
+1. 选择需要token的集合,选择bearer token
+2. 请求可以选择inherit from parent
+![token_interface](/screen_shot/token_interface.png)
+3. 也可以直接在请求前编写脚本或者在登陆脚本后,写在head里  
+```javascript
+var jsonResponse = pm.response.json();
+pm.environment.set("authToken", jsonResponse.token);
+```
+* 示例：获取用户信息请求：
+    * URL: https://api.example.com/user
+    * 请求头：
+      * Key: Authorization
+      * Value: Bearer {{authToken}}
+
+当你发送这个请求时，Postman 会自动用环境变量中的令牌替换 <kbd>{{authToken}}</kbd>。
