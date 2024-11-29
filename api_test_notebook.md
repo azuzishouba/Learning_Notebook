@@ -474,3 +474,12 @@ pm.environment.set("authToken", jsonResponse.token);
       * Value: Bearer {{authToken}}
 
 当你发送这个请求时，Postman 会自动用环境变量中的令牌替换 <kbd>{{authToken}}</kbd>。
+### 自动生成名字或邮箱
+```javascript
+//生成随机名字和邮件
+var random=Math.random().toString(36).substring(2);
+var name_random = "jim"+random;
+var email_random = random+"@gmail.com";
+pm.collectionVariables.set("name_random", name_random);
+pm.collectionVariables.set("email_random",email_random);
+```
