@@ -483,3 +483,26 @@ var email_random = random+"@gmail.com";
 pm.collectionVariables.set("name_random", name_random);
 pm.collectionVariables.set("email_random",email_random);
 ```
+### 数据驱动自动化测试
+1. 首先明确数据集里有哪些必要属性
+2. 在请求前编写脚本,比如可以在提交表单前编写脚本,脚本内容为需要用到的变量
+eg:
+例如，一个 CSV 文件可能如下所示：
+```
+userId, userName, userEmail
+1, Alice, alice@example.com
+2, Bob, bob@example.com
+```
+**在请求前pre-script界面内编写以下内容:**
+```json
+    {
+  "userId": "{{userId}}",
+  "name": "{{userName}}",
+  "email": "{{userEmail}}"
+    }
+```
+![data_driven_testing_interface](/screen_shot/data_driven_testing_interface.png)
+
+***iterations(循环)代表输入几行数据,delay(延迟)代表执行完一个请求后暂停时间,有些服务器数据库加载不出数据需要填写***
+
+***如果有特别需要可以将csv文件使用在线工具转换为json文件***

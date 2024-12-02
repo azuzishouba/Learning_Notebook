@@ -136,6 +136,7 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
 * >less (filename) 一页一页显示内容可以往前翻页,按q退出
 * >head (filename) 只看头十行
 * >tail (filename) 只看尾十行
+  * -n:选择查看行数的参数例如(head -n 20 filename) 
 ### 改变文件时间戳
 * >touch (filename) 修改文件时间戳为当前系统时间戳,如果没有该文件将创建文件
 ### 硬链接和软链接(符号链接)
