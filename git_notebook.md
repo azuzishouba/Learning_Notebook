@@ -69,3 +69,7 @@
 * git push -u origin master 默认推送至origin master 以后直接git push即可 -u：这个选项会将本地的 master 分支与远程的 origin/master 分支关联。当你使用 git push 或 git pull 命令时，Git 会默认使用这个关联的远程分支。
 ### Git fetch
 * git fetch 拉取远程更新，但不直接合并
+### Git fork
+目的: 创建一个你自己拥有的远程仓库副本，通常用于开源项目贡献。当你 fork 一个项目时，你实际上复制了原始仓库的内容，但你对 fork 出来的仓库拥有完全的控制权限。
+
+适用场景: 你想对一个开源项目进行贡献时，首先将该项目 fork 到你自己的账户下，然后克隆到本地进行开发，最后通过 Pull Request 提交代码到原仓库。
