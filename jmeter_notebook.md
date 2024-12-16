@@ -53,6 +53,32 @@
 6. 在Firefox设置中搜索proxy(代理)手动设置代理,端口号8888,主页设置localhost
 ![firefox_proxy_interface](/screen_shot/firefox_proxy_interface.png)
 7. 运行,执行网页相关操作
+## assertion(断言)
+* response assertion
+  1. 在线程组或者请求下添加断言,可以是response assertion
+![response_assertion_interface](/screen_shot/response_assertion_interface.png)
+  2. 选择response code,add pattern to text,状态码设为200
+* duration assertion
+1. 在线程组或者请求下添加duration assertion断言
+![duration_assertion_interface](duration_assertion_interface.png)
+2. 在duration in milliseconds(ms)里填写最多的时间
+* size assertion
+1. 填写最大byte,再选择比较关系
+![size_assertion_interface](size_assertion_interface.png)
 ## CMD命令行
-1. 在bin目录下执行cmd
->jmeter -n -t "location of test file" -l "location of result file"
+1. 在bin目录下执行cmd,并在指定位置生成测试报告(须在bin目录下执行cmd)
+```shell
+jmeter -n -t "location of test file" -l "location of result file"
+```
+eg:
+```shell
+jmeter -n -t "D:\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\HTTP Request 1.jmx" -l "D:\360MoveData\Users\YAN\Desktop\reports\result.csv"
+```
+2. 在生成报告后,根据报告生成html报告(须在bin目录下执行cmd)
+
+eg：
+```shell
+jmeter -n -t "D:\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\HTTP Request 1.jmx" -l "D:\360MoveData\Users\YAN\Desktop\reports\result.csv" -e -o "D:\360MoveData\Users\YAN\Desktop\reports\html reports"
+```
+***执行时测试文件result.csv需要重新生成***
+***-e -o 是专门生成html测试报告的参数***
