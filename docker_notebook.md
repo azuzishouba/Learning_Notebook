@@ -34,6 +34,48 @@
     >docker pull (images_name)
 
     > docker pull (images_name):(tag_name) 下载特定版本的镜像
+## docker dockerfile
+### 指令详解
+|Dockerfile指令|说明|
+|:--|:--|
+|FROM|指定基础镜像，用于后续的指令构建。|
+|LABEL|添加镜像的元数据，使用键值对的形式。|
+|RUN|在构建过程中在镜像中执行命令。|
+|CMD|指定容器创建时的默认命令。|
+|ENTRYPOINT|设置容器创建时的主要命令。|
+|EXPOSE|声明容器运行时监听的特定网络端口。|
+|ENV|在容器内部设置环境变量。|
+|ADD|将文件、目录或远程URL复制到镜像中。|
+|COPY|将文件或目录复制到镜像中。|
+|VOLUME|为容器创建挂载点或声明卷。|
+|WORKDIR|设置后续指令的工作目录。|
+|USER|指定后续指令的用户上下文。|
+|ARG|定义在构建过程中传递给构建器的变量，可使用 "docker build" 命令设置。|
+|ONBUILD|当该镜像被用作另一个构建过程的基础时，添加触发器。|
+|STOPSIGNAL|设置发送给容器以退出的系统调用信号。|
+|HEALTHCHECK|定义周期性检查容器健康状态的命令。|
+|SHELL|覆盖Docker中默认的shell，用于RUN、CMD和ENTRYPOINT指令。|
+
+```dockerfile
+#通常指定语言依赖包
+FROM (language):(verision)
+
+# 设置工作目录
+WORKDIR /app
+
+#构建中执行的命令，通常安装依赖包
+RUN pip install
+
+#指定需要的文件
+COPY . . 
+第一个.代表当前文件夹 第二个.代表所有文件 这句话意思就是需要当前文件夹的所有文件
+
+# 暴露应用运行的端口
+EXPOSE 3000
+
+#指定容器创建最终执行的命令
+CMD ["language","filename"]
+```
 ### docker镜像的构建
 生成dockerfile后,需要对镜像进行构建
 >docker build -t images_name:tag_name dockerfile_position
@@ -217,48 +259,6 @@ CONTAINER ID     IMAGE            COMMAND           ...    PORTS                
     CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                  NAMES
     a4251c3f32b9   nginx:1.23   "/docker-entrypoint.…"   18 minutes ago   Up 18 minutes   0.0.0.0:9000->80/tcp   beautiful_ardinghelli
     ```
-## docker dockerfile
-### 指令详解
-|Dockerfile指令|说明|
-|:--|:--|
-|FROM|指定基础镜像，用于后续的指令构建。|
-|LABEL|添加镜像的元数据，使用键值对的形式。|
-|RUN|在构建过程中在镜像中执行命令。|
-|CMD|指定容器创建时的默认命令。|
-|ENTRYPOINT|设置容器创建时的主要命令。|
-|EXPOSE|声明容器运行时监听的特定网络端口。|
-|ENV|在容器内部设置环境变量。|
-|ADD|将文件、目录或远程URL复制到镜像中。|
-|COPY|将文件或目录复制到镜像中。|
-|VOLUME|为容器创建挂载点或声明卷。|
-|WORKDIR|设置后续指令的工作目录。|
-|USER|指定后续指令的用户上下文。|
-|ARG|定义在构建过程中传递给构建器的变量，可使用 "docker build" 命令设置。|
-|ONBUILD|当该镜像被用作另一个构建过程的基础时，添加触发器。|
-|STOPSIGNAL|设置发送给容器以退出的系统调用信号。|
-|HEALTHCHECK|定义周期性检查容器健康状态的命令。|
-|SHELL|覆盖Docker中默认的shell，用于RUN、CMD和ENTRYPOINT指令。|
-
-```dockerfile
-#通常指定语言依赖包
-FROM (language):(verision)
-
-# 设置工作目录
-WORKDIR /app
-
-#构建中执行的命令，通常安装依赖包
-RUN pip install
-
-#指定需要的文件
-COPY . . 
-第一个.代表当前文件夹 第二个.代表所有文件 这句话意思就是需要当前文件夹的所有文件
-
-# 暴露应用运行的端口
-EXPOSE 3000
-
-#指定容器创建最终执行的命令
-CMD ["language","filename"]
-```
 ## docker compose
 docker compose主要进行多个容器的连接，可以直接在yaml文件中直接进行编辑配置，更加灵活
 1. 创建compose文件，后缀为yaml或yml

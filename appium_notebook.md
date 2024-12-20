@@ -164,3 +164,34 @@ emulator -avd avdname -wipe-data
 * devicename:设备名称,通过adb devices查看
 * app:测试的app的位置
 4. 启动session
+## appium inspector界面
+![appium_inspector_interface](/screen_shot/appium_inspector_interface.png)
+1. source(源):可以查看元素信息,可与元素互动,可以点击或者sendkeys
+2. 命令(command):可以执行一些简单的命令和判断
+3. 手势(gesture):执行一些触屏操作
+4. 录制(record):进行手势操作时可以录制,录制后自动生成语言代码
+5. 会话信息(session):当前会话的信息
+### 手势(gesture)
+1. 点击操作
+实现逻辑:移动到特定点位->手指按下去->手指抬起来
+   1. move,虚拟机上选取一个点,设定操作时间
+   2. pointer down(左点击,触屏一般没右击)
+   3. pointer up(左点击,触屏一般没右击)
+2. 滑动操作
+实现逻辑:移动到特定点位->手指按下去->移动到特定点位->手指抬起来
+   1. move,虚拟机上选取一个点,设定操作时间 
+   2. pointer down(左点击,触屏一般没右击)
+   3. move,虚拟机上选取一个点,设定操作时间
+   4. pointer up(左点击,触屏一般没右击)
+3. zoom in和zoom out操作
+实现逻辑:因为前面操作一只手指就可以操作,放缩操作需要两个手指,所以需要创建新的手指。左手指移动到特定点位->左手执按下去->移动到特定点位->左手指松开。右手指同样操作
+![zoom_gesture_interface](/screen_shot/zoom_gesture_interface.png)
+   1. move,虚拟机上选取一个点,设定操作时间 
+   2. pointer down(左点击,触屏一般没右击)
+   3. move,虚拟机上选取一个点,设定操作时间
+   4. pointer up(左点击,触屏一般没右击)
+   5. 添加右手指
+   6. move,虚拟机上选取一个点,设定操作时间 
+   7. pointer down(左点击,触屏一般没右击)
+   8. move,虚拟机上选取一个点,设定操作时间
+   9. pointer up(左点击,触屏一般没右击)
