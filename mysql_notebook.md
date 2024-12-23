@@ -372,6 +372,52 @@ MySQL 索引的建立对于 MySQL 的高效运行是很重要的，索引可以�
     >SHOW INDEX FROM table_name;
 * 删除索引
     >DROP INDEX idx_column_name ON table_name;
+## SQL注入
+SQL 注入攻击发生在 Web 应用程序未对用户输入进行适当过滤和验证的情况下。攻击者通过在输入框中插入 SQL 语句，操控后台的 SQL 查询，进而访问或修改数据库中的数据，甚至破坏数据库结构。
+简单的 SQL 注入示例：
+
+假设我们有一个登录表单，用户输入用户名和密码进行登录验证，后端代码（可能是 PHP）执行如下 SQL 查询：
+```sql
+SELECT * 
+FROM users 
+WHERE username = '$username' AND password = '$password';
+```
+如果用户输入的<kbd>username</kbd>和<kbd>password</kbd>直接插入到查询中,并且没有经过验证和转义,攻击者就可以通过输入恶意 SQL 来操控查询,例如：
+* 输入 username 为 ' OR '1'='1,password 为任意内容。
+
+生成的 SQL 查询变成：
+```sql
+SELECT * 
+FROM users 
+WHERE username = '' OR '1'='1' AND password = '任意内容';
+```
+这个查询的 WHERE 条件始终为真，因为<kbd>'1'='1'</kbd>永远成立,攻击者可以绕过身份验证,直接登录。
+防止sql注入:
+1. 使用预处理语句(Prepared Statements)
+
+预处理语句是防止 SQL 注入的最有效方法。它通过将 SQL 查询和数据分离，确保输入数据不会被当作 SQL 代码执行。
+在 PHP 中使用 MySQLi 或 PDO 库时，可以使用预处理语句：
+
+**使用 MySQLi(推荐)**
+```php
+$stmt = $mysqli->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+$stmt->bind_param("ss", $username, $password);  // "ss" 表示两个字符串类型的参数
+$stmt->execute();
+$result = $stmt->get_result();
+```
+2. 使用存储过程
+
+存储过程是一组预定义的 SQL 查询，通常可以减少 SQL 注入的风险。存储过程中的输入值通常会被处理为参数，而不是直接拼接到 SQL 查询中。
+
+例子(在 MySQL 中创建存储过程):
+```sql
+DELIMITER //
+CREATE PROCEDURE GetUser(IN username VARCHAR(50), IN password VARCHAR(50))
+BEGIN
+    SELECT * FROM users WHERE username = username AND password = password;
+END //
+DELIMITER ;
+```
 ## MYSQL函数
 |函数名|描述|实例|
 |:----:|:----:|:----:|
