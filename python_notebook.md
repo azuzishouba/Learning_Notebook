@@ -97,7 +97,7 @@ weight_lbs=input('weight(lbs): ')
 weight_kg=int(weight_lbs) * 0.45
 print(weight_kg)
 ```
-# 字符串
+## 字符串
 ```python
 #在python中双引号单引号表示字符串都可以,但在想输出单引号时就用双引号来表示,同样想输出双引号就用单引号表示
 course="python's course for beginners"
@@ -248,3 +248,59 @@ print(s.split(" "))  # 输出: ['Hello', 'World', 'Python']
 words = ["Hello", "World", "Python"]
 print(" ".join(words))  # 输出: "Hello World Python"
 ```
+## 格式化字符串
+```python
+first='John'
+last='Smith'
+#格式话字符串用f''或f""里面{}引用变量
+msg=f'{first} {last} is a coder' #输出 john smith is a coder
+```
+## 算术运算符
+1. 加法:+
+```python
+x=10
+#以下方法同样使用,也适用于其他运算符
+x+=3
+```
+2. 减法:-
+3. 乘法:*
+4. 除法:/
+```python
+a = 5
+b = 2
+result = a / b  # 结果为 2.5
+```
+5. 取整除://
+```python
+a = 5
+b = 2
+result = a // b  # 结果为 2
+```
+6. 取余:%
+```python
+a = 5
+b = 2
+result = a % b  # 结果为 1
+```
+7. 幂运算:**
+```python
+a = 5
+b = 2
+result = a ** b  # 结果为 25 (5的2次方)
+```
+**运算优先级**
+运算符优先级表
+|运算符|描述|优先级|
+|:--:|:--:|:--:|
+|<kbd>**</kbd>|幂运算|最高|
+|<kbd>+x</kbd>,<kbd> -x</kbd>,<kbd> ~x</kbd>|一元加法、减法、按位取反|高|
+|<kbd>*</kbd>,<kbd> /</kbd>, <kbd>//</kbd>,<kbd>%</kbd>|乘法、除法、取整除、取余|中等|
+|<kbd>+</kbd>,<kbd>-</kbd>|加法、减法|低|
+|<kbd>= (赋值运算符)</kbd>|赋值操作|最低|
+结合性说明:
+
+    乘法 (*)、除法 (/) 等是左结合的，因此在有多个乘法或除法运算时，它们从左到右依次执行。
+    幂运算 (**) 是右结合的，因此在有多个幂运算时，它们从右到左依次执行。例如：2 ** 3 ** 2 会先计算 3 ** 2，然后再计算 2 ** 9。
+
+在 Python 中，幂运算的优先级最高，而加法和减法的优先级最低。其他算术运算符如乘法、除法、取余等按顺序从高到低排列。如果要明确控制计算顺序，可以使用括号来改变默认的优先级计算顺
+## 数学函数
