@@ -304,3 +304,224 @@ result = a ** b  # 结果为 25 (5的2次方)
 
 在 Python 中，幂运算的优先级最高，而加法和减法的优先级最低。其他算术运算符如乘法、除法、取余等按顺序从高到低排列。如果要明确控制计算顺序，可以使用括号来改变默认的优先级计算顺
 ## 数学函数
+首先需要导入 math 模块：
+```python
+import math
+```
+**常用数学函数**
+1. 数学常数
+* <kbd>math.pi</kbd> — 圆周率(π)
+* <kbd>math.e</kbd> — 自然常数(e)
+```python
+import math
+print(math.pi)  # 输出：3.141592653589793
+print(math.e)   # 输出：2.718281828459045
+```
+2. 幂与对数
+* <kbd>math.pow(x, y)</kbd> — 返回x的y次幂
+* <kbd>math.sqrt(x)</kbd> — 返回x的平方根
+```python
+import math
+print(math.pow(2, 3))  # 输出:8.0
+print(math.sqrt(16))   # 输出:4.0
+```
+3. 取整和舍入
+* <kbd>math.ceil(x)</kbd> — 返回大于或等于x的最小整数
+* <kbd>math.floor(x)</kbd> — 返回小于或等于x的最大整数
+* <kbd>math.trunc(x)</kbd> — 返回x的整数部分
+* <kbd>math.fabs(x)</kbd> — 返回x的绝对值
+* <kbd>math.factorial(x)</kbd> — 返回x的阶乘(x必须为非负整数)
+* <kbd>math.gcd(x, y)</kbd> — 返回x和y的最大公约数
+```python
+import math
+print(math.ceil(3.2))  # 输出：4
+print(math.floor(3.8))  # 输出：3
+print(math.trunc(3.7))  # 输出：3
+print(math.fabs(-5))    # 输出：5.0
+print(math.factorial(5))  # 输出：120
+print(math.gcd(36, 60))  # 输出：12
+```
+## 条件判断(if语句,match...case)
+1. if 语句
+
+     基本的条件判断语法如下：
+     ```python
+     if condition:
+     # 如果条件成立，执行这个代码块
+     ```
+     示例：判断一个数是否为正数
+     ```python
+     number = 5
+     if number > 0:
+     print("这是一个正数")
+     ```
+2. if...else 语句
+
+     如果 if 的条件不成立，可以使用 else 语句执行另一个代码块。
+     ```python
+     if condition:
+     # 如果条件成立，执行这个代码块
+     else:
+     # 如果条件不成立，执行这个代码块
+     ```
+     示例：判断一个数是正数还是负数
+     ```python
+     number = -3
+     if number > 0:
+     print("这是一个正数")
+     else:
+     print("这是一个负数")
+     ```
+3. if...elif...else 语句
+
+     如果有多个条件需要判断，可以使用 elif 语句，它是 else if 的简写。elif 用于判断多个条件中的一个。如果条件不成立，程序会继续判断下一个 elif 条件。如果没有满足的条件，则执行 else 代码块。
+     ```python
+     if condition1:
+     # 如果条件1成立，执行这部分
+     elif condition2:
+     # 如果条件1不成立，但条件2成立，执行这部分
+     else:
+     # 如果所有条件都不成立，执行这部分
+     ```
+     示例：判断一个数是正数、负数还是零
+     ```python
+     number = 0
+     if number > 0:
+     print("这是一个正数")
+     elif number < 0:
+     print("这是一个负数")
+     else:
+     print("这是零")
+     ```
+4. 条件表达式(Ternary Operator)
+
+     Python 支持条件表达式（也叫三元运算符）。它的基本语法为：
+     ```python
+     value_if_true if condition else value_if_false
+     ```
+     它在 if 和 else 语句中经常被用来简化代码。
+     示例：使用条件表达式
+     ```python
+     age = 20
+     status = "成年人" if age >= 18 else "未成年人"
+     print(status)  # 输出：成年人
+     ```
+4. match...case语句
+
+Python 3.10 增加了<kbd>match...case</kbd>的条件判断，不需要再使用一连串的 if-else 来判断了。
+match 后的对象会依次与 case 后的内容进行匹配,如果匹配成功,则执行匹配到的表达式,否则直接跳过,<kbd>_</kbd>可以匹配一切。
+
+基本语法:
+```python
+match expression:
+    case pattern1:
+        # 当 expression 匹配 pattern1 时执行的代码
+    case pattern2:
+        # 当 expression 匹配 pattern2 时执行的代码
+    case _:
+        # 任何其他情况，通常作为默认情况
+```
+<kbd>case _</kbd>: 类似于 C 和 Java 中的<kbd>default</kbd>:，当其他 case 都无法匹配时，匹配这条，保证永远会匹配成功。
+实例:
+```python
+def http_error(status):
+    match status:
+        case 400:
+            return "Bad request"
+        case 404:
+            return "Not found"
+        case 418:
+            return "I'm a teapot"
+        case _:
+            return "Something's wrong with the internet"
+
+mystatus=400
+print(http_error(400))
+```
+以上是一个输出 HTTP 状态码的实例，输出结果为：
+```python
+Bad request
+```
+一个 case 也可以设置多个匹配条件，条件使用<kbd>|</kbd>隔开，例如：
+```python
+...
+    case 401|403|404:
+        return "Not allowed"
+```
+## 逻辑运算符
+|运算符|说明|示例|
+|:--:|:--:|:--:|
+|<kbd>and</kbd>|连接多个条件，**只有所有条件都为真**时，结果为真| `<kbd>x > 5 and y > 10</kbd>` 结果为 `True`，当 `x = 6` 和 `y = 12` 时 |
+|<kbd>or</kbd>|连接多个条件，**只要有一个条件为真**，结果就为真| `<kbd>x > 5 or y > 10</kbd>` 结果为 `True`，当 `x = 3` 和 `y = 12` 时 |
+|<kbd>not</kbd>|对条件取反，将 `True` 转为 `False`，将 `False` 转为 `True` | `<kbd>not x > 5</kbd>` 结果为 `True`，当 `x = 3` 时 |
+|<kbd>in</kbd>|判断一个值是否存在于容器（如列表、字符串等）中| `<kbd>'a' in 'apple'</kbd>` 结果为 `True`|
+|<kbd>not in</kbd>|判断一个值是否不存在于容器中| `<kbd>'b' not in 'apple'</kbd>` 结果为 `True`|
+|<kbd>is</kbd>|判断两个对象是否是同一个对象（内存地址相同）| `<kbd>a is b</kbd>` 结果为 `True`，当 `a = [1, 2]` 和 `b = a` 时|
+|<kbd>is not</kbd>|判断两个对象是否不是同一个对象| `<kbd>a is not b</kbd>` 结果为 `True`，当 `a = [1, 2]` 和 `b = [1, 2]` 时|
+## 比较运算符
+|运算符|说明|示例|
+|:--:|:--:|:--:|
+| <kbd>==</kbd>   | **等于**：判断两个值是否相等 | `<kbd>3 == 3</kbd>` 结果为 `True`|
+| <kbd>!=</kbd>   | **不等于**：判断两个值是否不相等 | `<kbd>3 != 4</kbd>` 结果为 `True`|
+| <kbd>></kbd> | **大于**：判断左边的值是否大于右边的值| `<kbd>5 &gt; 3</kbd>` 结果为 `True`|
+| <kbd><</kbd> | **小于**：判断左边的值是否小于右边的值| `<kbd>3 &lt; 5</kbd>` 结果为 `True`|
+| <kbd>>=</kbd> | **大于等于**：判断左边的值是否大于或等于右边的值| `<kbd>5 &gt;= 5</kbd>` 结果为 `True` |
+| <kbd><=</kbd> | **小于等于**：判断左边的值是否小于或等于右边的值| `<kbd>3 &lt;= 4</kbd>` 结果为 `True`|
+| <kbd>is</kbd>    | **身份运算符**：判断两个对象是否是同一个对象（内存地址相同） | `<kbd>a is b</kbd>` 结果为 `True`，当 `a` 和 `b` 指向同一个对象时 |
+| <kbd>is not</kbd>| **非身份运算符**：判断两个对象是否不是同一个对象| `<kbd>a is not b</kbd>` 结果为 `True`，当 `a` 和 `b` 指向不同对象时 |
+## while循环
+Python 的 while 循环用于在条件为 True 时重复执行代码块，直到条件变为 False。
+基本语法
+```python
+while condition:
+    # 执行的代码块
+
+    condition：布尔表达式，当为 True 时循环执行。
+    # 执行的代码块：每次迭代执行的代码。
+```
+示例
+
+1. 基本用法：
+     ```python
+     count = 0
+     while count < 5:
+     print(count)
+     count += 1
+     ```
+2. 无限循环：
+     ```python
+     while True:
+     print("This will run forever")
+     ```
+3. break 终止循环：
+     ```python
+     count = 0
+     while True:
+     count += 1
+     if count == 5:
+          break
+     ```
+4. continue 跳过当前迭代：
+<kbd>continue</kbd>语句可以跳过当前循环的其余部分，直接开始下一次迭代。
+     
+```python
+     count = 0
+     while count < 5:
+     count += 1
+     if count == 3:
+          continue
+     print(count)
+```
+5. else 块：在循环正常结束时执行。
+
+while 循环还可以带有 else 块。else 块中的代码会在循环正常结束时执行（即没有因为 break 语句而提前退出）。
+
+如果循环是因为 break 被终止的,else 部分将不会执行。
+```python 
+     count = 0
+     while count < 5:
+     print(count)
+     count += 1
+     else:
+     print("Loop finished.")
+```
