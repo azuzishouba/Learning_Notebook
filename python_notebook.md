@@ -525,3 +525,80 @@ while 循环还可以带有 else 块。else 块中的代码会在循环正常结
      else:
      print("Loop finished.")
 ```
+## for循环
+在 Python 中，for 循环是一种迭代器，可以用于遍历任何序列（如列表、元组、字符串等）或其他可迭代对象。其基本语法结构如下：
+```python
+for variable in iterable:
+    # 执行代码块
+```
+详细解释：
+
+* <kbd>variable</kbd>是循环中使用的临时变量，代表当前迭代的元素。
+* <kbd>iterable</kbd>是任何可以迭代的对象（如列表、元组、字典、字符串、范围等）。
+* 每次循环，<kbd>variable</kbd>会依次取<kbd>iterable</kbd>中的每个元素，直到迭代完所有元素。
+```python
+# 示例 1: 遍历列表
+fruits = ["apple", "banana", "cherry"]
+print("遍历列表:")
+for fruit in fruits:
+    print(fruit)
+
+# 示例 2: 遍历字符串
+word = "Python"
+print("\n遍历字符串:")
+for letter in word:
+    print(letter)
+
+# 示例 3: 使用 range() 生成数字序列
+print("\n遍历数字序列:")
+for i in range(5):
+    print(i)
+
+# 示例 4: 遍历字典
+person = {"name": "Alice", "age": 25, "city": "New York"}
+print("\n遍历字典:")
+for key, value in person.items():
+    print(f"{key}: {value}")
+```
+运行结果:
+```python
+遍历列表:
+apple
+banana
+cherry
+
+遍历字符串:
+P
+y
+t
+h
+o
+n
+
+遍历数字序列:
+0
+1
+2
+3
+4
+
+遍历字典:
+name: Alice
+age: 25
+city: New York
+n
+```
+但如果在循环中使用<kbd>break</kbd>提前退出,<kbd>else</kdb>代码块就不会执行：
+```python
+for i in range(5):
+    if i == 3:
+        break
+    print(i)
+else:
+    print("循环结束")
+
+#输出：
+0
+1
+2
+```
