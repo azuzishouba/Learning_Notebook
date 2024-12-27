@@ -183,7 +183,7 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
 5. 管道：
     >command | another_command：将 command 的输出通过管道传递给 another_command。
 ### 通配符
-1. *：匹配零个或多个字符。
+1. \*：匹配零个或多个字符。
 例如：*.txt 匹配所有文本文件。
 
 2. ?：匹配一个字符。

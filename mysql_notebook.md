@@ -6,9 +6,11 @@
 * use (database_name) 使用哪一个数据库
 ## SELECT关键字
 * SELECT (cloumn_name) 选择表中需要的列，通常要和FROM搭配使用
-    >seletct (cloumn_name)
+    ```sql
+    seletct (cloumn_name)
 
-    >FROM (table_name)
+    FROM (table_name)
+    ```
 ### AS关键字
 * AS (cloumn_name)给指定列一个别名
 ### DISTINCT关键字
@@ -17,11 +19,13 @@
 * UNIQUE 用于表的定义当中,确保值唯一
 ## WHERE关键字
 *  WHERE用于过滤搜索的结果
-    >SELECT (cloumn_name)
+    ```sql
+    SELECT (cloumn_name)
 
-    >FROM (table_name)
+    FROM (table_name)
 
-    >WHERE (cONstraint_cONditiON)
+    WHERE (constraint_condition)
+    ```
 ## 逻辑运算符
 * AND,OR,NOT 表示与或非
 ## 关系运算符
@@ -57,26 +61,29 @@ GROUP BY 是 SQL 中用于将结果集按一个或多个列进行分组的语句
 >GROUP BY product;
 ### HAVING 关键字
 HAVING关键字对分组的结果再进行过滤，相当于WHERE的作用。
->SELECT product, SUM(amount) AS total_sales
+```sql
+SELECT product, SUM(amount) AS total_sales
 
->FROM sales
+FROM sales
 
->GROUP BY product
+GROUP BY product
 
->HAVING SUM(amount) > 1000;
-
+HAVING SUM(amount) > 1000;
+```
 这个查询只返回总销售额超过 1000 的产品。
 ## WITHROLLUP 关键字
 WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）。
 
 例如我们将以上的数据表按名字进行分组，再统计每个人登录的次数：
-> SELECT name, SUM(signin) as signin_count
+```sql
+SELECT name, SUM(signin) as signin_count
   
-> FROM  employee_tbl
+FROM  employee_tbl
   
-> GROUP BY name
+GROUP BY name
   
-> WITH ROLLUP;
+WITH ROLLUP;
+```
  
 |name|signin_count|
 |  :----:  | :----:  |
@@ -89,47 +96,53 @@ WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计�
 * LIMIT (number) 表示限制取多少条数据
 * LIMIT (pass_number,number) 表示跳过多少条数据，再取多少条数据
 ## INNER JOIN内连接
->SELECT * 
+```sql
+SELECT * 
 
->FROM orders o 可以简写为o
+FROM orders o 可以简写为o
 
->JOIN customers c 要连接的表
+JOIN customers c 要连接的表
 
->>ON o.customer_id=c.customer_id  两表中共有的列，这样才可以拼接
+    ON o.customer_id=c.customer_id  两表中共有的列，这样才可以拼接
+```
 ## SELF JOIN自连接
->SELECT e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
+```sql
+SELECT e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
 
->FROM employee e 可以简写为e
+FROM employee e 可以简写为e
 
->JOIN employee m 可以简写为m,连接自己本身
+JOIN employee m 可以简写为m,连接自己本身
 
->>ON  e.reports_to=m.employee_id
+    ON  e.reports_to=m.employee_id
+```
 ## 多表连接
->SELECT o.order_id,o.order_date,c.first_name,c.last_name,os.name AS status
+```sql
+SELECT o.order_id,o.order_date,c.first_name,c.last_name,os.name AS status
 
->FROM orders o 简写为o
+FROM orders o 简写为o
 
->JOIN customers c 简写为c
+JOIN customers c 简写为c
 
->>ON  o.customer_id=c.customer_id 寻求两张表共同列
+    ON  o.customer_id=c.customer_id 寻求两张表共同列
 
->JOIN order_status os 简写为os 
+JOIN order_status os 简写为os 
 
->>ON  o.status=os.order_status_id 
-
+    ON  o.status=os.order_status_id 
+```
 需求拼接后的表共同列
 ## 复合连接情况
 * 在某些情况下，一张表有两个主键，这类似于二维数组，两个数字才能代表唯一性
-> SELECT *  
+```sql
+SELECT *  
 
->FROM order_items oi
+FROM order_items oi
 
->JOIN order_item_notes oin
+JOIN order_item_notes oin
 
->>ON oi.order_id=oin.order_id
+    ON oi.order_id=oin.order_id
 
->>AND oi.product.id=oin.product_id 
-
+    AND oi.product.id=oin.product_id 
+```
 当表中有两个主键时，都需要进行连接，使用AND来指定两个连接条件
 ## 隐式连接
 > SELECT *  
@@ -143,47 +156,53 @@ WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计�
 OUTER JOIN 外连接分为左连接和右连接
 ### 左连接
 LEFT JOIN 左连接:无论连接条件是否为真,无条件保留左表所有的数据再进行连接
->SELECT c.customer_id,c.first_name,o.order_id
+```sql
+SELECT c.customer_id,c.first_name,o.order_id
 
->FROM customers c 左连接保留左表所有记录，左表为customers
+FROM customers c 左连接保留左表所有记录，左表为customers
 
->left JOIN orders o 右表为orders
+left JOIN orders o 右表为orders
 
->>ON c.customer_id=o.customer_id
+    ON c.customer_id=o.customer_id
+```
 ORDER BY c.customer_id
 ### 右连接
 RIGHT JOIN 右连接:无论连接条件是否为真,无条件保留右表所有的数据再进行连接
->SELECT c.customer_id,c.first_name,o.order_id
+```sql
+SELECT c.customer_id,c.first_name,o.order_id
 
->FROM orders o 
+FROM orders o 
 
->left JOIN customers c 右连接保留右表所有记录,右表为c
+left JOIN customers c 右连接保留右表所有记录,右表为c
 
->>ON c.customer_id=o.customer_id
+    ON c.customer_id=o.customer_id
 ORDER BY c.customer_id
+```
 ## 多表进行外连接
 尽量都是用左连接,代码可读性更强
 ## 自身外连接
->SELECT e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
+```sql
+SELECT e.employee_id,e.first_name,m.first_name AS manager 自连接同列名需要指定表名
 
->FROM employee e 可以简写为e
+FROM employee e 可以简写为e
 
->left JOIN employee m 这种情况下员工都有经理,但是没有经理的信息,所以进行左表外连接也就是左连接，来显示经理信息
+left JOIN employee m 这种情况下员工都有经理,但是没有经理的信息,所以进行左表外连接也就是左连接，来显示经理信息
 
->>ON  e.reports_to=m.employee_id
+    ON  e.reports_to=m.employee_id
+```
 ## USING关键字
 如果两张表有相同的列名,可以用using来代替ON
->SELECT o.order_id,c.first_name
+```sql
+SELECT o.order_id,c.first_name
 
->FROM orders o 
+FROM orders o 
 
->JOIN customers c
+JOIN customers c
 
->>using (customer_id)
-
-等同于ON c.customer_id=o.customer_id
->ORDER BY c.customer_id
-
+using (customer_id)
+--等同于ON c.customer_id=o.customer_id
+ORDER BY c.customer_id
+```
 
 在需要多重连接的情况下同样可以使用using,using (column_name1,column_name2)
 > SELECT *  
@@ -204,19 +223,21 @@ ORDER BY c.customer_id
 >ORDER BY c.first_name
 ## UNION联合
 合并两个或多个查询的结果,默认去除重复行,想包含重复行可以UNION ALL,查询时须保持列数,列数据类型一致,第一个选择的列名会代表联合后的列名
-> SELECT order_id,order_date,'Active' AS status
+```sql
+SELECT order_id,order_date,'Active' AS status
 
->FROM orders
+FROM orders
 
->WHERE order_date>='2019-01-01'
+WHERE order_date>='2019-01-01'
 
->UNION 表示两者查询的合并
+UNION 表示两者查询的合并
 
-> SELECT order_id,order_date,'Archived' AS status
+SELECT order_id,order_date,'Archived' AS status
 
->FROM orders
+FROM orders
 
->WHERE order_date<'2019-01-01'
+WHERE order_date<'2019-01-01'
+```
 ## 列的属性
 * int 类型,表示数据是整形,不含小数点
 * varchar 类型,字符型,varchar(50),var代表variable,表示可变,最多可以有50个字节,当数据只有5个字节时,不会用空格填充,节省了空间
@@ -232,50 +253,56 @@ ORDER BY c.customer_id
 >VALUES('john','smith','1990-01-01','address','city','CA')
 
 ### 插入多条数据
->INSERT into shippers (name)
+```sql
+INSERT into shippers (name)
 
->VALUES('shippers1'),('shippers2'),('shippers3')
-
+VALUES('shippers1'),('shippers2'),('shippers3')
+```
 插入多条数据时,用逗号分隔开
-### 插入层次行
->INSERT into orders (customer_id,order_date,status)
+### 序列
+```sql
+INSERT into orders (customer_id,order_date,status)
 
->VALUES(1,'2019-01-02',1);
+VALUES(1,'2019-01-02',1);
 
->INSERT into order_items
+INSERT into order_items
 
->VALUES(LAST_INSERT_ID(),1,1,2.95),(LAST_INSERT_ID(),1,1,2.95)
-
+VALUES(LAST_INSERT_ID(),1,1,2.95),(LAST_INSERT_ID(),1,1,2.95)
+```
 LAST_INSRET_ID()用来获取刚刚插入数据的id
 ## 表格的浅复制
 浅复制只复制数据，表的结构不复制
->CREATE table orders_archived AS
+```sql
+CREATE table orders_archived AS
 
->SELECT *
+SELECT *
 
->FROM orders
-
+FROM orders
+```
 ## 子查询
->INSERT into orders_archived
+```sql
+INSERT into orders_archived
 
->SELECT *
+SELECT *
 
->FROM orders
+FROM orders
 
->WHERE order_date < '2019-01-01'
-
+WHERE order_date < '2019-01-01'
+```
 * exercies:
-    >CREATE table invoices_archived AS  
- 
-    >SELECT *
+    ```sql
+        CREATE table invoices_archived AS  
+    
+        SELECT *
 
-    >FROM invoices i
+        FROM invoices i
 
-    >JOIN clients c
+        JOIN clients c
 
-    >>USING (client_id)
+            USING (client_id)
 
-    >WHERE payment_date is not null
+        WHERE payment_date is not null
+    ```
 ## 更新数据
 ### 更新单行数据
 >UPDATE invoices
@@ -286,43 +313,45 @@ LAST_INSRET_ID()用来获取刚刚插入数据的id
 ### 更新多行数据
 在mysql workbench中，不允许一下子更改多条数据，需要在preference,sql editor，取消safe mode,重新开启workbench就能更改多条数据
 ### 利用子查询更新数据
->UPDATE invoices
+```sql
+UPDATE invoices
 
->SET payment_total=invoice_total*0.5,payment_date=due_date
+SET payment_total=invoice_total*0.5,payment_date=due_date
 
->WHERE client_id=
+WHERE client_id=
 
->>(SELECT client_id
+    (SELECT client_id
 
->>FROM clients
+    FROM clients
 
->>WHERE name='myworks')
+    WHERE name='myworks')
 
->UPDATE invoices
+UPDATE invoices
 
->SET payment_total=invoice_total*0.5,payment_date=due_date
+SET payment_total=invoice_total*0.5,payment_date=due_date
 
->WHERE client_id IN
+WHERE client_id IN
 
->>(SELECT client_id
+    (SELECT client_id
 
->>FROM clients
+    FROM clients
 
->>WHERE status IN ('CA','NY')) 多条语句下用IN
-
+    WHERE status IN ('CA','NY')) 多条语句下用IN
+```
 
 子查询的语句需要带括号,mysql会优先执行括号内语句
 ## 删除数据
->DELETE FROM 
+```sql
+DELETE FROM 
 
->WHERE client_id=
+WHERE client_id=
 
->>(SELECT *
+    (SELECT *
 
->>FROM clients
+    FROM clients
 
->>WHERE name='myworks')
-
+    WHERE name='myworks')
+```
 ## MYSQL中的事务
 * 事务的四个特性:
   * 原子性：一个事务（transaction）中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。
@@ -363,15 +392,24 @@ ROLLBACK TO SAVEPOINT -- 用于回滚到之前设置的保存点：
 MySQL 索引是一种数据结构，用于加快数据库查询的速度和性能。
 
 MySQL 索引的建立对于 MySQL 的高效运行是很重要的，索引可以大大提高 MySQL 的检索速度。
+* 创建单列索引:
+    ```sql
+    CREATE INDEX idx_name ON table_name(column1);
+    ```
 
 * 创建一个多列索引（复合索引）来加速对多个列的查询：
-    >CREATE INDEX idx_multiple_columns ON table_name(column1, column2);
-
-    使用时可以加速查询和分组
+    ```sql
+    CREATE INDEX idx_multiple_columns ON table_name(column1, column2);
+    ```
+    使用时可以加速需要两个列或以上的条件查询和分组
 * 查看索引
-    >SHOW INDEX FROM table_name;
+    ```sql
+    SHOW INDEX FROM table_name;
+    ```
 * 删除索引
-    >DROP INDEX idx_column_name ON table_name;
+    ```sql
+    DROP INDEX idx_column_name ON table_name;
+    ```
 ## SQL注入
 SQL 注入攻击发生在 Web 应用程序未对用户输入进行适当过滤和验证的情况下。攻击者通过在输入框中插入 SQL 语句，操控后台的 SQL 查询，进而访问或修改数据库中的数据，甚至破坏数据库结构。
 简单的 SQL 注入示例：

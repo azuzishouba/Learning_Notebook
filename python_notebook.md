@@ -550,6 +550,10 @@ for letter in word:
     print(letter)
 
 # 示例 3: 使用 range() 生成数字序列
+#range(start, stop, step)
+#start: 序列的起始值（默认值为 0）。如果省略，则默认为 0。
+#stop: 序列的结束值（不包括该值）。这是必须指定的参数。
+#step: 每次增加的步长（默认值为 1）。如果省略，则默认为 1。
 print("\n遍历数字序列:")
 for i in range(5):
     print(i)
@@ -601,4 +605,81 @@ else:
 0
 1
 2
+```
+## 循环嵌套
+```python
+for i in range(start1, stop1, step1):
+    for j in range(start2, stop2, step2):
+        # 执行的操作
+```
+示例:
+```python
+# 示例 1: 打印二维数组的元素
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print("示例 1: 打印二维数组的元素")
+for row in matrix:
+    for value in row:
+        print(value, end=' ')
+    print()
+print()
+
+# 示例 2: 打印九九乘法表
+print("示例 2: 打印九九乘法表")
+for i in range(1, 10):
+    for j in range(1, i+1):
+        print(f'{j}*{i}={i*j}', end=' ')
+    print()
+print()
+
+# 示例 3: 打印矩阵的坐标
+rows = 3
+cols = 4
+
+print("示例 3: 打印矩阵的坐标")
+for i in range(rows):
+    for j in range(cols):
+        print(f'({i}, {j})', end=' ')
+    print()
+print()
+
+# 示例 4: 计算二维数组的和
+total = 0
+print("示例 4: 计算二维数组的和")
+for row in matrix:
+    for value in row:
+        total += value
+
+print("Total sum:", total)
+```
+输出:
+```pyt
+示例 1: 打印二维数组的元素
+1 2 3 
+4 5 6 
+7 8 9 
+
+示例 2: 打印九九乘法表
+1*1=1 
+1*2=2 2*2=4 
+1*3=3 2*3=6 3*3=9 
+1*4=4 2*4=8 3*4=12 4*4=16 
+1*5=5 2*5=10 3*5=15 4*5=20 5*5=25 
+1*6=6 2*6=12 3*6=18 4*6=24 5*6=30 6*6=36 
+1*7=7 2*7=14 3*7=21 4*7=28 5*7=35 6*7=42 7*7=49 
+1*8=8 2*8=16 3*8=24 4*8=32 5*8=40 6*8=48 7*8=56 8*8=64 
+1*9=9 2*9=18 3*9=27 4*9=36 5*9=45 6*9=54 7*9=63 8*9=72 9*9=81 
+
+示例 3: 打印矩阵的坐标
+(0, 0) (0, 1) (0, 2) (0, 3) 
+(1, 0) (1, 1) (1, 2) (1, 3) 
+(2, 0) (2, 1) (2, 2) (2, 3) 
+
+示例 4: 计算二维数组的和
+Total sum: 45
+hon
 ```
