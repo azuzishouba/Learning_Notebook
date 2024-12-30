@@ -657,7 +657,7 @@ for row in matrix:
 print("Total sum:", total)
 ```
 输出:
-```pyt
+```python
 示例 1: 打印二维数组的元素
 1 2 3 
 4 5 6 
@@ -681,5 +681,271 @@ print("Total sum:", total)
 
 示例 4: 计算二维数组的和
 Total sum: 45
-hon
 ```
+## 列表
+1. 创建列表
+
+    你可以通过方括号<kbd>[]</kbd>来创建一个列表,元素之间用逗号<kbd>,</kbd>分隔。
+    ```python
+    # 示例
+    my_list = [1, 2, 3, 4, 5]
+    ```
+2. 访问列表元素
+
+    列表的元素是通过索引来访问的，Python的索引从 0 开始。
+
+    ```python
+    print(my_list[0])  # 输出 1
+    print(my_list[1])  # 输出 2
+
+    # 你也可以使用负数索引来从列表的末尾访问元素，-1 表示最后一个元素,-2 表示倒数第二个元素，以此类推。
+
+    print(my_list[-1])  # 输出 5
+    print(my_list[-2])  # 输出 4
+    ```
+3. 修改列表
+
+    列表是可变的，这意味着你可以直接修改列表中的元素。
+    ```python
+    my_list[2] = 10
+    print(my_list)  # 输出 [1, 2, 10, 4, 5]
+    ```
+4. 列表切片
+
+    切片（Slicing）是从列表中提取一个子列表。你可以通过 start:stop:step 来获取子列表。
+    列表切片不改变原列表,返回一个新的列表
+    ```python
+    # 获取索引2到4之间的元素
+    sublist = my_list[2:4]
+    print(sublist)  # 输出 [4, 5]
+
+    # 从索引1开始，每隔1个元素取一个
+    sublist = my_list[1::2]
+    print(sublist)  # 输出 [2, 5]
+    
+    #反转列表:切片可以通过步长为 -1 来反转列表，且这不会改变原列表。
+    my_list = [1, 2, 3, 4, 5]
+    reversed_list = my_list[::-1]
+    print(reversed_list)  # 输出 [5, 4, 3, 2, 1]
+    ```
+5. 列表嵌套
+
+    列表可以包含其他列表，这称为嵌套列表。
+    ```python
+    nested_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    print(nested_list[0])  # 输出 [1, 2, 3]
+    print(nested_list[1][2])  # 输出 6
+    ```
+6. 列表推导式（List Comprehension）
+
+    列表推导式是一种简洁的方式来生成新列表。它允许你从一个已有的列表创建一个新的列表，同时可以进行条件筛选或变换。
+    ```python
+    # 示例：将my_list中的每个元素乘以2
+    new_list = [x * 2 for x in my_list]
+    print(new_list)  # 输出 [2, 4, 8, 10]
+
+    # 示例：筛选出大于3的元素
+    filtered_list = [x for x in my_list if x > 3]
+    print(filtered_list)  # 输出 [4, 5]
+    ```
+### 列表常用方法
+1. <kbd>append()</kbd>
+
+    <kbd>append()</kbd>方法将元素添加到列表的末尾。
+    ```python
+    my_list = [1, 2, 3]
+    my_list.append(4)
+    print(my_list)  # 输出: [1, 2, 3, 4]
+    ```
+2. extend()
+
+    <kbd>extend()</kbd>方法将一个可迭代对象（如列表、元组、字符串等）的元素添加到列表的末尾。
+    ```python
+    my_list = [1, 2, 3]
+    my_list.extend([4, 5])
+    print(my_list)  # 输出: [1, 2, 3, 4, 5]
+
+    # 也可以扩展其他可迭代对象
+    my_list.extend("abc")
+    print(my_list)  # 输出: [1, 2, 3, 4, 5, 'a', 'b', 'c']
+    ```
+3. <kbd>insert()</kbd>
+
+    <kbd>insert()</kbd>方法将元素插入到列表的指定位置。
+    ```python
+    my_list = [1, 2, 3]
+    my_list.insert(1, 10)  # 在索引 1 处插入元素 10
+    print(my_list)  # 输出: [1, 10, 2, 3]
+    ```
+4. <kbd>remove()</kbd>
+
+    <kbd>remove()</kbd>方法删除列表中第一个匹配的元素。如果该元素不存在，Python 会抛出 ValueError 异常。
+    ```python
+    my_list = [1, 2, 3, 4, 5]
+    my_list.remove(3)  # 删除值为 3 的元素
+    print(my_list)  # 输出: [1, 2, 4, 5]
+    ```
+5. <kbd>clear()</kbd>
+
+    <kbd>clear()</kbd>方法删除列表中的所有元素，使列表变为空列表。
+    ```python
+    my_list = [1, 2, 3]
+    my_list.clear()
+    print(my_list)  # 输出: []
+    ```
+6. <kbd>index()</kbd>
+
+    <kbd>index()</kbd>方法返回列表中某个元素的第一个匹配项的索引。如果元素不存在，会抛出 ValueError 异常。
+    ```python
+    my_list = [10, 20, 30, 40]
+    index_of_20 = my_list.index(20)
+    print(index_of_20)  # 输出: 1
+    ```
+7. <kbd>count()</kbd>
+
+    <kbd>count()</kbd>方法返回某个元素在列表中出现的次数。
+    ```python
+    my_list = [1, 2, 2, 3, 2, 4]
+    count_of_2 = my_list.count(2)
+    print(count_of_2)  # 输出: 3
+    ```
+8. <kbd>sort()</kbd>
+
+    <kbd>sort()</kbd>方法将列表中的元素按升序排序，默认是按照元素的值排序。可以通过 reverse=True 参数反向排序，也可以通过 key 参数提供自定义排序规则。
+
+    ***sort() 方法没有返回值（即返回 None）,它是在原地对列表进行排序。用于对原始列表进行排序,并且会修改原列表。***
+    ```python
+    my_list = [3, 1, 4, 2, 5]
+    my_list.sort()
+    print(my_list)  # 输出: [1, 2, 3, 4, 5]
+
+    # 反向排序
+    my_list.sort(reverse=True)
+    print(my_list)  # 输出: [5, 4, 3, 2, 1]
+
+    # 按绝对值排序
+    my_list = [-3, 1, -4, 2, -5]
+    my_list.sort(key=abs)
+    print(my_list)  # 输出: [1, 2, -3, -4, -5]
+    ```
+9. <kbd>sorted</kbd>
+    <kbd>sorted()</kbd>是一个内建函数,可以对任何可迭代对象进行排序（不仅限于列表）,并返回一个新的已排序的列表,而不修改原始数据。
+    
+    ***返回一个新的排序后的列表。***
+#### sort与sorted主要区别
+|特性|sort()|sorted()|
+|:--:|:--:|:--:|
+|修改原列表|是，排序是原地进行的|否，返回一个新的排序后的列表|
+|返回值|<kbd>None</kbd>|返回排序后的新列表|
+|适用范围|只能用于列表对象|可以用于任何可迭代对象|
+|性能|原地排序(较高效)|需要额外的空间来存储新列表|
+
+***如果你想就地修改原始列表，使用 sort() 方法。如果你需要保持原始列表不变，或者希望对其他可迭代对象进行排序，使用 sorted() 函数。***
+1.  <kbd>reverse()</kbd>
+
+    <kbd>reverse()</kbd>方法将列表中的元素反向排列。这个方法会直接修改原列表。
+    ```python
+    my_list = [1, 2, 3, 4, 5]
+    my_list.reverse()
+    print(my_list)  # 输出: [5, 4, 3, 2, 1]
+    ```
+2.  <kbd>max()</kbd>和<kbd>min()</kbd>
+
+    max() 和 min() 方法分别返回列表中的最大值和最小值。
+    ```python
+    my_list = [1, 2, 3, 4, 5]
+    print(max(my_list))  # 输出: 5
+    print(min(my_list))  # 输出: 1
+    ```
+3.  <kbd>list()</kbd>
+
+    list() 方法用于将其他类型（如元组、字符串、字典等）转换为列表。
+    ```python
+    # 从元组转换为列表
+    tuple_data = (1, 2, 3)
+    my_list = list(tuple_data)
+    print(my_list)  # 输出: [1, 2, 3]
+
+    # 从字符串转换为列表
+    string_data = "hello"
+    my_list = list(string_data)
+    print(my_list)  # 输出: ['h', 'e', 'l', 'l', 'o']
+    ```
+## 元组
+在Python中，元组（Tuple）是一种内置的数据结构，类似于列表（List），但与列表不同的是，元组是不可变的（immutable）。一旦创建，元组的元素就不能被修改、添加或删除。这使得元组通常用于存储那些不需要修改的数据。
+1. 元组的创建
+    
+    元组可以通过圆括号 () 创建，元素之间使用逗号 , 分隔。
+    ```python
+    # 创建一个包含三个元素的元组
+    my_tuple = (1, 2, 3)
+
+    # 创建一个包含不同数据类型的元组
+    mixed_tuple = (1, "hello", 3.14)
+
+    # 单元素元组需要一个逗号
+    single_element_tuple = (5,)
+    ```
+2. 访问元组中的元素
+
+    你可以通过索引访问元组中的元素，索引从0开始。
+    ```python
+    my_tuple = (10, 20, 30)
+
+    # 访问第一个元素
+    print(my_tuple[0])  # 输出: 10
+
+    # 访问最后一个元素
+    print(my_tuple[-1])  # 输出: 30
+    ```
+## 解包(元组解包和参数解包)
+在Python中，元组解包（Tuple Unpacking）是指将元组中的元素分配给多个变量。通过元组解包，可以轻松地将元组中的每个元素提取到相应的变量中，这是一种非常方便且常见的操作。
+1. 在元组解包中使用 *
+
+   <kbd>*</kbd>在元组解包中的使用主要体现在 捕获多余的元素。它将元组中剩余的元素打包成一个列表，然后赋值给一个变量。
+
+   示例 1：捕获剩余的元素
+
+    ```python
+    my_tuple = (1, 2, 3, 4, 5)
+
+    # 使用 * 来捕获剩余的元素
+    a, b, *rest = my_tuple
+
+    print(a)      # 输出: 1
+    print(b)      # 输出: 2
+    print(rest)   # 输出: [3, 4, 5]
+    ```
+2. <kbd>*</kbd>在函数参数中
+
+    <kbd>*</kbd>也用于 函数定义和调用时解包 元组或列表。你可以将一个元组或列表中的元素解包并将它们作为函数的参数传递。
+
+    示例 3：函数参数中的 *
+    ```python
+    # 定义一个函数
+    def add(a, b, c):
+        return a + b + c
+
+    # 创建一个元组
+    my_tuple = (1, 2, 3)
+
+    # 使用 * 来解包元组并传递给函数
+    result = add(*my_tuple)
+
+    print(result)  # 输出: 6
+    ```
+    在这个例子中，*my_tuple 将元组中的元素解包并传递给函数 add，分别作为 a, b 和 c。
+
+    示例4:selenium下的函数解包
+    
+    ```python
+    element = self.driver.find_element(*MainPageLocators.GO_BUTTON)
+    element.click()
+
+    class MainPageLocators(object):
+    """A class for main page locators. All main page locators should come here"""
+    
+    GO_BUTTON = (By.ID, 'submit')
+    
+    ```
+    ***在 self.driver.find_element(*MainPageLocators.GO_BUTTON) 中，<kbd>*</kbd>是用于 解包 元组的语法。这个语法将 MainPageLocators.GO_BUTTON 元组中的两个元素 By.ID 和 'submit' 解包并分别传递给 find_element 方法。***
