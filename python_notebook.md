@@ -888,7 +888,7 @@ Total sum: 45
     ```
 2. 访问元组中的元素
 
-    你可以通过索引访问元组中的元素，索引从0开始。
+    你可以通过索引访问元组中的元素,索引从0开始。
     ```python
     my_tuple = (10, 20, 30)
 
@@ -899,12 +899,12 @@ Total sum: 45
     print(my_tuple[-1])  # 输出: 30
     ```
 ## 解包(元组解包和参数解包)
-在Python中，元组解包（Tuple Unpacking）是指将元组中的元素分配给多个变量。通过元组解包，可以轻松地将元组中的每个元素提取到相应的变量中，这是一种非常方便且常见的操作。
+在Python中,元组解包(Tuple Unpacking)是指将元组中的元素分配给多个变量。通过元组解包，可以轻松地将元组中的每个元素提取到相应的变量中，这是一种非常方便且常见的操作。
 1. 在元组解包中使用 *
 
    <kbd>*</kbd>在元组解包中的使用主要体现在 捕获多余的元素。它将元组中剩余的元素打包成一个列表，然后赋值给一个变量。
 
-   示例 1：捕获剩余的元素
+   示例 1:捕获剩余的元素
 
     ```python
     my_tuple = (1, 2, 3, 4, 5)
@@ -920,7 +920,7 @@ Total sum: 45
 
     <kbd>*</kbd>也用于 函数定义和调用时解包 元组或列表。你可以将一个元组或列表中的元素解包并将它们作为函数的参数传递。
 
-    示例 3：函数参数中的 *
+    示例 3:函数参数中的 *
     ```python
     # 定义一个函数
     def add(a, b, c):
@@ -949,3 +949,127 @@ Total sum: 45
     
     ```
     ***在 self.driver.find_element(*MainPageLocators.GO_BUTTON) 中，<kbd>*</kbd>是用于 解包 元组的语法。这个语法将 MainPageLocators.GO_BUTTON 元组中的两个元素 By.ID 和 'submit' 解包并分别传递给 find_element 方法。***
+## 字典
+Python 中的字典(dict)是一种内置的数据结构,它是一个无序的键值对集合。字典中的每个元素都是由一个键(key)和值(value)组成,键是唯一的,而值则可以是任何数据类型。
+1. 字典的创建
+    你可以使用大括号 {} 或者 dict() 构造函数来创建字典。
+    使用大括号创建字典：
+    ```python
+    my_dict = {"name": "Alice", "age": 25, "city": "New York"}
+    ```
+    使用 dict() 构造函数：
+    ```python
+    my_dict = dict(name="Alice", age=25, city="New York")
+    ```
+2. 访问字典中的元素
+      
+    可以通过键来访问字典中的值。如果键不存在，会抛出 KeyError 异常。
+    ```python
+    print(my_dict["name"])  # 输出: Alice
+    ```
+    使用 .get() 方法访问值
+
+    get() 方法允许你在键不存在时返回 None 或者你指定的默认值，而不是抛出异常。
+    ```python
+    print(my_dict.get("age"))  # 输出: 25
+    print(my_dict.get("address", "Not Found"))  # 输出: Not Found
+    ```
+3. 修改字典中的元素
+
+    你可以通过键来修改字典中的值。如果键不存在，则会添加一个新的键值对。
+    ```python
+    my_dict["age"] = 26
+    print(my_dict)  # 输出: {'name': 'Alice', 'age': 26, 'city': 'New York'}
+    
+    # 添加新的键值对
+    my_dict["address"] = "123 Street"
+    print(my_dict)  # 输出: {'name': 'Alice', 'age': 26, 'city': 'New York', 'address': '123 Street'}
+    ```
+4. 删除字典中的元素
+
+    你可以使用 del 语句或 .pop() 方法删除字典中的元素。
+    使用 del 删除
+    ```python
+    del my_dict["age"]
+    print(my_dict)  # 输出: {'name': 'Alice', 'city': 'New York', 'address': '123 Street'}
+    ```
+    使用 .pop() 删除并返回值
+    ```python
+    value = my_dict.pop("city")
+    print(value)  # 输出: New York
+    print(my_dict)  # 输出: {'name': 'Alice', 'address': '123 Street'}
+    ```
+    5. 字典的方法
+
+    ***遍历字典**
+
+    可以使用 for 循环遍历字典中的键、值或键值对。
+
+    * 遍历键：
+    ```python
+    for key in my_dict:
+        print(key)
+    ```
+   * 遍历值：
+    ```python
+    for value in my_dict.values():
+        print(value)
+    ```
+   * 遍历键值对：
+    ```python
+    for key, value in my_dict.items():
+        print(key, value)
+    ```
+### 字典常用函数
+1. <kbd>.clear()</kbd>
+
+    清空字典，删除所有的键值对。
+    ```python
+    my_dict = {'a': 1, 'b': 2}
+    my_dict.clear()
+    print(my_dict)  # 输出: {}
+    ```
+2. <kbd>.copy()</kbd>
+
+    返回字典的浅拷贝，即创建一个新的字典，内容与原字典相同。
+    ```python
+    original_dict = {'a': 1, 'b': 2}
+    new_dict = original_dict.copy()
+    print(new_dict)  # 输出: {'a': 1, 'b': 2}
+    ```
+3. <kbd>.get(key, default=None)</kbd>
+
+    获取指定键的值。如果键不存在，返回 default（默认为 None）。
+    ```python
+    my_dict = {'a': 1, 'b': 2}
+    print(my_dict.get('a'))  # 输出: 1
+    print(my_dict.get('c'))  # 输出: None
+    print(my_dict.get('c', 'Not Found'))  # 输出: Not Found
+    ```
+4. <kbd>.items()</kbd>
+
+    返回一个包含所有键值对的视图对象（dict_items），它是一个包含 (key, value) 元组的可迭代对象。
+    ```python
+    my_dict = {'a': 1, 'b': 2}
+    print(my_dict.items())  # 输出: dict_items([('a', 1), ('b', 2)])
+    for key, value in my_dict.items():
+        print(key, value)
+    ```
+5. <kbd>.keys()</kbd>
+
+    返回字典中所有键的视图对象（dict_keys），可以用来遍历所有的键。
+    ```python
+    my_dict = {'a': 1, 'b': 2}
+    print(my_dict.keys())  # 输出: dict_keys(['a', 'b'])
+    for key in my_dict.keys():
+        print(key)
+    ```
+6. <kbd>.values()</kbd>
+
+    返回字典中所有值的视图对象（dict_values），可以用来遍历所有的值。
+    ```python
+    my_dict = {'a': 1, 'b': 2}
+    print(my_dict.values())  # 输出: dict_values([1, 2])
+    for value in my_dict.values():
+        print(value)
+    ```
