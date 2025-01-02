@@ -122,6 +122,15 @@ adb shell pm list packages
 ```shell
 adb logcat
 ```
+9. 将日志保存到文件
+```shell
+adb logcat > log.txt
+```
+10. 进入设备的shell
+```shell
+adb shell
+```
+1.  
 ## 安装appium inspector(物理安卓设备)
 1. 官网下载appium inspector
     > https://github.com/appium/appium-inspector
@@ -135,7 +144,7 @@ adb logcat
 * platformversion:系统版本,通过adb shell getprop ro.build.version.release查看
 * devicename:设备名称,通过adb devices查看
 * app:测试的app的位置
-6. 也可用json文件
+1. 也可用json文件
 eg:
 {
   "appium:automationName": "UiAutomator2",
@@ -157,13 +166,13 @@ emulator -avd avdname -no-snapshot-load
 #恢复出厂设置
 emulator -avd avdname -wipe-data
 ```
-3. 设备相关信息同上
+1. 设备相关信息同上
 * automationname:通常为自动化驱动,可以通过appium driver list查看,安卓通常为uiautomator2,苹果统称为xcuitest
 * platformname:安卓是Android,苹果是iOS
 * platformversion:系统版本,通过adb shell getprop ro.build.version.release查看
 * devicename:设备名称,通过adb devices查看
 * app:测试的app的位置
-4. 启动session
+1. 启动session
 ## appium inspector界面
 ![appium_inspector_interface](/screen_shot/appium_inspector_interface.png)
 1. source(源):可以查看元素信息,可与元素互动,可以点击或者sendkeys
@@ -177,13 +186,13 @@ emulator -avd avdname -wipe-data
    1. move,虚拟机上选取一个点,设定操作时间
    2. pointer down(左点击,触屏一般没右击)
    3. pointer up(左点击,触屏一般没右击)
-2. 滑动操作
+1. 滑动操作
 实现逻辑:移动到特定点位->手指按下去->移动到特定点位->手指抬起来
    1. move,虚拟机上选取一个点,设定操作时间 
    2. pointer down(左点击,触屏一般没右击)
    3. move,虚拟机上选取一个点,设定操作时间
    4. pointer up(左点击,触屏一般没右击)
-3. zoom in和zoom out操作
+1. zoom in和zoom out操作
 实现逻辑:因为前面操作一只手指就可以操作,放缩操作需要两个手指,所以需要创建新的手指。左手指移动到特定点位->左手执按下去->移动到特定点位->左手指松开。右手指同样操作
 ![zoom_gesture_interface](/screen_shot/zoom_gesture_interface.png)
    1. move,虚拟机上选取一个点,设定操作时间 

@@ -53,7 +53,7 @@
 * git restore --source=(commitid) (filename) 特定提交中恢复文件
 ### Git中分支的操作
 * git branch (branch-name) 创建分支
-* git switch (branch) 切换到分支
+* ***git switch (branch) 切换到分支***
 * git switch -b (branch-name)
 * git branch 查看所有分支
 * git branch -d (branch-name)删除分支
@@ -62,7 +62,7 @@
 ### 复制GitHub项目到本地
 * git clone (repository-url) 克隆仓库到本地
 ### Git remote
-* git remote add orgin (repository-url) or (repositor-ssh_keys)添加远程仓库
+* ***git remote add orgin (repository-url) or (repositor-ssh_keys)添加远程仓库***
 * git remote -v 查看与本地仓库关联的远程仓库
 ### Git push
 * git push origin master 推送到远程仓库默认的master分支

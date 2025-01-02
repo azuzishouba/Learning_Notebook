@@ -97,6 +97,14 @@ weight_lbs=input('weight(lbs): ')
 weight_kg=int(weight_lbs) * 0.45
 print(weight_kg)
 ```
+***
+```python
+#inf表示无穷大,类型为float
+a = float('inf')  # 正无穷大
+b = float('-inf') # 负无穷大
+print(type(float('inf')))  # 输出 <class 'float'>
+```
+***
 ## 字符串
 ```python
 #在python中双引号单引号表示字符串都可以,但在想输出单引号时就用双引号来表示,同样想输出双引号就用单引号表示
@@ -329,6 +337,7 @@ print(math.sqrt(16))   # 输出:4.0
 * <kbd>math.ceil(x)</kbd> — 返回大于或等于x的最小整数
 * <kbd>math.floor(x)</kbd> — 返回小于或等于x的最大整数
 * <kbd>math.trunc(x)</kbd> — 返回x的整数部分
+* <kbd>round(x)</kbd> — 进行四舍五入后,返回x的整数部分
 * <kbd>math.fabs(x)</kbd> — 返回x的绝对值
 * <kbd>math.factorial(x)</kbd> — 返回x的阶乘(x必须为非负整数)
 * <kbd>math.gcd(x, y)</kbd> — 返回x和y的最大公约数
@@ -337,6 +346,7 @@ import math
 print(math.ceil(3.2))  # 输出：4
 print(math.floor(3.8))  # 输出：3
 print(math.trunc(3.7))  # 输出：3
+print(round(3.7))#输出:4
 print(math.fabs(-5))    # 输出：5.0
 print(math.factorial(5))  # 输出：120
 print(math.gcd(36, 60))  # 输出：12
