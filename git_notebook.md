@@ -73,3 +73,209 @@
 目的: 创建一个你自己拥有的远程仓库副本，通常用于开源项目贡献。当你 fork 一个项目时，你实际上复制了原始仓库的内容，但你对 fork 出来的仓库拥有完全的控制权限。
 
 适用场景: 你想对一个开源项目进行贡献时，首先将该项目 fork 到你自己的账户下，然后克隆到本地进行开发，最后通过 Pull Request 提交代码到原仓库。
+## Git tag
+标签常用于标记一个特定的点(通常是某个版本发布点),让开发者可以方便地引用和定位到那个特定的提交.
+1. 创建标签
+   1. 创建轻量标签
+      轻量标签就是简单地指向某个提交，不带任何附加信息。
+      ```shell
+      git tag <tag_name>
+      ```
+      例如：
+      ```shell
+      git tag v1.0
+      ```
+   2. 创建附注标签(Annotated Tag)
+
+      附注标签包含了创建者、日期、注释以及可能的签名。
+      ```shell
+      git tag -a <tag_name> -m "Tag message"
+      ```
+      例如：
+      ```shell
+      git tag -a v1.0 -m "First release"
+      ```
+   3. 给特定的提交创建标签
+  
+      可以指定一个提交哈希值来给该提交打标签：
+      ```shell
+        git tag <tag_name> <commit_hash>
+      ```
+        例如：
+      ```shell
+      git tag v1.0 1a2b3c4d
+      ```
+2. 查看标签
+    ```shell
+    git tag
+    ```
+    这会列出当前仓库中的所有标签。
+
+    要查看某个特定标签的信息，可以使用：
+    ```shell
+    git show <tag_name>
+    ```
+    例如：
+    ```shell
+    git show v1.0
+    ```
+3. 删除标签
+
+    要删除本地标签：
+    ```shell
+    git tag -d <tag_name>
+    ```
+    例如：
+    ```shell
+    git tag -d v1.0
+    ```
+4. 推送标签到远程仓库
+
+    默认情况下，git push 不会推送标签。需要显式推送：
+
+    推送单个标签：
+    ```shell
+    git push origin v1.0.0
+    ```
+    推送所有标签：
+    ```shell
+    git push origin --tags
+    ```
+## Git stash
+在 Git 中,<kbd>git stash</kbd>是一个非常有用的命令，用于临时保存当前工作目录和暂存区的改动，以便可以切换到其他分支或进行其他操作，而不需要提交这些更改。它允许你在不提交当前工作进度的情况下，将这些更改保存到一个堆栈中，稍后可以恢复。
+
+* git stash 的常见用途：
+
+  * 切换分支：你正在开发一个特性，但突然需要切换到其他分支来修复 bug 或查看其他内容。你不希望提交当前的工作，但又不想丢失正在进行的更改，使用 git stash 可以临时保存这些更改。
+  * 中断工作：当你还没有准备好提交时，你可以使用 stash 来临时保存你的工作进度，以便稍后恢复。
+  * 清理工作区：在某些情况下，你需要一个干净的工作目录来进行测试或其他操作，可以使用 git stash 来暂时清理当前的更改。
+* 常用操作
+
+1. 保存当前修改
+
+     1. 保存工作目录和暂存区的修改：
+      ```shell
+      git stash
+      ```
+      默认保存的 stash 会命名为 <kbd>stash@{0}</kbd>。
+
+     2. 保存并添加描述信息：
+      ```shell
+      git stash save "描述信息"
+      ```
+
+     3. 保存未跟踪的文件（新增的文件）：
+      ```shell
+      git stash -u
+      ```
+
+2. 查看保存的 stash 列表
+      ```shell
+      git stash list
+      ```
+3. 恢复最新的 stash 并删除 stash 记录
+    ```shell
+    git stash pop
+    ```
+    不删除stash
+    ```shell
+    git stash apply
+    ```
+## Git flow
+1. windows版本git自带git flow,检查是否安装git flow
+    ```shell
+    git flow version
+    ```
+### Git Flow 分支模型
+
+master 分支：
+
+  * 永远保持稳定和可发布的状态。
+  * 每次发布一个新的版本时，都会从 develop 分支合并到 master 分支。
+
+develop 分支：
+
+  * 用于集成所有的开发分支。
+  * 代表了最新的开发进度。
+  * 功能分支、发布分支和修复分支都从这里分支出去，最终合并回这里。
+
+feature 分支：
+
+  * 用于开发新功能。
+  * 从 develop 分支创建，开发完成后合并回 develop 分支。
+  * 命名规范：feature/feature-name。
+
+release 分支：
+
+  * 用于准备新版本的发布。
+  * 从 develop 分支创建，进行最后的测试和修复，然后合并回 develop 和 master 分支，并打上版本标签。
+  * 命名规范：release/release-name。
+
+hotfix 分支：
+
+  * 用于修复紧急问题。
+  * 从 master 分支创建，修复完成后合并回 master 和 develop 分支，并打上版本标签。
+  * 命名规范：hotfix/hotfix-name。
+
+![git_flow_interface](https://www.runoob.com/wp-content/uploads/2024/07/git-flow.png)
+### Git flow 工作流程
+1. 初始化 Git Flow
+
+首先，在项目中初始化 Git Flow。可以使用 Git Flow 插件（例如 git-flow）来简化操作。
+```shell
+git flow init
+```
+初始化时，你需要设置分支命名规则和默认分支。
+2. 创建功能分支
+
+当开始开发一个新功能时，从 develop 分支创建一个功能分支。
+```shell
+git flow feature start feature-name
+```
+完成开发后，将功能分支合并回 develop 分支，并删除功能分支。
+```shell
+git flow feature finish feature-name
+```
+3. 创建发布分支
+
+当准备发布一个新版本时，从 develop 分支创建一个发布分支。
+```shell
+git flow release start release-name
+```
+在发布分支上进行最后的测试和修复，准备好发布后，将发布分支合并回 develop 和 master 分支，并打上版本标签。
+```shell
+git flow release finish release-name
+```
+4. 创建修复分支
+
+当发现需要紧急修复的问题时，从 master 分支创建一个修复分支。
+```shell
+git flow hotfix start hotfix-name
+```
+修复完成后，将修复分支合并回 master 和 develop 分支，并打上版本标签。
+```shell
+git flow hotfix finish hotfix-name
+```
+实例操作
+
+以下是一个实际使用 Git Flow 的综合实例。
+
+初始化 Git Flow：
+```shell
+git flow init
+```
+创建和完成功能分支：
+```shell
+git flow feature start new-feature # 开发新功能
+git flow feature finish new-feature
+```
+创建和完成发布分支：
+```shell
+git flow release start v1.0.0 # 测试和修复
+git flow release finish v1.0.0
+```
+创建和完成修复分支：
+```shell
+git flow hotfix start hotfix-1.0.1. # 修复紧急问题
+git flow hotfix finish hotfix-1.0.1
+```

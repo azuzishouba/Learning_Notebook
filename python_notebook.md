@@ -1083,3 +1083,107 @@ Python 中的字典(dict)是一种内置的数据结构,它是一个无序的键
     for value in my_dict.values():
         print(value)
     ```
+## python函数
+1. 函数的定义和调用
+    ```python
+    def greet_user():
+        print('Hi there!')
+        print('welcome aboard')
+
+    print("start")
+    greet_user()
+    prinf("Finish")
+    ```
+2. 带参数的函数
+    ```python
+    def greet_user(name):
+        print(f'Hi {name}!')
+        print('welcome aboard')
+
+    print("start")
+    greet_user('john')
+    greet_user('mary')
+    prinf("Finish")
+    ```
+    ```python
+    def greet_user(first_name,last_name):
+        print(f'Hi {first_name,},{last_name}!')
+        print('welcome aboard')
+
+    print("start")
+    greet_user('john','smith')
+    prinf("Finish")
+    ```
+3. 带关键字参数函数
+
+当同时使用位置参数和关键字参数时，位置参数必须先传递，关键字参数可以根据名称传递。
+
+***关键字参数应该置于位置参数后***
+
+
+```python
+def greet_user(first_name,last_name):
+    print(f'Hi {first_name,},{last_name}!')
+    print('welcome aboard')
+
+print("start")
+greet_user(first_name='john',last_name='smith')
+prinf("Finish")
+```
+```python
+def greet(name, age, city="Unknown"):
+    print(f"Hello, my name is {name}, I am {age} years old, and I live in {city}.")
+
+# 使用位置参数和关键字参数
+greet("Alice", 25, city="New York")  # 输出: Hello, my name is Alice, I am 25 years old, and I live in New York.
+
+# 只使用位置参数，使用默认值
+greet("Bob", 30)  # 输出: Hello, my name is Bob, I am 30 years old, and I live in Unknown.
+```
+4. 使用可变参数(<kbd>*args</kbd>和<kbd>**kwargs</kbd>)
+* <kbd>*args</kbd>用于接收任意数量的位置参数（以元组形式传递）。
+* <kbd>**kwargs</kbd>用于接收任意数量的关键字参数(以字典形式传递)。
+```python
+ # 使用 *args 接收多个位置参数
+def add_numbers(*args):
+    return sum(args)
+
+print(add_numbers(1, 2, 3))  # 输出: 6
+print(add_numbers(5, 10, 15, 20))  # 输出: 50
+
+# 使用 **kwargs 接收多个关键字参数
+def greet_person(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+greet_person(name="Alice", age=25, city="New York")
+# 输出:
+# name: Alice
+# age: 25
+# city: New York
+```
+5. lambda函数(匿名函数)
+用法:
+```python
+lambda 参数: 表达式
+```
+```python
+# 定义一个lambda函数
+multiply = lambda x, y: x * y
+print(multiply(3, 4))  # 输出: 12
+```
+## 函数的返回(return)
+在 Python 中,函数的返回值是指函数执行完毕后,将结果返回到函数,以便下次继续调用.
+```python
+def square(number):
+    return number * number
+print(square(3)) #输出9
+```
+在以下情况下无返回值默认返回None
+```python
+def square(number):
+    print(number * number)
+print(square(3)) 
+#输出9
+#输出None
+```

@@ -130,7 +130,41 @@ adb logcat > log.txt
 ```shell
 adb shell
 ```
-1.  
+11. adb无线连接
+* 启用无线调试：
+    1. 确保设备和计算机在同一网络下。
+    2. 连接设备并启用无线调试：
+        ```shell
+        adb tcpip 5555
+        ```
+    3. ipv4地址查看
+        ```shell
+        adb shell ip addr show
+        ```
+        使用inet地址就行
+        ![adb_ip_addr_show_interface](./screen_shot/adb_ip_addr_show_interface.png)
+    4. 断开 USB 连接，通过 IP 地址连接设备(ipv4地址)：
+        ```shell
+        adb connect <device_ip>
+        ```
+    5. 断开无线连接：
+        ```shell
+        adb disconnect <device_ip>
+        ```
+### monkey 测试
+Monkey测试（Monkey Testing）是一种软件测试方法，主要目的是通过随机的、无计划的输入来测试系统的稳定性和鲁棒性。Monkey测试的核心思想是通过不按常理出牌、无目标地进行操作，来寻找可能的缺陷或异常行为。
+1. Android Monkey:
+Android提供了一个叫做 Monkey 的命令行工具，可以在Android设备上执行随机的用户操作来测试应用程序的稳定性。可以使用以下命令运行：
+
+    ```shell
+    adb shell monkey -p com.example.app -v 500
+    ```
+    其中<kbd>-p</kbd>指定包名,<kbd>-v</kbd>控制输出的详细程度,500 表示要执行500个随机事件。
+示例:
+
+    ```shell
+    adb shell monkey -p com.example.app --throttle 100 --ignore-crashes --ignore-timeouts -v 5000
+    ```
 ## 安装appium inspector(物理安卓设备)
 1. 官网下载appium inspector
     > https://github.com/appium/appium-inspector
