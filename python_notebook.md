@@ -1187,3 +1187,67 @@ print(square(3))
 #输出9
 #输出None
 ```
+## python 魔术方法
+Python 中的魔术方法(Magic Methods)，也叫做特殊方法或双下方法(dunder methods)，是以双下划线(<kbd>__</kbd>)包围的方法，用来实现 Python 类的特殊功能和行为。这些方法可以让你自定义对象的行为，使其在特定情况下表现得像内建类型一样。例如，你可以让你的对象支持加法、减法、索引、字符串表示等操作。
+1. 对象创建与初始化
+
+    * <kbd>\_\_new\_\_(cls, ...)</kbd>:
+
+      * 用于创建并返回一个新的对象实例。
+
+      * 在 \_\_init\_\_ 之前调用。
+
+    * <kbd>\_\_init\_\_(self, ...)</kbd>:
+
+      * 用于初始化对象实例。
+
+      * 在对象创建后调用。
+
+    * <kbd>\_\_del\_\_(self)</kbd>:
+
+      * 在对象被销毁（垃圾回收）时调用。
+    ```python
+    class MyClass:
+        def __new__(cls, *args, **kwargs):
+            print("Creating instance")
+            return super().__new__(cls)
+
+        def __init__(self, value):
+            print("Initializing instance")
+            self.value = value
+
+        def __del__(self):
+            print("Deleting instance")
+
+    obj = MyClass(10)  # 输出: Creating instance, Initializing instance
+    del obj            # 输出: Deleting instance
+    ```
+2. 字符串表示
+
+    * <kbd>\_\_str\_\_(self)</kbd>:
+
+      * 定义对象的“非正式”字符串表示，通常用于用户友好的输出。
+
+      * 调用 str(obj) 或 print(obj) 时触发。
+
+    * <kbd>\_\_repr\_\_(self)</kbd>:
+
+      * 定义对象的“正式”字符串表示，通常用于调试和开发。
+
+      * 调用 repr(obj) 或在交互式环境中直接输入对象时触发。
+
+    ```python
+    class MyClass:
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f"MyClass with value: {self.value}"
+
+        def __repr__(self):
+            return f"MyClass({self.value})"
+
+    obj = MyClass(10)
+    print(str(obj))   # 输出: MyClass with value: 10
+    print(repr(obj))  # 输出: MyClass(10)
+    ```

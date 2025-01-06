@@ -181,6 +181,101 @@
     ```shell
     git stash apply
     ```
+## Git rebase
+Rebase(变基):将当前分支的提交“移动”到目标分支的最新提交之后，形成一条直线历史。
+与 merge 的区别：
+
+   * <kbd>merge</kbd>会创建一个新的合并提交，保留分支的历史。
+
+   * <kbd>rebase</kbd>则不会创建合并提交，而是将提交重新应用到目标分支上，形成线性历史。
+常见的用法：
+
+   1. 将当前分支的修改重新应用到另一个分支的顶部：
+      ```shell
+      git checkout feature-branch  # 切换到需要进行 rebase 的分支
+      git rebase main  # 将当前分支的修改应用到 main 分支的顶部
+      ```
+   2. 交互式 rebase： 你可以使用 -i 选项进行交互式的 rebase，以便在 rebase 过程中修改提交历史。
+      ```shell
+      git rebase -i HEAD~5  # 交互式 rebase，修改最近 5 次提交
+      ```
+   3. 解决冲突： 在 rebase 过程中，如果发生冲突，Git 会暂停，并提示你解决冲突。解决冲突后，需要运行以下命令继续 rebase：
+      ```shell
+      git add <file>  # 标记冲突已解决
+      git rebase --continue  # 继续 rebase
+      ```
+   4. 放弃 rebase 操作： 如果在 rebase 过程中遇到问题，或者想要放弃 rebase，可以使用以下命令：
+      ```shell
+      git rebase --abort  # 放弃当前的 rebase 操作，恢复到原来的状态
+      ```
+使用场景：
+
+  * 清理历史：当你有一个长时间进行开发的分支，期间与主分支有很多不同步的提交，通过<kbd>rebase</kbd>可以将这些提交整理得更清晰。
+  * 避免重复的合并提交：如果多个开发者在不同的分支上进行开发,<kbd>rebase</kbd>可以帮助减少冗余的合并提交，保持历史记录的整洁。
+
+注意事项：
+
+  * 重写历史:<kbd>rebase</kbd>会重写提交历史，因此它最好只在自己本地分支上使用，如果其他人也在使用该分支，使用 rebase 可能会导致问题。
+  * 避免在公共分支上使用：如果分支已经被推送到远程并被其他开发者拉取，最好不要使用<kbd>rebase</kbd>，因为这会改变历史，导致其他开发者的仓库与远程仓库不同步。
+## Git cherry-pick
+git cherry-pick 是 Git 中的一个命令,用于将某个提交(或多个提交)从一个分支应用到当前分支.这使得你能够选择性地将其他分支上的某些提交复制到当前分支,而不是合并整个分支或者使用 rebase。
+语法：
+  ```shell
+  git cherry-pick <commit-hash>
+  ```
+其中 <commit-hash> 是你想要挑选的提交的哈希值。
+
+示例：
+
+假设你在 feature 分支上有如下提交历史：
+```shell
+A---B---C---D  (feature)
+```
+你想把提交<kbd>B</kbd>和<kbd>D</kbd>从 feature 分支应用到<kbd>main</kbd>分支上。
+
+1. 首先，切换到 main 分支：
+```shell
+git checkout main
+```
+2. 然后，使用 cherry-pick 将 feature 分支上的 B 和 D 提交应用到 main 分支上：
+```shell
+git cherry-pick <commit-hash-of-B>
+git cherry-pick <commit-hash-of-D>
+```
+每个提交都会被单独应用到当前分支（main），并生成新的提交。
+
+结果是 main 分支会有类似下面的提交历史：
+```shell
+    A---B---C---D  (feature)
+                \
+                 B'---D'  (main)
+```
+其中<kbd>B'</kbd>和<kbd>D'</kbd>是原始提交<kbd>B 和</kbd>D的拷贝,哈希值不同,但内容相同。
+
+常见选项：
+
+1. 多个提交： 你可以一次性挑选多个连续的提交：
+```shell
+git cherry-pick <commit-hash1>^..<commit-hash2>
+```
+这会将从 <commit-hash1> 到 <commit-hash2> 之间的所有提交挑选到当前分支。
+
+2. 解决冲突： 在 cherry-pick 的过程中，如果发生冲突，Git 会暂停并提示你解决冲突。你需要手动解决冲突，然后使用以下命令继续操作：
+```shell
+git add <resolved-file>
+git cherry-pick --continue
+```
+3. 跳过提交： 如果你决定跳过某个有冲突的提交，可以使用：
+```shell
+git cherry-pick --skip
+```
+这会跳过当前有冲突的提交，并继续应用下一个提交。
+
+4. 放弃 cherry-pick 操作： 如果你在过程中决定放弃 cherry-pick，可以使用：
+```shell
+git cherry-pick --abort
+```
+这会取消当前的 cherry-pick 操作，恢复到操作之前的状态。
 ## Git flow
 1. windows版本git自带git flow,检查是否安装git flow
     ```shell
