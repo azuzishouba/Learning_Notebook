@@ -1263,3 +1263,332 @@ Python 中的魔术方法(Magic Methods)，也叫做特殊方法或双下方法(
     print(str(obj))   # 输出: MyClass with value: 10
     print(repr(obj))  # 输出: MyClass(10)
     ```
+3. 属性访问
+
+    * <kbd>\_\_getattr\_\_(self, name)</kbd>:
+
+      * 当访问不存在的属性时调用。
+
+    * <kbd>\_\_setattr\_\_(self, name, value)</kbd>:
+
+      * 当设置属性时调用。
+
+    * <kbd>\_\_delattr\_\_(self, name)</kbd>:
+
+      * 当删除属性时调用。
+
+    ```python
+    class MyClass:
+        def __getattr__(self, name):
+            return f"Attribute {name} not found"
+
+        def __setattr__(self, name, value):
+            print(f"Setting {name} to {value}")
+            super().__setattr__(name, value)
+
+    obj = MyClass()
+    print(obj.x)  # 输出: Attribute x not found
+    obj.x = 10    # 输出: Setting x to 10
+    ```
+5. 运算符重载
+
+    * <kbd>\_\_add\_\_(self, other)</kbd>:
+
+       * 定义加法行为，调用 obj1 + obj2 时触发。
+
+    * <kbd>\_\_sub\_\_(self, other)</kbd>:
+
+       * 定义减法行为，调用 obj1 - obj2 时触发。
+
+    * <kbd>\_\_eq\_\_(self, other)</kbd>:
+
+       * 定义相等比较行为，调用 obj1 == obj2 时触发。
+
+    * <kbd>\_\_lt\_\_(self, other)</kbd>:
+
+       * 定义小于比较行为，调用 obj1 < obj2 时触发。
+
+    ```python
+    class Point:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+        def __add__(self, other):
+            return Point(self.x + other.x, self.y + other.y)
+
+        def __eq__(self, other):
+            return self.x == other.x and self.y == other.y
+
+    p1 = Point(1, 2)
+    p2 = Point(3, 4)
+    p3 = p1 + p2
+    print(p3.x, p3.y)  # 输出: 4 6
+    print(p1 == p2)    # 输出: False
+    ```
+## 错误处理
+在 Python 中，错误处理主要通过<kbd>try</kbd>、<kbd>except</kbd>、<kbd>else</kbd>和<kbd>finally</kbd>语句来实现.这些语句允许你捕获和处理代码中可能发生的异常,从而避免程序崩溃。
+```python
+try:
+    # 尝试执行的代码
+    risky_code()
+except SomeException as e:
+    # 如果发生 SomeException 异常，执行这里的代码
+    handle_exception(e)
+else:
+    # 如果没有异常发生，执行这里的代码
+    no_exceptions()
+finally:
+    # 无论是否发生异常，都会执行这里的代码
+    always_execute()
+```
+eg:
+```python
+try:
+    # 尝试打开一个文件
+    with open('non_existent_file.txt', 'r') as file:
+        content = file.read()
+except FileNotFoundError as e:
+    # 如果文件不存在，捕获 FileNotFoundError 异常
+    print(f"Error: {e}")
+else:
+    # 如果没有异常发生，打印文件内容
+    print(content)
+finally:
+    # 无论是否发生异常，都会执行这里的代码
+    print("Execution complete.")
+```
+1. 捕获多个异常
+
+    你可以捕获多个不同类型的异常，并对它们进行不同的处理：
+    ```python
+    try:
+        age =int(input('age: '))
+        income=20000
+        risk= income / age
+        print(age)  
+    except ZeroDivisionError:
+        print('Age cannot be 0')
+    except ValueError:
+        print('Invalid value')
+
+    ```
+    ```python
+    try:
+        # 尝试执行的代码
+        risky_code()
+    except FileNotFoundError as e:
+        # 处理文件未找到异常
+        print(f"File not found: {e}")
+    except PermissionError as e:
+        # 处理权限错误
+        print(f"Permission denied: {e}")
+    except Exception as e:
+        # 处理其他所有异常
+        print(f"An unexpected error occurred: {e}")
+    ```
+2. 捕获所有异常
+
+    如果你想要捕获所有可能的异常，可以使用 Exception 类：
+    ```python
+    try:
+        # 尝试执行的代码
+        risky_code()
+    except Exception as e:
+        # 处理所有异常
+        print(f"An error occurred: {e}")
+    ```
+3. 自定义异常
+
+    你还可以定义自己的异常类，并在代码中抛出这些异常：
+    ```python
+    class MyCustomError(Exception):
+        pass
+
+    def risky_function():
+        raise MyCustomError("Something went wrong!")
+
+    try:
+        risky_function()
+    except MyCustomError as e:
+        print(f"Custom error caught: {e}")
+    ```
+### 常见错误
+|异常类型|描述|处理方法|
+|:--:|:--:|:--:|
+|FileNotFoundError|文件未找到|检查文件路径，捕获异常|
+|ZeroDivisionError|除零错误|检查除数，捕获异常|
+|TypeError|类型错误|检查变量类型，捕获异常|
+|IndexError|索引错误|检查索引范围，捕获异常|
+|KeyError|键错误|检查字典键值，捕获异常|
+|AttributeError|属性错误|检查对象属性或方法，捕获异常|
+|ValueError|值错误|检查输入值，捕获异常|
+|KeyboardInterrupt|用户中断|捕获异常并优雅退出|
+|自定义异常|自定义逻辑错误|定义异常类，抛出并捕获|
+## 类
+在 Python 中,类(Class)是面向对象编程（OOP）的核心概念。类用于创建对象，对象是类的实例。类可以包含属性（变量）和方法(函数),用于描述对象的行为和状态。
+1. 基本语法
+定义类
+
+使用 class 关键字定义类，类名通常采用驼峰命名法（如 MyClass）。
+```python
+class MyClass:
+    pass  # 空类
+```
+创建对象
+
+通过类名加括号 () 创建类的实例（对象）。
+python
+复制
+
+obj = MyClass()
+
+1. 属性和方法
+实例属性
+
+实例属性是绑定到对象上的变量，通常在 __init__ 方法中初始化。
+```python
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name  # 实例属性
+        self.age = age
+
+# 创建对象
+person = Person("Alice", 25)
+print(person.name)  # 输出: Alice
+print(person.age)   # 输出: 25
+```
+实例方法
+
+实例方法是绑定到对象上的函数，第一个参数通常是 self，表示对象本身。
+```python
+
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        return f"Hello, my name is {self.name} and I am {self.age} years old."
+
+# 创建对象并调用方法
+person = Person("Alice", 25)
+print(person.greet())  # 输出: Hello, my name is Alice and I am 25 years old.
+```
+3. 类属性和类方法
+类属性
+
+类属性是绑定到类本身的变量，所有实例共享。
+```python
+
+class Person:
+    species = "Human"  # 类属性
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# 访问类属性
+print(Person.species)  # 输出: Human
+
+# 实例也可以访问类属性
+person = Person("Alice", 25)
+print(person.species)  # 输出: Human
+```
+类方法
+
+类方法是绑定到类本身的方法，使用 @classmethod 装饰器定义，第一个参数是 cls，表示类本身。
+```python
+
+class Person:
+    species = "Human"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    @classmethod
+    def get_species(cls):
+        return cls.species
+
+# 调用类方法
+print(Person.get_species())  # 输出: Human
+```
+4. 静态方法
+
+静态方法与类和实例无关，使用 @staticmethod 装饰器定义，不需要 self 或 cls 参数。
+```python
+
+class MathUtils:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+# 调用静态方法
+print(MathUtils.add(3, 5))  # 输出: 8
+```
+5. 继承
+
+继承允许一个类（子类）继承另一个类（父类）的属性和方法。
+基本语法
+```python
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return "Unknown sound"
+
+class Dog(Animal):  # 继承 Animal 类
+    def speak(self):
+        return "Woof!"
+
+# 创建子类对象
+dog = Dog("Buddy")
+print(dog.name)      # 输出: Buddy
+print(dog.speak())   # 输出: Woof!
+```
+方法重写
+
+子类可以重写父类的方法。
+调用父类方法
+
+使用 super() 调用父类的方法。
+```python
+
+class Cat(Animal):
+    def speak(self):
+        return super().speak() + " Meow!"
+
+cat = Cat("Whiskers")
+print(cat.speak())  # 输出: Unknown sound Meow!
+```
+7. 多态
+
+多态是指不同类的对象可以调用相同的方法，但表现出不同的行为。
+```python
+
+class Animal:
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+def animal_sound(animal):
+    return animal.speak()
+
+dog = Dog()
+cat = Cat()
+
+print(animal_sound(dog))  # 输出: Woof!
+print(animal_sound(cat))  # 输出: Meow!
+```

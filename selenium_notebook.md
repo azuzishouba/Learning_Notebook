@@ -256,6 +256,50 @@ class SearchResultsPageLocators(object):
 
     pass
 ```
+## select(多项选择)
+![select_option](/screen_shot/select_option.png)
+```python
+def select_months(self):
+        dropdown2 = self.driver.find_element(By.ID, 'months')
+        select2 = Select(dropdown2)
+        select2.select_by_visible_text('January')
+```
+### select常用方法
+索引从0开始
+* select_by_index(index: int) → None
+
+  * Select the option at the given index. This is done by examining the “index” attribute of an element, and not merely by counting.
+
+  * Args:
+
+    * index - The option at this index will be selected
+
+    throws NoSuchElementException If there is no option with specified index in SELECT
+
+* select_by_value(value: str) → None
+
+  * Select all options that have a value matching the argument. That is, when given “foo” this would select an option like:
+
+    <option value=”foo”>Bar</option>
+
+  * Args:
+
+    * value - The value to match against
+
+    throws NoSuchElementException If there is no option with specified value in SELECT
+
+* select_by_visible_text(text: str) → None
+
+  * Select all options that display text matching the argument. That is, when given “Bar” this would select an option like:
+
+        <option value=”foo”>Bar</option>
+
+  * Args:
+
+    * text - The visible text to match against
+
+        throws NoSuchElementException If there is no option with specified text in SELECT
+
 ## actionchains(复杂链式操作)
 ActionChains 在链模式的使用:
 ```python
