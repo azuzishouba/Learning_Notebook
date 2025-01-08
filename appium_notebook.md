@@ -238,3 +238,44 @@ emulator -avd avdname -wipe-data
    7. pointer down(左点击,触屏一般没右击)
    8. move,虚拟机上选取一个点,设定操作时间
    9. pointer up(左点击,触屏一般没右击)
+   ## 使用python-unittest编写脚本
+   ```python
+   import unittest
+    from appium import webdriver
+    from appium.options.android import UiAutomator2Options
+
+    class AppiumTest(unittest.TestCase):
+        def setUp(self):
+            # 配置 Appium 选项
+            options = UiAutomator2Options()
+            options.platform_name = 'Android'
+            options.device_name = 'emulator-5554'
+            options.app = '/path/to/your/app.apk'
+            options.automation_name = 'UiAutomator2'
+            options.app_package = 'com.example.app'
+            options.app_activity = 'com.example.app.MainActivity'
+
+            # 初始化驱动
+            self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
+
+        def test_login(self):
+            # 测试登录功能
+            username_field = self.driver.find_element_by_id('com.example.app:id/username')
+            password_field = self.driver.find_element_by_id('com.example.app:id/password')
+            login_button = self.driver.find_element_by_id('com.example.app:id/login_button')
+
+            username_field.send_keys('testuser')
+            password_field.send_keys('password123')
+            login_button.click()
+
+            # 验证登录是否成功
+            welcome_message = self.driver.find_element_by_id('com.example.app:id/welcome_message')
+            self.assertEqual(welcome_message.text, 'Welcome, testuser!')
+
+        def tearDown(self):
+            # 关闭驱动
+            self.driver.quit()
+
+    if __name__ == '__main__':
+        unittest.main()
+   ```
