@@ -37,6 +37,173 @@ public class Helloworld {
 ```
 ***//表示单行注释,/\*\*\/表示多行注释***
 ## 变量
-1. 变量类型
+1. 变量初始化
+
+变量可以在声明时直接初始化，也可以在声明后单独初始化。语法如下：
+```java
+数据类型 变量名 = 初始值;
+```
+例如：
+```java
+int age = 25;
+String name = "John Doe";
+double salary = 50000.0;
+```
+2. 变量类型
    1. 基本数据类型
-   2. 引用数据类型
+
+    |数据类型|大小(字节)|默认值|描述|
+    |:--:|:--:|:--:|:--:|
+    |byte|1|0|8位有符号整数|
+    |short|2|0|16位有符号整数|
+    |int|4|0|32位有符号整数|
+    |long|8|0L|64位有符号整数|
+    |float|4|0.0f|32位单精度浮点数|
+    |double|8|0.0d|64位双精度浮点数
+    |char|2|'\u0000'|16位Unicode字符|
+    |boolean|1|false|布尔值(true或false)|
+   1. 引用数据类型
+
+    引用数据类型是指向对象的引用（类似于指针）。常见的引用数据类型包括：
+
+    * 类：如<kbd>String</kbd>、<kbd>Integer</kbd>等。
+
+    * 接口：如<kbd>List</kbd>、Map等。
+
+    * 数组：如int[]、String[]等。
+3. 变量的作用域
+
+变量的作用域指的是变量在程序中可以被访问的范围。Java中的变量作用域可以分为以下几种：
+
+* 局部变量：在方法、构造函数或块中声明的变量。它们只在声明它们的块中有效。
+
+* 实例变量：在类中声明但在方法、构造函数或块之外的变量。它们属于对象的实例，每个对象都有其自己的实例变量副本。
+
+* 类变量（静态变量）：使用static关键字声明的变量。它们属于类，而不是类的任何特定实例。所有实例共享同一个类变量。
+    ```java
+    public class VariableExample {
+        // 实例变量
+        int instanceVar = 10;
+
+        // 类变量（静态变量）
+        static int classVar = 20;
+
+        public void method() {
+            // 局部变量
+            int localVar = 30;
+            System.out.println("局部变量: " + localVar);
+        }
+
+        public static void main(String[] args) {
+            VariableExample obj = new VariableExample();
+            System.out.println("实例变量: " + obj.instanceVar);
+            System.out.println("类变量: " + classVar);
+            obj.method();
+        }
+    }
+    ```
+
+***变量的命名应遵循命名规范,通常使用驼峰命名法(如myVariableName).***
+***类名使用大写字母开头（帕斯卡命名法）。(如MyClass)*** 
+## java输入
+1. 使用 Scanner 类
+
+Scanner 类是Java中最常用的输入工具，它可以从控制台、文件或其他输入源读取数据。
+
+步骤：
+
+   1. 导入java.util.Scanner。
+
+   2. 创建Scanner对象。
+
+   3. 使用Scanner的方法读取输入。
+
+常用方法：
+
+* <kbd>next()</kbd>：读取一个字符串（以空格或换行符分隔）。
+
+* <kbd>nextInt()</kbd>：读取一个整数。
+
+* <kbd>nextDouble()</kbd>：读取一个双精度浮点数。
+
+* <kbd>nextLine()</kbd>：读取一行字符串（包括空格）。
+
+示例代码：
+```java
+
+import java.util.Scanner;
+
+public class ScannerExample {
+    public static void main(String[] args) {
+        // 创建 Scanner 对象
+        Scanner scanner = new Scanner(System.in);
+
+        // 读取整数
+        System.out.print("请输入一个整数: ");
+        int num = scanner.nextInt();
+        System.out.println("你输入的整数是: " + num);
+
+        // 读取浮点数
+        System.out.print("请输入一个浮点数: ");
+        double decimal = scanner.nextDouble();
+        System.out.println("你输入的浮点数是: " + decimal);
+
+        // 读取字符串（单个单词）
+        System.out.print("请输入一个单词: ");
+        String word = scanner.next();
+        System.out.println("你输入的单词是: " + word);
+
+        // 读取一行字符串
+        scanner.nextLine(); // 清除缓冲区
+        System.out.print("请输入一行文字: ");
+        String line = scanner.nextLine();
+        System.out.println("你输入的文字是: " + line);
+
+        // 关闭 Scanner
+        scanner.close();
+    }
+}
+```
+***(不换行时候)在使用nextInt()或nextDouble()后，如果紧接着使用nextLine()，可能会读取到空行。这是因为nextInt()不会读取换行符，而nextLine()会读取换行符。处理嫌麻烦输出时println换行即可***
+2. 使用 BufferedReader 类
+
+BufferedReader 类是一个更高效的输入工具，通常与InputStreamReader一起使用。它适合读取大量数据。
+步骤：
+
+* 导入java.io.BufferedReader和java.io.InputStreamReader。
+
+* 创建BufferedReader对象。
+
+* 使用readLine()方法读取输入。
+
+示例代码：
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BufferedReaderExample {
+    public static void main(String[] args) throws IOException {
+        // 创建 BufferedReader 对象
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        // 读取字符串
+        System.out.print("请输入你的名字: ");
+        String name = reader.readLine();
+        System.out.println("你好, " + name + "!");
+
+        // 读取整数
+        System.out.print("请输入你的年龄: ");
+        int age = Integer.parseInt(reader.readLine());
+        System.out.println("你的年龄是: " + age);
+
+        // 读取浮点数
+        System.out.print("请输入你的身高: ");
+        double height = Double.parseDouble(reader.readLine());
+        System.out.println("你的身高是: " + height);
+
+        // 关闭 BufferedReader
+        reader.close();
+    }
+}
+```
