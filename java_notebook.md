@@ -207,3 +207,141 @@ public class BufferedReaderExample {
     }
 }
 ```
+## java 数学运算
+1. 加法:+
+2. 减法:-
+3. 乘法:*
+4. 除法:/
+5. 取整除://
+6. 取余:%
+7. 幂运算:
+```java
+double result = Math.pow(2, 3); // result = 8.0 (2的3次方)
+```
+8. 自增运算符 (++)
+* 用于将变量的值增加1。
+
+```java
+int a = 5;
+a++; // a = 6
+```
+* 前缀自增 (++a) 和后缀自增 (a++) 的区别：
+  * 前缀自增：先增加，再使用。
+  * 后缀自增：先使用，再增加。
+
+```java
+int a = 5;
+int b = ++a; // a = 6, b = 6
+
+int c = 5;
+int d = c++; // c = 6, d = 5
+```
+9. 自减运算符 (--)
+* 用于将变量的值减少1。
+
+```java
+int a = 5;
+a--; // a = 4
+```
+* 前缀自减 (<kbd>--a</kbd>) 和后缀自减 (<kbd>a--</kbd>) 的区别：
+
+    * 前缀自减：先减少，再使用。
+
+    * 后缀自减：先使用，再减少。
+
+```java
+int a = 5;
+int b = --a; // a = 4, b = 4
+
+int c = 5;
+int d = c--; // c = 4, d = 5
+```
+10. 三元运算符 (? :)
+* 虽然不是严格的数学运算符，但它可以用于条件判断。
+```java
+int a = 5;
+int b = 3;
+int max = (a > b) ? a : b; // max = 5
+```
+## if 语句
+1. <kbd>if</kbd>语句
+
+* 如果条件为<kbd>true</kbd>，则执行 if 块中的代码。
+
+```java
+int a = 10;
+if (a > 5) {
+    System.out.println("a 大于 5");
+}
+```
+2. <kbd>if-else</kbd>语句
+* 如果 if 条件为 true，执行 if 块中的代码；否则执行 else 块中的代码。
+
+```java
+int a = 3;
+if (a > 5) {
+    System.out.println("a 大于 5");
+} else {
+    System.out.println("a 小于或等于 5");
+}
+```
+3. <kbd>if-else if-else</kbd>语句
+
+* 用于多个条件的判断。如果第一个 if 条件为 false，则检查下一个 else if 条件；如果所有条件都为 false，则执行 else 块中的代码。
+
+```java
+int a = 7;
+if (a > 10) {
+    System.out.println("a 大于 10");
+} else if (a > 5) {
+    System.out.println("a 大于 5 但小于或等于 10");
+} else {
+    System.out.println("a 小于或等于 5");
+}
+```
+## 数学类
+1. 基本数学运算
+* 绝对值：<kbd>Math.abs()</kbd>
+    ```java
+    int a = -10;
+    int absValue = Math.abs(a); // absValue = 10
+    ```
+* 最大值和最小值：<kbd>Math.max()</kbd>和<kbd>Math.min()</kbd>
+    ```java
+    int max = Math.max(5, 10); // max = 10
+    int min = Math.min(5, 10); // min = 5
+    ```
+* 四舍五入：<kbd>Math.round()</kbd>
+    ```java
+    double num = 3.6;
+    long rounded = Math.round(num); // rounded = 4
+    ```
+* 向上取整：Math.ceil()
+    ```java
+    double num = 3.2;
+    double ceilValue = Math.ceil(num); // ceilValue = 4.0
+    ```
+* 向下取整：Math.floor()
+    ```java
+    double num = 3.9;
+    double floorValue = Math.floor(num); // floorValue = 3.0
+    ```
+2. 幂运算和开方
+* 幂运算：Math.pow()
+    ```java
+    double result = Math.pow(2, 3); // 2的3次方，result = 8.0
+    ```
+* 平方根：Math.sqrt()
+    ```java
+    double sqrtValue = Math.sqrt(16); // sqrtValue = 4.0
+    ```
+3. 随机数
+* 生成随机数：Math.random()
+  * 返回一个 [0.0, 1.0) 之间的随机浮点数。
+    ```java
+    double randomValue = Math.random(); // 例如：0.123456
+    ```
+  * 生成指定范围的随机整数（例如 1 到 100）：
+    ```java
+    int randomInt = (int) (Math.random() * 100) + 1; // 1 到 100 之间的随机整数
+    ```
