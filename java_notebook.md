@@ -413,3 +413,52 @@ System.out.printf("%-10s %5d %6.2f%n", "Bob", 30, 1.80);
 Alice      25   1.75
 Bob        30   1.80
 ```
+## if嵌套
+4. 嵌套的 if 语句
+
+可以在一个 if 或 else 块中嵌套另一个 if 语句。
+
+```java
+int a = 12;
+if (a > 10) {
+    if (a > 15) {
+        System.out.println("a 大于 15");
+    } else {
+        System.out.println("a 大于 10 但小于或等于 15");
+    }
+} else {
+    System.out.println("a 小于或等于 10");
+}
+```
+## 字符串方法
+1. 字符串长度
+
+* length()：返回字符串的长度。
+    ```java
+    String str = "Hello";
+    int len = str.length(); // len = 5
+    ```
+
+2. 字符串拼接
+
+* concat(String str)：将指定字符串连接到当前字符串的末尾。
+    ```java
+    String str1 = "Hello";
+    String str2 = "World";
+    String result = str1.concat(" ").concat(str2); // result = "Hello World"
+    ```
+* \+ 运算符：也可以用于字符串拼接。
+    ```java
+    String result = str1 + " " + str2; // result = "Hello World"
+    ```
+3. 字符串比较
+* equals(Object obj)：比较字符串内容是否相等（区分大小写）。
+    ```java
+    String str1 = "Hello";
+    String str2 = "hello";
+    boolean isEqual = str1.equals(str2); // isEqual = false
+    ```
+* equalsIgnoreCase(String str)：比较字符串内容是否相等（不区分大小写）。
+    ```java
+    boolean isEqualIgnoreCase = str1.equalsIgnoreCase(str2); // isEqualIgnoreCase = true
+    ```
