@@ -432,7 +432,6 @@ if (a > 10) {
 ```
 ## 字符串方法
 1. 字符串长度
-
 * length()：返回字符串的长度。
     ```java
     String str = "Hello";
@@ -440,7 +439,6 @@ if (a > 10) {
     ```
 
 2. 字符串拼接
-
 * concat(String str)：将指定字符串连接到当前字符串的末尾。
     ```java
     String str1 = "Hello";
@@ -462,3 +460,156 @@ if (a > 10) {
     ```java
     boolean isEqualIgnoreCase = str1.equalsIgnoreCase(str2); // isEqualIgnoreCase = true
     ```
+4. 字符串查找
+* charAt(int index)：返回指定索引处的字符。
+    ```java
+    char ch = str1.charAt(1); // ch = 'e'
+    ```
+* indexOf(String str)：返回指定子字符串第一次出现的索引。
+    ```java
+    int index = str1.indexOf("lo"); // index = 3
+    ```
+* lastIndexOf(String str)：返回指定子字符串最后一次出现的索引。
+    ```java
+    int lastIndex = str1.lastIndexOf("l"); // lastIndex = 3
+    ```
+* contains(CharSequence s)：检查字符串是否包含指定子字符串。
+    ```java
+    boolean contains = str1.contains("ell"); // contains = true
+    ```
+5. 字符串截取
+* substring(int beginIndex)：从指定索引开始截取字符串。
+    ```java
+    String subStr = str1.substring(1); // subStr = "ello"
+    ```
+* substring(int beginIndex, int endIndex)：截取指定索引范围内的字符串。
+    ```java
+    String subStr = str1.substring(1, 4); // subStr = "ell"
+    ```
+6. 字符串替换
+* replace(char oldChar, char newChar)：替换字符串中的字符。
+    ```java
+    String newStr = str1.replace('l', 'L'); // newStr = "HeLLo"
+    ```
+7. 字符串大小写转换
+* toLowerCase()：将字符串转换为小写。
+   ```java
+    String lowerStr = str1.toLowerCase(); // lowerStr = "hello"
+    ```
+* toUpperCase()：将字符串转换为大写。
+    ```java
+    String upperStr = str1.toUpperCase(); // upperStr = "HELLO"
+    ```
+8. 字符串修剪
+* trim()：去除字符串两端的空白字符。
+    ```java
+    String str = "  Hello  ";
+    String trimmedStr = str.trim(); // trimmedStr = "Hello"
+    ```
+
+9. 字符串分割
+* split(String regex)：根据正则表达式分割字符串。
+    ```java
+    String str = "Hello,World,Java";
+    String[] parts = str.split(","); // parts = ["Hello", "World", "Java"]
+    ```
+10. 字符串检查
+* isEmpty()：检查字符串是否为空。
+    ```java
+    boolean isEmpty = str1.isEmpty(); // isEmpty = false
+    ```
+* startsWith(String prefix)：检查字符串是否以指定前缀开头。
+    ```java
+    boolean startsWith = str1.startsWith("He"); // startsWith = true
+    ```
+* endsWith(String suffix)：检查字符串是否以指定后缀结尾。
+    ```java
+    boolean endsWith = str1.endsWith("lo"); // endsWith = true
+    ```
+11. 字符串重复
+* repeat(int count)（Java 11+）：重复字符串指定次数。
+    ```java
+    String repeatedStr = str1.repeat(3); // repeatedStr = "HelloHelloHello"
+    ```
+## switch...case判断
+在 Java 中，switch-case 是一种多分支选择结构，用于根据变量的值执行不同的代码块。它比多个 if-else 语句更简洁和易读，特别适合处理多个固定值的场景。
+```java
+switch (expression) {
+    case value1:
+        // 当 expression 等于 value1 时执行的代码
+        break;
+    case value2:
+        // 当 expression 等于 value2 时执行的代码
+        break;
+    // 可以有任意数量的 case 语句
+    default:
+        // 当 expression 不匹配任何 case 时执行的代码
+}
+```
+* expression：可以是 byte、short、int、char、String（Java 7+）或枚举类型。
+* case：每个 case 后面跟一个常量值，用于与 expression 进行比较。
+* break：用于退出 switch 语句。如果没有 break，程序会继续执行后续的 case 代码（称为“贯穿”）。
+* default：当 expression 不匹配任何 case 时执行的代码块（可选）。
+Java 12+ 的增强 switch 表达式
+
+示例 ：贯穿现象
+
+如果没有 break，程序会继续执行后续的 case 代码，直到遇到 break 或 switch 结束。
+```java
+int num = 2;
+String result;
+
+switch (num) {
+    case 1:
+    case 2:
+    case 3:
+        result = "Small number";
+        break;
+    case 4:
+    case 5:
+    case 6:
+        result = "Medium number";
+        break;
+    default:
+        result = "Large number";
+}
+
+System.out.println(result); // 输出：Small number
+```
+### 从 Java 12 开始，switch 支持更简洁的语法，并且可以作为表达式返回值。
+```java
+int day = 3;
+String dayName = switch (day) {
+    case 1 -> "Monday";
+    case 2 -> "Tuesday";
+    case 3 -> "Wednesday";
+    case 4 -> "Thursday";
+    case 5 -> "Friday";
+    case 6 -> "Saturday";
+    case 7 -> "Sunday";
+    default -> "Invalid day";
+};
+
+System.out.println("Day: " + dayName); // 输出：Day: Wednesday
+```
+在 Java 的增强 switch 表达式（Java 12+）中，如果某个 case 需要执行多行代码，可以使用 {} 包裹代码块，并通过 yield 返回值。这种方式既保留了增强 switch 表达式的简洁性，又支持复杂的逻辑。
+```java
+result = switch (expression) {
+    case value -> {
+        // 多行代码
+        yield resultValue; // 使用 yield 返回值
+    }
+    // 其他 case
+};
+```
+* <kbd>{}</kbd>:用于包裹多行代码。
+
+* <kbd>yield</kbd>:用于返回结果值（类似于 return，但专门用于 switch 表达式）。
+## 逻辑运算符
+常用逻辑运算符
+
+|运算符|名称|描述|
+|:--:|:--:|:--:|
+|<kbd>&&</kbd>|逻辑与|两个条件都为 true 时，结果为 true；否则为 false。
+|<kbd>\|\|</kbd>|逻辑或|至少一个条件为 true 时，结果为 true；否则为 false。|
+|<kbd>!</kbd>|逻辑非|对条件取反，true 变 false，false 变 true。
