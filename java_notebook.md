@@ -299,6 +299,25 @@ if (a > 10) {
     System.out.println("a 小于或等于 5");
 }
 ```
+## random函数
+1. 导入包
+```java
+import java.util.Random
+```
+2. 创建对象
+```java
+Random random=new random();
+```
+3. 生成随机数
+```java
+int number;
+number =random.nextInt(1,6);
+System.out.println(number)
+//左闭右开取1-5的值
+double number;
+number =random.nextDouble();
+System.out.println(number)
+```
 ## 数学类
 1. 基本数学运算
 * 绝对值:<kbd>Math.abs()</kbd>
@@ -326,7 +345,7 @@ if (a > 10) {
     double num = 3.9;
     double floorValue = Math.floor(num); // floorValue = 3.0
     ```
-2. 幂运算和开方
+1. 幂运算和开方
 * 幂运算:Math.pow()
     ```java
     double result = Math.pow(2, 3); // 2的3次方，result = 8.0
@@ -335,7 +354,7 @@ if (a > 10) {
     ```java
     double sqrtValue = Math.sqrt(16); // sqrtValue = 4.0
     ```
-3. 随机数
+1. 随机数
 * 生成随机数:Math.random()
   * 返回一个 [0.0, 1.0) 之间的随机浮点数。
     ```java
@@ -602,6 +621,26 @@ result = switch (expression) {
     // 其他 case
 };
 ```
+```java
+int day = 2;
+String message = switch (day) {
+    case 1 -> {
+        System.out.println("It's Monday!");
+        yield "Start of the week"; // 使用 yield 返回值
+    }
+    case 2 -> {
+        System.out.println("It's Tuesday!");
+        yield "Second day of the week";
+    }
+    case 3 -> {
+        System.out.println("It's Wednesday!");
+        yield "Midweek";
+    }
+    default -> "Invalid day";
+};
+
+System.out.println(message);
+```
 * <kbd>{}</kbd>:用于包裹多行代码。
 
 * <kbd>yield</kbd>:用于返回结果值（类似于 return，但专门用于 switch 表达式）。
@@ -613,3 +652,121 @@ result = switch (expression) {
 |<kbd>&&</kbd>|逻辑与|两个条件都为 true 时，结果为 true；否则为 false。
 |<kbd>\|\|</kbd>|逻辑或|至少一个条件为 true 时，结果为 true；否则为 false。|
 |<kbd>!</kbd>|逻辑非|对条件取反，true 变 false，false 变 true。
+## while循环与do-while循环
+在 Java 中，while 循环是一种条件循环，它会重复执行一段代码，直到指定的条件不再满足为止。while 循环适合在不确定循环次数的情况下使用。
+1. 基本语法
+```java
+while (条件) {
+    // 循环体（需要重复执行的代码）
+}
+```
+* 条件：一个布尔表达式。如果条件为 true，则执行循环体；如果为 false，则退出循环。
+* 循环体：需要重复执行的代码块。
+2. 执行流程
+    1. 检查条件是否为 true。
+    2. 如果条件为 true，执行循环体。
+    3. 执行完循环体后，再次检查条件。
+    4. 重复上述步骤，直到条件为 false，退出循环。
+3. 示例
+
+    示例 1：打印 1 到 5
+    ```java
+    int i = 1;
+    while (i <= 5) {
+        System.out.println(i);
+        i++; // 更新条件变量
+    }
+    ```
+    输出：
+    ```java
+    1
+    2
+    3
+    4
+    5
+    ```
+4. do-while 循环
+
+do-while 循环是 while 循环的变体，它会先执行一次循环体，再检查条件。即使条件一开始就不满足，循环体也会至少执行一次。
+
+语法
+```java
+do {
+    // 循环体
+} while (条件);
+```
+示例
+```java
+int i = 1;
+do {
+    System.out.println(i);
+    i++;
+} while (i <= 5);
+```
+输出：
+```java
+1
+2
+3
+4
+5
+```
+## for循环
+在 Java 中，for 循环是一种计数循环，用于在已知循环次数的情况下重复执行一段代码。for 循环的语法简洁明了，适合遍历数组、集合或执行固定次数的操作。
+1. 基本语法
+```java
+for (初始化; 条件; 更新) {
+    // 循环体（需要重复执行的代码）
+}
+```
+* 初始化：在循环开始前执行一次，通常用于初始化循环变量。
+* 条件：一个布尔表达式。如果条件为 true，则执行循环体；如果为 false，则退出循环。
+* 更新：在每次循环结束后执行，通常用于更新循环变量。
+* 循环体：需要重复执行的代码块。
+
+示例 1：打印 1 到 5
+```java
+for (int i = 1; i <= 5; i++) {
+    System.out.println(i);
+}
+```
+输出：
+```java
+1
+2
+3
+4
+5
+```
+
+for 循环可以嵌套使用，常用于处理多维数组或复杂的逻辑。
+
+示例：打印九九乘法表
+```java
+for (int i = 1; i <= 9; i++) {
+    for (int j = 1; j <= i; j++) {
+        System.out.print(j + "×" + i + "=" + (i * j) + "\t");
+    }
+    System.out.println();
+}
+```
+输出：
+```java
+1×1=1	
+1×2=2	2×2=4	
+1×3=3	2×3=6	3×3=9	
+...
+1×9=9	2×9=18	3×9=27	...	9×9=81
+```
+2. break 终止循环：
+     ```java
+     int count = 0
+     while(True){
+         count += 1;
+     if(count == 5){
+        break;s
+        }
+     } 
+     ```
+3. continue 跳过当前迭代：
+<kbd>continue</kbd>语句可以跳过当前循环的其余部分，直接开始下一次迭代。
