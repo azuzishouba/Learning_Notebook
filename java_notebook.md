@@ -770,3 +770,89 @@ for (int i = 1; i <= 9; i++) {
      ```
 3. continue 跳过当前迭代：
 <kbd>continue</kbd>语句可以跳过当前循环的其余部分，直接开始下一次迭代。
+
+## 方法
+
+在Java中，方法（Method）是类或对象的行为的体现，用于执行特定的任务或操作。方法可以接受输入参数并返回结果。以下是Java方法的基本结构和一些关键概念：
+1. 方法的基本结构
+```java
+[访问修饰符] [返回类型] 方法名([参数列表]) {
+    // 方法体
+    // 执行具体的操作
+    return [返回值]; // 如果返回类型不是void
+}
+```
+* 访问修饰符：控制方法的访问权限，如 public、private、protected 或默认（无修饰符）。
+* 返回类型：方法返回的数据类型，如 int、String、void（表示不返回任何值）等。
+* 方法名：方法的名称，遵循标识符命名规则。
+* 参数列表：方法接受的输入参数，可以有多个参数，用逗号分隔。
+* 方法体：包含具体的执行代码。
+* return 语句：用于返回方法的结果（如果返回类型不是 void）。
+2. 示例
+```java
+public class Calculator {
+
+    // 一个简单的加法方法
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    // 一个没有返回值的方法
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
+
+    // 主方法，程序的入口
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        int result = calc.add(5, 3); // 调用add方法
+        System.out.println("5 + 3 = " + result);
+
+        calc.printMessage("Hello, Java!"); // 调用printMessage方法
+    }
+}
+```
+3. 方法的重载（Overloading）
+
+Java允许在同一个类中定义多个同名方法，只要它们的参数列表不同（参数类型、数量或顺序不同）。这称为方法重载。
+```java
+public class MathOperations {
+
+    // 重载的add方法
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    public static void main(String[] args) {
+        MathOperations math = new MathOperations();
+        System.out.println(math.add(2, 3)); // 调用int add(int, int)
+        System.out.println(math.add(2.5, 3.5)); // 调用double add(double, double)
+        System.out.println(math.add(2, 3, 4)); // 调用int add(int, int, int)
+    }
+}
+```
+4. 静态方法
+
+静态方法属于类而不是类的实例，可以通过类名直接调用。静态方法不能访问非静态成员（变量或方法）。
+```java
+public class MathUtils {
+
+    // 静态方法
+    public static int square(int num) {
+        return num * num;
+    }
+
+    public static void main(String[] args) {
+        int result = MathUtils.square(4); // 直接通过类名调用
+        System.out.println("4的平方是: " + result);
+    }
+}
+```
