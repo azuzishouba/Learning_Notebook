@@ -856,3 +856,220 @@ public class MathUtils {
     }
 }
 ```
+## 变量范围
+
+变量的作用域指的是变量在程序中可以被访问的范围。Java中的变量作用域可以分为以下几种：
+
+1. 局部变量：在方法、构造函数或块中声明的变量。它们只在声明它们的块中有效。
+```java
+public class LocalVariableExample {
+    public void printNumber() {
+        // 局部变量
+        int num = 10; // num 只在 printNumber 方法中有效
+        System.out.println("局部变量 num: " + num);
+    }
+
+    public static void main(String[] args) {
+        LocalVariableExample obj = new LocalVariableExample();
+        obj.printNumber(); // 输出: 局部变量 num: 10
+
+        // 以下代码会报错，因为 num 是局部变量，不能在方法外访问
+        // System.out.println(num);
+    }
+}
+```
+2. 实例变量：在类中声明但在方法、构造函数或块之外的变量。它们属于对象的实例，每个对象都有其自己的实例变量副本。
+```java
+public class InstanceVariableExample {
+    // 实例变量
+    int num; // 默认值为 0
+
+    public void setNumber(int num) {
+        this.num = num; // 使用 this 关键字引用当前对象的实例变量
+    }
+
+    public void printNumber() {
+        System.out.println("实例变量 num: " + num);
+    }
+
+    public static void main(String[] args) {
+        InstanceVariableExample obj1 = new InstanceVariableExample();
+        InstanceVariableExample obj2 = new InstanceVariableExample();
+
+        obj1.setNumber(10); // 设置 obj1 的 num
+        obj2.setNumber(20); // 设置 obj2 的 num
+
+        obj1.printNumber(); // 输出: 实例变量 num: 10
+        obj2.printNumber(); // 输出: 实例变量 num: 20
+    }
+}
+```
+3. 类变量（静态变量）：使用static关键字声明的变量。它们属于类，而不是类的任何特定实例。所有实例共享同一个类变量。
+```java
+public class StaticVariableExample {
+    // 类变量（静态变量）
+    static int num; // 默认值为 0
+
+    public void setNumber(int num) {
+        StaticVariableExample.num = num; // 使用类名访问静态变量
+    }
+
+    public void printNumber() {
+        System.out.println("类变量 num: " + num);
+    }
+
+    public static void main(String[] args) {
+        StaticVariableExample obj1 = new StaticVariableExample();
+        StaticVariableExample obj2 = new StaticVariableExample();
+
+        obj1.setNumber(10); // 设置类变量 num
+        obj2.setNumber(20); // 修改类变量 num
+
+        obj1.printNumber(); // 输出: 类变量 num: 20
+        obj2.printNumber(); // 输出: 类变量 num: 20
+
+        // 直接通过类名访问静态变量
+        System.out.println("直接访问类变量 num: " + StaticVariableExample.num); // 输出: 20
+    }
+}
+```
+## 数组
+在Java中，数组是一种用于存储固定数量同类型元素的数据结构。数组中的元素可以通过索引访问，索引从0开始。以下是关于Java数组的一些基本概念和操作：
+
+1. 声明数组
+
+你可以通过以下方式声明一个数组：
+```java
+// 声明一个整型数组
+int[] myArray;
+
+// 声明一个字符串数组
+String[] stringArray;
+```
+2. 创建数组
+
+声明数组后，你需要使用new关键字来创建数组，并指定数组的大小：
+```java
+
+// 创建一个可以存储5个整数的数组
+myArray = new int[5];
+
+// 创建一个可以存储3个字符串的数组
+stringArray = new String[3];
+```
+你也可以在声明数组的同时进行初始化：
+```java
+// 声明并初始化一个整型数组
+int[] myArray = {1, 2, 3, 4, 5};
+
+// 声明并初始化一个字符串数组
+String[] stringArray = {"Hello", "World", "Java"};
+```
+3. 访问数组元素
+
+你可以通过索引访问数组中的元素。数组的索引从0开始：
+```java
+int[] myArray = {10, 20, 30, 40, 50};
+
+// 访问第一个元素
+int firstElement = myArray[0]; // 10
+
+// 访问第三个元素
+int thirdElement = myArray[2]; // 30
+```
+4. 修改数组元素
+
+你可以通过索引修改数组中的元素：
+```java
+int[] myArray = {10, 20, 30, 40, 50};
+
+// 修改第二个元素
+myArray[1] = 25;
+
+// 现在数组变为 {10, 25, 30, 40, 50}
+```
+5. 数组的长度
+
+你可以使用length属性来获取数组的长度：
+```java
+
+int[] myArray = {10, 20, 30, 40, 50};
+
+int arrayLength = myArray.length; // 5
+```
+6. 遍历数组
+
+你可以使用for循环或for-each循环来遍历数组：
+```java
+int[] myArray = {10, 20, 30, 40, 50};
+
+// 使用for循环遍历数组
+for (int i = 0; i < myArray.length; i++) {
+    System.out.println(myArray[i]);
+}
+
+// 使用for-each循环遍历数组
+for (int num : myArray) {
+    System.out.println(num);
+}
+```
+7. 多维数组
+
+Java也支持多维数组，最常见的是二维数组：
+```java
+
+// 声明并初始化一个二维数组
+int[][] twoDArray = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+// 访问二维数组中的元素
+int element = twoDArray[1][2]; // 6
+```
+8. 数组的常见操作
+* 数组排序:可以使用<kbd>Arrays.sort()</kbd>方法对数组进行排序。
+* 数组复制:可以使用<kbd>System.arraycopy()</kbd>或<kbd>Arrays.copyOf()</kbd>方法复制数组。
+* 数组填充:可以使用<kbd>Arrays.fill()</kbd>方法填充数组。
+
+```java
+import java.util.Arrays;
+
+public class ArrayExample {
+    public static void main(String[] args) {
+        int[] myArray = {5, 3, 1, 4, 2};
+
+        // 排序数组
+        Arrays.sort(myArray); // {1, 2, 3, 4, 5}
+
+        // 复制数组
+        int[] copiedArray = Arrays.copyOf(myArray, myArray.length);
+
+        // 填充数组
+        Arrays.fill(myArray, 0); // {0, 0, 0, 0, 0}
+    }
+}
+```
+***
+***通过用户输入转为数组输出***
+
+```java
+ public static void main(String[] args)throws IOException{
+        BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+        String[] foods;
+        int num;
+        System.out.print("input a number you want input");
+        num= Integer.parseInt(reader.readLine());
+        foods=new String[num];
+        for(int i=0;i<foods.length;i++){
+            System.out.println("input a food ");
+            foods[i] = reader.readLine();
+        }
+        for(String food:foods){
+            System.out.println(food +" " );
+        }
+        reader.close();
+    }
+```
+***
