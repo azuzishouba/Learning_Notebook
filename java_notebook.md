@@ -856,6 +856,45 @@ public class MathUtils {
     }
 }
 ```
+5. 可变参数（Varargs）
+
+Java支持可变参数，允许方法接受不定数量的参数。
+```java
+public class VarargsExample {
+
+    // 可变参数方法
+    public int sum(int... numbers) {
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        VarargsExample example = new VarargsExample();
+        System.out.println("Sum: " + example.sum(1, 2, 3)); // 输出 6
+        System.out.println("Sum: " + example.sum(1, 2, 3, 4, 5)); // 输出 15
+    }
+}
+```
+6. 方法的调用
+
+方法可以通过对象实例调用，如果是静态方法，则可以通过类名直接调用。
+```java
+ClassName obj = new ClassName();
+obj.methodName(arguments); // 实例方法调用
+
+ClassName.staticMethodName(arguments); // 静态方法调用
+```
+7. 方法的返回值
+
+方法可以返回一个值，返回值的类型必须与方法声明中的返回类型匹配。如果方法返回类型为 void，则不需要<kbd>return</kbd>语句，或者可以使用<kbd>return</kbd>; 来提前结束方法。
+```java
+public int getMax(int a, int b) {
+    return (a > b) ? a : b;
+}
+```
 ## 变量范围
 
 变量的作用域指的是变量在程序中可以被访问的范围。Java中的变量作用域可以分为以下几种：
@@ -956,6 +995,8 @@ myArray = new int[5];
 
 // 创建一个可以存储3个字符串的数组
 stringArray = new String[3];
+//也可以创建一个数组来隐式指定数组大小
+int[] myArray = {1,2,3,4,5} //数组大小为5
 ```
 你也可以在声明数组的同时进行初始化：
 ```java
@@ -1027,6 +1068,13 @@ int[][] twoDArray = {
 
 // 访问二维数组中的元素
 int element = twoDArray[1][2]; // 6
+// 遍历输出二维数组元素
+for(int[] row:twoDArray){
+    for(int num:row){
+        System.out.print(num + " ")
+    }
+    System.out.println()
+}
 ```
 8. 数组的常见操作
 * 数组排序:可以使用<kbd>Arrays.sort()</kbd>方法对数组进行排序。
@@ -1073,3 +1121,28 @@ public class ArrayExample {
     }
 ```
 ***
+### 在数组内搜索元素
+```java
+public class Helloworld {
+    public static void main(String[] args)throws IOException{
+        BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+        String[] fruits={"apple","orange","banana"};
+        int[] num={1,2,3,4,5};
+        boolean isFound=false;
+        System.out.print("input a fruit you wang to search: ");
+        String fruit = reader.readLine();
+        for(int i=0;i<fruits.length;i++){
+            if (fruits[i].equals(fruit)){
+                System.out.print("element found in index: "+ i);
+                isFound=true;
+            }
+        }
+        if (!isFound){
+            System.out.print("element not found!");
+        }
+
+        reader.close();
+    }
+}
+```
+## 面向对象编程
