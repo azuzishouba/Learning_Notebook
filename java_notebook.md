@@ -1146,3 +1146,340 @@ public class Helloworld {
 }
 ```
 ## 面向对象编程
+Java 面向对象编程（OOP，Object-Oriented Programming）是 Java 编程语言的一种编程范式，它将程序组织成由类和对象构成的结构。面向对象编程有四大基本特性
+1. 类（Class）和对象（Object）
+   * 类：类是对象的模板或蓝图，定义了对象的属性和行为。类包含字段（属性）和方法（行为）。
+   * 对象：对象是类的实例，具有类定义的属性和行为。
+
+示例：
+```java
+// 定义一个类
+class Dog {
+    // 属性（字段）
+    String name;
+    int age;
+
+    // 行为（方法）
+    void bark() {
+        System.out.println(name + " is barking!");
+    }
+}
+
+// 创建对象
+public class Main {
+    public static void main(String[] args) {
+        Dog myDog = new Dog(); // 创建Dog类的对象
+        myDog.name = "Buddy";  // 设置属性
+        myDog.age = 3;
+        myDog.bark();          // 调用方法
+    }
+}
+```
+2. 封装（Encapsulation）
+   * 封装是将数据（属性）和行为（方法）绑定在一起，并隐藏内部实现细节，只暴露必要的接口。
+   * 通过访问修饰符（private、protected、public）控制对类的属性和方法的访问。
+
+示例：
+```java
+class Person {
+    // 私有属性，外部不能直接访问
+    private String name;
+    private int age;
+
+    // 公共方法，提供访问和修改属性的接口
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if (age > 0) { // 数据校验
+            this.age = age;
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person person = new Person();
+        person.setName("Alice");
+        person.setAge(25);
+        System.out.println("Name: " + person.getName() + ", Age: " + person.getAge());
+    }
+}
+```
+3. 继承（Inheritance）
+   * 继承允许一个类（子类）继承另一个类（父类）的属性和方法，从而实现代码复用。
+   * 子类可以扩展或重写父类的功能。
+
+示例：
+```java
+// 父类
+class Animal {
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat();  // 继承自Animal类
+        dog.bark(); // Dog类自己的方法
+    }
+}
+
+1. 多态（Polymorphism）
+   * 多态是指同一个方法在不同对象中有不同的实现。
+   * 多态可以通过方法重写（Override）和接口实现来实现。
+
+示例：
+```java
+
+// 父类
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound.");
+    }
+}
+
+// 子类1
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("The dog barks.");
+    }
+}
+
+// 子类2
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("The cat meows.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myAnimal = new Animal(); // 父类对象
+        Animal myDog = new Dog();       // 子类对象
+        Animal myCat = new Cat();       // 子类对象
+
+        myAnimal.sound(); // 输出: Animal makes a sound.
+        myDog.sound();    // 输出: The dog barks.
+        myCat.sound();    // 输出: The cat meows.
+    }
+}
+```
+
+1. 抽象类（Abstract Class）和接口（Interface）
+   * 抽象类：用abstract关键字定义，不能实例化，可以包含抽象方法（没有实现的方法）和具体方法。
+   * 接口：用interface关键字定义，只能包含抽象方法（Java 8 以后可以包含默认方法和静态方法），用于定义行为规范。
+
+抽象类示例：
+```java
+abstract class Shape {
+    abstract void draw(); // 抽象方法
+}
+
+class Circle extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape = new Circle();
+        shape.draw(); // 输出: Drawing a circle.
+    }
+}
+```
+接口示例：
+```java
+interface Drawable {
+    void draw(); // 抽象方法
+}
+
+class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Drawable drawable = new Circle();
+        drawable.draw(); // 输出: Drawing a circle.
+    }
+}
+```
+面向对象代码示例:
+```java
+//Main.java文件
+public class Main{
+    public static void main(String[] args){
+        Car car1=new Car();
+        Car car2=new Car();
+        System.out.println(car1.make+ " " + car1.model);
+        System.out.println(car2.make+ " " + car2.model);
+    }
+}
+//Car.java文件
+public class Car {
+    String make="ford";
+    String model="mustang";
+    int year=2025;
+    double price=58000.9;
+    boolean inRunning=false;
+    void start(){
+        System.out.println(" you start the engine");
+    }
+    void stop(){
+        System.out.println(" you stop the engine");
+    }
+}
+/*
+如果一个类声明为 public，那么它所在的文件名必须与该类名完全一致，包括大小写。例如，如果类名是 Person，那么文件名必须是Person.java。
+在一个文件中只能有一个 public 类，因为 Java 不允许一个文件包含多个 public 类。如果文件中有多个类，只有一个类可以是 public，其他的类可以是默认访问修饰符（包访问级别）或者是 private 或 protected。
+*/
+```
+访问权限：
+   * 默认访问修饰符（package-private）：如果类或类的成员（字段、方法）没有显式的访问修饰符（如 public、private、protected），它们的访问权限默认是 包访问权限，即只要是同一包中的类，都可以直接访问和创建对象。
+   * public 类：如果类是 public，它不仅可以在同一个包中创建对象，也可以在其他包中创建对象（前提是导入该类）。
+   * private 类：如果类是 private（通常适用于内部类），则它只能在定义该类的外部类中访问，不能在同一包的其他类中访问。
+   * protected 类：protected 类通常适用于继承关系，允许同一包中的类或子类访问。
+## 构造方法
+构造方法是用于在创建对象时初始化对象的状态。构造方法与类同名，并且没有返回类型（连 void 也没有）。
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    // 构造函数
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+使用构造函数来创建对象：
+```java
+Person person = new Person("John", 30);
+```
+## 构造方法的重载
+构造方法是可以重载的，也就是说，可以定义多个构造方法，它们的参数不同。Java 会根据传递给构造方法的参数类型和数量来决定使用哪个构造方法。
+```java
+//User.java文件
+public class User{
+    String username;
+    String email;
+    int age;
+    User(){
+        this.name="guest";
+        this.email="not provided";
+        this.age=0;
+    }
+    User(String username){
+        this.name=username;
+        this.email="not provided";
+        this.age=0;
+    }
+    User(String username,String email){
+        this.name=username;
+        this.email=email;
+        this.age=0;
+    }
+    User(String username,String email,int age){
+        this.name=name;
+        this.email=email;
+        this.age=age;
+    }
+}
+//Main.java文件
+public class Main{
+    public static void main(String[] args){
+        User user1=new User("Spongebob");
+        User user2=new User("patrick","pstar@email.com");
+        User user3=new User("sandy","scheeks@gmail.com",27);
+        User user4=new User();
+        System.out.println(user1.username)
+        System.out.println(user1.email)
+        System.out.println(user1.age)
+        System.out.println(user2.username)
+        System.out.println(user2.email)
+        System.out.println(user2.age)
+        System.out.println(user3.username)
+        System.out.println(user3.email)
+        System.out.println(user3.age)
+        System.out.println(user4.username)
+        System.out.println(user4.email)
+        System.out.println(user4.age)
+    }
+}
+```
+## 对象数组
+在 Java 中，对象数组是指一个数组，其中的每个元素都是一个对象（即类的实例）。Java 中的数组是固定长度的，对象数组可以存储同一类型的多个对象。
+
+假设我们有一个 User 类，表示用户信息：
+```java
+class User {
+    int id;
+    String name;
+    int age;
+
+    // 构造方法
+    public User(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    // 重写 toString 方法，方便打印对象信息
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", name='" + name + "', age=" + age + "}";
+    }
+}
+```
+我们可以创建一个 User 类型的对象数组：
+```java
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 User 对象数组
+        User[] users = new User[3];
+
+        // 初始化数组中的每个元素
+        users[0] = new User(1, "Alice", 25);
+        users[1] = new User(2, "Bob", 30);
+        users[2] = new User(3, "Charlie", 35);
+
+        // 遍历数组并打印每个对象
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+}
+```
+输出结果
+```java
+User{id=1, name='Alice', age=25}
+User{id=2, name='Bob', age=30}
+User{id=3, name='Charlie', age=35}
+```
