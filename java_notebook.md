@@ -1483,3 +1483,215 @@ User{id=1, name='Alice', age=25}
 User{id=2, name='Bob', age=30}
 User{id=3, name='Charlie', age=35}
 ```
+## static关键字
+在Java中，static 关键字用于声明类级别的成员，而不是对象级别的成员。通过使用 static，可以让某个变量、方法或代码块属于类本身，而不是某个特定的对象实例。这样可以提高内存的利用率，减少资源的浪费。
+1. static 变量（静态变量）
+
+静态变量属于类，而不属于任何对象。也就是说，无论类创建多少个实例，静态变量只有一份拷贝，并且所有对象都共享这份数据。
+```java
+class Example {
+    static int count = 0; // 静态变量
+
+    Example() {
+        count++; // 每创建一个实例，count增加
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Example obj1 = new Example();
+        Example obj2 = new Example();
+        System.out.println(Example.count); // 输出2，因为有两个实例
+    }
+}
+```
+2. static 方法（静态方法）
+
+静态方法属于类，可以直接通过类名调用，而不需要实例化对象。静态方法只能访问静态变量或调用其他静态方法。它不能访问实例变量和实例方法，因为它不依赖于对象的状态。
+```java
+class Example {
+    static void greet() {
+        System.out.println("Hello, world!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Example.greet(); // 直接调用静态方法
+    }
+}
+```
+3. static 块（静态初始化块）
+
+静态块是在类加载时执行的代码块。它通常用于类级别的初始化操作，比如设置静态变量的初始值。静态块会在类第一次加载时执行一次。
+```java
+class Example {
+    static {
+        System.out.println("静态块执行");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        new Example(); // 只要类被加载，静态块就会执行一次
+    }
+}
+```
+## 继承
+在Java中，继承（Inheritance）是面向对象编程的核心特性之一。它允许一个类从另一个类继承属性和方法，从而实现代码的重用和扩展。继承通过创建一个子类（subclass）来扩展现有的父类（superclass）的功能。
+
+继承的基本概念
+
+* 父类（SuperClass 或 BaseClass）：提供被继承的属性和方法。
+* 子类（SubClass 或 DerivedClass）：继承父类的属性和方法，并可以添加新的属性和方法，或者重写父类的方法。
+1. 使用 extends 关键字
+
+子类通过 extends 关键字继承父类。
+```java
+// 父类
+class Animal {
+    void eat() {
+        System.out.println("Animal is eating");
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog is barking");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat();  // 从父类继承的方法
+        dog.bark(); // 子类的方法
+    }
+}
+```
+2. 方法重写（Overriding）
+
+子类可以重写父类的方法，以提供自己的实现。重写时，方法的签名（方法名、参数类型、返回类型）必须与父类中的方法完全相同。
+```java
+// 父类
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    @Override  // 可选的注解，用来检查是否正确重写了方法
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        Dog dog = new Dog();
+
+        animal.sound(); // 输出: Animal makes a sound
+        dog.sound();    // 输出: Dog barks
+    }
+}
+```
+3. super 关键字
+
+super 关键字用于引用父类的成员（属性、方法）。它通常用于：
+* 调用父类的构造方法。
+* 调用父类的实例方法。
+* 访问父类的成员变量。
+```java
+// 父类
+class Animal {
+    String name;
+
+    Animal(String name) {
+        this.name = name;
+    }
+
+    void greet() {
+        System.out.println("Hello, I am " + name);
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    Dog(String name) {
+        super(name); // 调用父类构造方法
+    }
+
+    void greet() {
+        super.greet(); // 调用父类的方法
+        System.out.println("Woof!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Rex");
+        dog.greet();
+    }
+}
+```
+4. 构造方法和继承
+
+构造方法不会被继承，但子类可以通过 super() 调用父类的构造方法。如果父类没有无参构造方法，子类必须显式调用父类的构造方法。
+```java
+// 父类
+class Animal {
+    Animal(String name) {
+        System.out.println("Animal's name is " + name);
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    Dog(String name) {
+        super(name); // 调用父类构造方法
+        System.out.println("Dog's name is " + name);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy");
+    }
+}
+```
+5. 单继承与多重继承
+
+在Java中，类支持单继承，即一个类只能继承一个父类。这是为了避免多重继承可能带来的复杂性（比如方法冲突）。
+
+如果想实现多重继承的效果，可以通过\*\*接口（interface）\*\*来实现，接口支持多重实现。
+```java
+interface Animal {
+    void sound();
+}
+
+interface Pet {
+    void play();
+}
+
+class Dog implements Animal, Pet {
+    public void sound() {
+        System.out.println("Dog barks");
+    }
+
+    public void play() {
+        System.out.println("Dog plays");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.sound();  // Dog barks
+        dog.play();   // Dog plays
+    }
+}
+```
