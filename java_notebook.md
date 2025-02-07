@@ -1695,3 +1695,184 @@ public class Main {
     }
 }
 ```
+## super
+super的作用是明确区分父类与子类的成员，特别是在子类和父类有相同的成员（例如构造方法、属性或方法）时，super能够确保你访问的是父类的版本。这对于避免命名冲突和控制继承行为非常重要。
+1. 访问父类的构造方法
+
+当子类的构造方法需要调用父类的构造方法时，必须使用super()，尤其是父类没有默认构造方法（无参构造方法）时。
+```java
+class Parent {
+    Parent(int x) {
+        System.out.println("Parent constructor with x = " + x);
+    }
+}
+
+class Child extends Parent {
+    Child(int x) {
+        super(x);  // 调用父类的构造方法
+        System.out.println("Child constructor with x = " + x);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child child = new Child(10);
+    }
+}
+```
+2. 访问父类的成员变量
+
+当子类和父类有相同的成员变量时，子类会隐藏父类的成员变量。此时，使用super可以访问父类的变量，而不是子类中的同名变量。
+```java
+class Parent {
+    int num = 10;
+}
+
+class Child extends Parent {
+    int num = 20;
+
+    void printNums() {
+        System.out.println("Child num: " + num);        // 访问子类的num
+        System.out.println("Parent num: " + super.num); // 访问父类的num
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child child = new Child();
+        child.printNums();
+    }
+}
+```
+3. 调用父类的被重写方法
+
+如果子类重写了父类的方法，使用super可以调用父类被重写的方法，而不是子类的重写版本。
+```java
+class Parent {
+    void display() {
+        System.out.println("Parent's display");
+    }
+}
+
+class Child extends Parent {
+    @Override
+    void display() {
+        System.out.println("Child's display");
+    }
+
+    void callParentDisplay() {
+        super.display();  // 调用父类的display方法
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child child = new Child();
+        child.callParentDisplay();  // 输出 "Parent's display"
+    }
+}
+```
+总结来说，super的作用是明确区分父类与子类的成员，特别是在子类和父类有相同的成员（例如构造方法、属性或方法）时，super能够确保你访问的是父类的版本。这对于避免命名冲突和控制继承行为非常重要。
+## 重写override
+方法重写（Method Overriding）是面向对象编程（OOP）中的一个重要特性，允许子类对从父类继承过来的方法进行修改和扩展。通过方法重写，子类可以提供自己的实现来替代父类中已经定义的方法。
+1. 方法重写的基本规则
+
+    方法名、参数列表、返回类型必须相同：子类重写父类方法时，方法名、参数列表和返回类型必须与父类中的方法完全相同。
+    访问修饰符：子类重写的方法的访问修饰符不能比父类的更严格。例如，父类的 public 方法，子类重写时不能使用 private，但可以使用相同的 public 或更宽松的 protected。
+    抛出的异常：子类重写父类方法时，可以抛出比父类方法更多的异常，但不能抛出父类方法没有声明的异常。
+
+2. 方法重写的目的
+
+方法重写的主要目的是让子类能够修改父类的方法实现，以便符合子类的实际需求。方法重写也支持多态，使得同一个方法在不同的对象上表现出不同的行为。
+3. 方法重写的示例
+
+假设有一个父类 Animal，它有一个 makeSound() 方法，子类 Dog 和 Cat 重写这个方法，分别实现自己的声音。
+```java
+class Animal {
+    // 父类的makeSound方法
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    // 子类Dog重写makeSound方法
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    // 子类Cat重写makeSound方法
+    @Override
+    void makeSound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myDog = new Dog();   // 创建Dog对象
+        Animal myCat = new Cat();   // 创建Cat对象
+
+        myDog.makeSound();  // 输出: Dog barks
+        myCat.makeSound();  // 输出: Cat meows
+    }
+}
+```
+在这个例子中，Dog 和 Cat 类分别重写了 Animal 类中的 makeSound() 方法，实现了不同的声音。
+4. @Override 注解
+
+@Override 是一个注解，它用于标记方法是对父类方法的重写。使用 @Override 可以帮助编译器检查方法签名是否正确（例如，方法名和参数列表是否匹配），如果没有正确重写父类方法，编译器会给出错误提示。
+
+虽然 @Override 不是必需的，但它是一个良好的编程实践，能帮助捕捉潜在的错误。
+5. 方法重写与多态
+
+方法重写是实现多态的一个重要部分。在Java中，通过父类引用指向子类对象时，调用的方法是运行时决定的，即会调用子类重写的方法，而不是父类的方法。这被称为动态方法分派。
+```java
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();  // 父类引用指向子类对象
+        animal.makeSound();         // 输出: Dog barks
+    }
+}
+```
+这里，animal 是 Animal 类型的引用，但它指向的是 Dog 类型的对象。由于方法是重写的，所以调用 makeSound() 时，会执行 Dog 类中的版本，而不是 Animal 类中的版本，这就是多态的体现。
+6. 注意事项
+
+* 构造方法不能被重写：构造方法属于类的一部分，而方法重写是针对类的方法的，因此构造方法不能被重写。
+* 静态方法不能被重写：静态方法是类级别的方法，它们在类加载时就已经被确定，不属于对象实例，因此不能被重写。如果子类定义了一个与父类静态方法签名相同的方法，它实际上是方法隐藏（方法覆盖），而不是方法重写。
+```java
+class Animal {
+    static void staticMethod() {
+        System.out.println("Animal static method");
+    }
+}
+
+class Dog extends Animal {
+    static void staticMethod() {
+        System.out.println("Dog static method");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal.staticMethod();  // 输出: Animal static method
+        Dog.staticMethod();     // 输出: Dog static method
+    }
+}
+```
