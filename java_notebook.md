@@ -1876,3 +1876,46 @@ public class Main {
     }
 }
 ```
+## tostring方法
+在 Java 中，toString() 方法是 Object 类中的一个方法。因为所有的 Java 类都直接或间接继承自 Object 类，所以每个 Java 对象都有一个 toString() 方法。默认情况下，toString() 方法返回的是该对象的类名和它的哈希码，但是你通常会在你的类中重写该方法，以便返回更有意义的对象信息。
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public static void main(String[] args) {
+        Person person = new Person("Alice", 30);
+        System.out.println(person.toString());
+    }
+}
+```
+**默认的 toString() 方法**
+
+默认情况下，toString() 方法返回的是该对象的类名以及对象的哈希码，例如：
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public static void main(String[] args) {
+        Person person = new Person("Alice", 30);
+        System.out.println(person.toString());
+    }
+}
+```
+如果你没有重写 toString()，输出可能类似于：
+```java
+Person@15db9742
+```
+这个输出包括了类名 Person 和对象的哈希码的十六进制表示。
