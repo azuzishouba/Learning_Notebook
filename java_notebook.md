@@ -1919,3 +1919,234 @@ public class Person {
 Person@15db9742
 ```
 这个输出包括了类名 Person 和对象的哈希码的十六进制表示。
+## abstract抽象类
+在 Java 中,抽象类(Abstract Class)和接口(Interface)是两种不同的机制,用于实现多态性和封装性。它们都用于定义类的行为，但有一些关键的区别。
+1. 抽象类（Abstract Class）
+
+    定义: 抽象类是一个不能实例化的类，它可以包含抽象方法（没有方法体）和具体方法（有方法体）。抽象类主要用于被其他类继承。
+    特性:
+    * 可以有构造方法。
+    * 可以有成员变量。
+    * 可以有抽象方法，也可以有具体方法（有方法体）。
+    * 继承抽象类的子类必须实现所有的抽象方法（除非子类本身也是抽象类）。
+        一个类只能继承一个抽象类（Java 支持单继承）。
+
+示例:
+```java
+abstract class Animal {
+    // 抽象方法
+    abstract void sound();
+    
+    // 具体方法
+    void sleep() {
+        System.out.println("This animal is sleeping.");
+    }
+}
+
+class Dog extends Animal {
+    // 实现抽象方法
+    @Override
+    void sound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.sound();  // 输出 "Bark"
+        dog.sleep();  // 输出 "This animal is sleeping."
+    }
+}
+```
+## interface接口
+2. 接口（Interface）
+
+    定义: 接口是一个纯粹的抽象类型，只能包含常量、抽象方法（Java 8 及以后版本支持默认方法和静态方法）和默认方法。接口用于定义类必须遵循的契约。
+    特性:
+    * 不能有构造方法。
+    * 不能有实例变量（只能有静态常量）。
+    * 接口中的方法默认是 public abstract（可以省略）。
+    * 一个类可以实现多个接口（Java 支持多重继承）。
+    * 接口不提供实现，只有方法签名，实际的实现由实现类提供。
+
+示例:
+```java
+//在创建时选择创建接口文件
+interface Animal {
+    // 抽象方法
+    void sound();
+    
+    // 默认方法
+    default void sleep() {
+        System.out.println("This animal is sleeping.");
+    }
+}
+
+class Dog implements Animal {
+    // 实现接口中的抽象方法
+    @Override
+    public void sound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.sound();  // 输出 "Bark"
+        dog.sleep();  // 输出 "This animal is sleeping."
+    }
+}
+```
+主要区别
+||||
+|:--|:--|:--|
+|特性|抽象类|接口|
+|成员|可以包含字段、方法（有实现）|只能包含常量、抽象方法（Java 8 后可有默认方法和静态方法）|
+|构造方法|可以有构造方法|不能有构造方法|
+|继承|类只能继承一个抽象类|类可以实现多个接口|
+|方法实现|可以有具体方法（有方法体）|只能包含抽象方法（除非是 Java 8 及以上版本）|
+|访问修饰符|方法可使用任何访问修饰符|所有方法默认都是 public|
+## 多态
+   * 多态是指同一个方法在不同对象中有不同的实现。
+   * 多态可以通过方法重写（Override）和接口实现来实现。
+```java
+
+// 父类
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound.");
+    }
+}
+
+// 子类1
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("The dog barks.");
+    }
+}
+
+// 子类2
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("The cat meows.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myAnimal = new Animal(); // 父类对象
+        Animal myDog = new Dog();       // 子类对象
+        Animal myCat = new Cat();       // 子类对象
+
+        myAnimal.sound(); // 输出: Animal makes a sound.
+        myDog.sound();    // 输出: The dog barks.
+        myCat.sound();    // 输出: The cat meows.
+    }
+}
+```
+## 运行时多态
+运行时多态性的特点：
+
+* 方法重写：子类重写了父类的方法。
+* 父类引用指向子类对象：可以通过父类的引用类型来调用子类重写的方法。
+*  方法调用在运行时决定：方法的具体调用取决于对象的实际类型，而不是声明类型。
+
+运行时多态性的示例
+```java
+class Animal {
+    // 父类的speak方法
+    public void speak() {
+        System.out.println("Animal speaks");
+    }
+}
+
+class Dog extends Animal {
+    // 子类Dog重写了父类的speak方法
+    @Override
+    public void speak() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    // 子类Cat重写了父类的speak方法
+    @Override
+    public void speak() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class TestPolymorphism {
+    public static void main(String[] args) {
+        Animal animal;  // 父类引用
+
+        animal = new Dog();  // 父类引用指向子类对象Dog
+        animal.speak();  // 输出 "Dog barks" 由于运行时多态性，调用的是Dog类的speak方法
+
+        animal = new Cat();  // 父类引用指向子类对象Cat
+        animal.speak();  // 输出 "Cat meows" 由于运行时多态性，调用的是Cat类的speak方法
+    }
+}
+```
+## getter 和setter方法
+在Java中，getter 和 setter 方法用于访问和修改对象的私有成员变量。通过这两个方法，类的外部可以安全地访问和修改对象的属性，同时保持封装性（Encapsulation）和数据的控制。
+1. Getter方法：
+   * 作用：用于获取对象的属性值。
+   * 命名规则：通常以get开头，后跟属性名，首字母大写。
+   * 返回类型：与属性类型相同。
+
+2. Setter方法：
+   * 作用：用于设置对象的属性值。
+   * 命名规则：通常以set开头，后跟属性名，首字母大写。
+   * 参数类型：与属性类型相同。
+```java
+class Person {
+    // 私有成员变量
+    private String name;
+    private int age;
+
+    // Getter方法：获取name
+    public String getName() {
+        return name;
+    }
+
+    // Setter方法：设置name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter方法：获取age
+    public int getAge() {
+        return age;
+    }
+
+    // Setter方法：设置age
+    public void setAge(int age) {
+        if (age > 0) {  // 增加条件判断来确保设置的年龄有效
+            this.age = age;
+        } else {
+            System.out.println("年龄必须大于0");
+        }
+    }
+}
+
+public class TestGetterSetter {
+    public static void main(String[] args) {
+        Person person = new Person();
+        
+        // 使用setter方法设置属性
+        person.setName("Alice");
+        person.setAge(25);
+
+        // 使用getter方法获取属性
+        System.out.println("Name: " + person.getName());  // 输出 "Name: Alice"
+        System.out.println("Age: " + person.getAge());    // 输出 "Age: 25"
+    }
+}
+//在Person类中，name和age是私有的 (private)，这意味着它们不能直接从类外部访问。
+```
+它们允许类的外部访问和修改私有成员变量，同时提供了控制数据合法性和修改逻辑的机会。
