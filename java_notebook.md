@@ -2150,3 +2150,231 @@ public class TestGetterSetter {
 //在Person类中，name和age是私有的 (private)，这意味着它们不能直接从类外部访问。
 ```
 它们允许类的外部访问和修改私有成员变量，同时提供了控制数据合法性和修改逻辑的机会。
+## 聚合
+在 Java 中，"聚合"（Aggregation）是面向对象编程中的一个概念，表示一种对象之间的"整体-部分"关系。它通常是指一个类（整体）包含或拥有另一个类（部分）的实例，但这些部分可以独立于整体存在。聚合通常被视为比组合（Composition）关系更为松散，因为部分对象可以在多个整体对象之间共享。
+
+在代码中，聚合通常通过引用其他对象的实例来实现。
+```java
+class Employee {
+    private String name;
+    private int id;
+
+    public Employee(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+}
+
+class Department {
+    private String departmentName;
+    private Employee[] employees;  // 使用数组来替代 List
+
+    public Department(String departmentName, Employee[] employees) {
+        this.departmentName = departmentName;
+        this.employees = employees;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public Employee[] getEmployees() {
+        return employees;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建 Employee 对象
+        Employee emp1 = new Employee("Alice", 1);
+        Employee emp2 = new Employee("Bob", 2);
+
+        // 创建 Employee 数组
+        Employee[] employees = {emp1, emp2};
+
+        // 创建 Department 对象，传入 Employee 数组
+        Department dept = new Department("HR", employees);
+
+        // 打印部门信息及员工
+        System.out.println("Department: " + dept.getDepartmentName());
+        for (Employee emp : dept.getEmployees()) {
+            System.out.println("Employee: " + emp.getName());
+        }
+    }
+}
+```
+聚合是对象间的一种关系，强调对象间的关联而非生命周期的依赖性。它可以在不影响部分对象独立性的情况下，实现对象间的组合。
+## 结合
+在 Java 中，组合（Composition）是面向对象编程中的一种“整体-部分”关系。与聚合不同，组合具有更强的关联性，其中 部分对象 的生命周期由 整体对象 控制。也就是说，如果整体对象被销毁，那么它包含的部分对象也会被销毁。组合关系比聚合关系更加紧密，部分对象不能在多个整体对象间共享。
+```java
+class Engine {
+    private String type;
+
+    public Engine(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+
+class Car {
+    private String model;
+    private Engine engine;  // 组合关系，Car 包含一个 Engine
+
+    public Car(String model, String engineType) {
+        this.model = model;
+        this.engine = new Engine(engineType);  // 创建 Engine 对象
+    }
+
+    public void start() {
+        System.out.println(model + " is starting with a " + engine.getType() + " engine.");
+    }
+
+    // Getter
+    public Engine getEngine() {
+        return engine;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car("Toyota", "V8");
+
+        // 启动汽车
+        car.start();
+    }
+}
+
+```
+
+## 泛式
+在Java中，\*\*泛型（Generics）\*\*是一种允许在类、接口和方法中使用类型参数的机制。泛型提供了一种强大的方式来提高代码的重用性、类型安全性以及可读性。泛型使得代码可以在不指定具体类型的情况下进行操作，从而在编译时提供类型检查，减少了运行时错误。
+```java
+1. 泛型类
+
+泛型类是指在类定义时使用类型参数的类。类型参数可以在实例化时指定。
+示例：
+
+// 定义一个泛型类
+public class Box<T> {
+    private T value;
+    
+    public void setValue(T value) {
+        this.value = value;
+    }
+    
+    public T getValue() {
+        return value;
+    }
+}
+
+// 使用泛型类
+public class Main {
+    public static void main(String[] args) {
+        Box<Integer> intBox = new Box<>();
+        intBox.setValue(100);
+        System.out.println(intBox.getValue());  // 输出 100
+        
+        Box<String> strBox = new Box<>();
+        strBox.setValue("Hello");
+        System.out.println(strBox.getValue());  // 输出 Hello
+    }
+}
+
+在上面的代码中，Box<T> 是一个泛型类，T 是一个类型参数。在实例化时，可以指定类型，比如 Box<Integer> 或 Box<String>。
+```
+2. 泛型方法
+
+泛型方法是指方法声明时使用类型参数，可以在方法调用时指定类型。
+示例：
+```java
+public class GenericMethodExample {
+
+    // 泛型方法
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.println(element);
+        }
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4};
+        String[] strArray = {"Hello", "World"};
+
+        // 调用泛型方法
+        printArray(intArray);  // 输出 1 2 3 4
+        printArray(strArray);  // 输出 Hello World
+    }
+}
+```
+在这个例子中，<T> 使得 printArray 方法可以处理不同类型的数组。
+3. 泛型接口
+
+泛型接口是指接口声明时包含类型参数的接口，接口的实现类可以指定具体的类型。
+示例：
+```java
+// 定义一个泛型接口
+interface Pair<K, V> {
+    K getKey();
+    V getValue();
+}
+
+// 实现泛型接口
+public class OrderedPair<K, V> implements Pair<K, V> {
+    private K key;
+    private V value;
+    
+    public OrderedPair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    @Override
+    public K getKey() {
+        return key;
+    }
+
+    @Override
+    public V getValue() {
+        return value;
+    }
+}
+
+// 使用泛型接口
+public class Main {
+    public static void main(String[] args) {
+        Pair<String, Integer> pair = new OrderedPair<>("One", 1);
+        System.out.println(pair.getKey() + ": " + pair.getValue());  // 输出 One: 1
+    }
+}
+```
+4. 泛型边界
+
+在定义泛型时，可以使用extends来指定泛型类型的上限，限制泛型的类型范围。
+示例：
+```java
+public class BoundedTypeParameter {
+
+    // 只允许Number及其子类作为T的类型
+    public static <T extends Number> void printNumber(T number) {
+        System.out.println(number);
+    }
+
+    public static void main(String[] args) {
+        printNumber(100);     // 可以传入Integer
+        printNumber(10.5);    // 可以传入Double
+        // printNumber("Hello");  // 编译错误，String不是Number的子类
+    }
+}
+```
+在这个例子中，<T extends Number> 限制了类型 T 必须是 Number 类及其子类（如 Integer 和 Double）。
