@@ -14,6 +14,7 @@
 ### AS关键字
 * AS (cloumn_name)给指定列一个别名
 ### DISTINCT关键字
+***DISTINCT 必须放在 SELECT 语句中的最前面***
 * DISTINCT (column_name)用于查询中去除重复结果，返回唯一值
 ### UNIQUE关键字
 * UNIQUE 用于表的定义当中,确保值唯一
