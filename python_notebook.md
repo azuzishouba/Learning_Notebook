@@ -1413,6 +1413,32 @@ finally:
     except MyCustomError as e:
         print(f"Custom error caught: {e}")
     ```
+### raise关键字
+在 Python 中，raise 关键字用于触发（或抛出）一个异常。它可以用来手动引发一个异常，从而停止程序的正常执行并跳转到异常处理机制（如 try 和 except 语句块）。
+1. 抛出一个特定的异常： 你可以使用 raise 抛出一个已经存在的异常类，例如 ValueError、TypeError 等。可以传递一个错误信息来帮助解释异常的原因。
+```python
+raise ValueError("Invalid value provided")
+```
+这将抛出一个 ValueError 异常，并附带消息 "Invalid value provided"。
+
+2. 重新抛出当前异常： 在 except 块中，可以使用 raise 重新抛出当前捕获的异常。
+```python
+try:
+    x = 10 / 0
+except ZeroDivisionError as e:
+    print("Caught an exception:", e)
+    raise  # 重新抛出当前异常
+```
+3. 这会在打印错误消息后重新抛出 ZeroDivisionError。
+
+自定义异常： 你还可以创建自己的异常类，并用 raise 抛出它们。
+```python
+    class MyCustomError(Exception):
+        pass
+
+    raise MyCustomError("Something went wrong")
+```
+总的来说，raise 关键字使得你可以在程序中控制错误流，触发或重新抛出异常，帮助开发者处理特殊情况或错误。
 ### 常见错误
 |异常类型|描述|处理方法|
 |:--:|:--:|:--:|

@@ -1895,6 +1895,13 @@ public class Person {
     }
 }
 ```
+**重写tostring()方法**
+```java
+@Override
+public String toString() {
+    return "Person{name='" + name + "', age=" + age + "}";
+}
+```
 **默认的 toString() 方法**
 
 默认情况下，toString() 方法返回的是该对象的类名以及对象的哈希码，例如：
@@ -2256,7 +2263,92 @@ public class Main {
 }
 
 ```
+## 封装类
+在Java中，Wrapper 类是用于将基本数据类型（如 int、char 等）封装成对象的类。Java 中的基本数据类型（原始类型）不能直接作为对象传递或操作，因此我们使用包装类来实现这一点。每个基本数据类型都有一个对应的包装类。
+基本数据类型与对应的包装类如下：
+|基本数据类型|对应的包装类|
+|:--:|:--:|
+|byte|Byte|
+|short|Short|
+|int|Integer|
+|long|Long|
+|float|Float|
+|double|Double|
+|char|Character|
+|boolean|Boolean|
+```java
+public class WrapperExample {
+    public static void main(String[] args) {
+        // 自动装箱
+        Integer intWrapper = 100;  // 自动将int类型转换为Integer对象
+        
+        // 自动拆箱
+        int num = intWrapper;  // 自动将Integer对象转换为int类型
+        
+        // 使用包装类的方法
+        String intStr = intWrapper.toString();  // Integer对象转为字符串
+        System.out.println("Integer as String: " + intStr);
+        
+        // 从字符串转换回包装类
+        Integer parsedInt = Integer.parseInt("200");
+        System.out.println("Parsed Integer: " + parsedInt);
+        
+        // 比较两个包装类对象
+        Integer a = 10;
+        Integer b = 10;
+        System.out.println("a == b: " + (a == b));  // true，因为Integer缓存池的原因
+        
+        // 手动装箱
+        Integer manualBoxing = Integer.valueOf(123);
+        System.out.println("Manually boxed value: " + manualBoxing);
+    }
+}
+```
+**自动装箱与拆箱：**
+```java
+Integer num1 = 5; // 自动装箱，将基本类型5转换为Integer对象
+int num2 = num1;  // 自动拆箱，将Integer对象转换为基本类型int
+```
+## arraylist
+ArrayList 是 Java 集合框架中的一个类，它提供了一个可变大小的数组，用于存储元素。ArrayList 是基于动态数组实现的，能够自动调整大小，因此在存储元素时非常灵活。它属于 java.util 包，并且实现了 List 接口，意味着它维护元素的插入顺序，允许重复的元素，并提供对元素的访问。
+```java
+import java.util.ArrayList;
 
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // 创建一个 ArrayList
+        ArrayList<String> list = new ArrayList<>();
+        
+        // 添加元素
+        list.add("Apple");
+        list.add("Banana");
+        list.add("Cherry");
+        
+        // 获取元素
+        System.out.println("Element at index 1: " + list.get(1));  // 输出: Banana
+        
+        // 修改元素
+        list.set(1, "Blueberry");
+        System.out.println("Modified element at index 1: " + list.get(1));  // 输出: Blueberry
+        
+        // 删除元素
+        list.remove("Apple");  // 删除 Apple
+        System.out.println("After removal: " + list);
+        
+        // 获取 ArrayList 大小
+        System.out.println("Size of list: " + list.size());  // 输出: 2
+        
+        // 检查是否包含某个元素
+        boolean containsCherry = list.contains("Cherry");
+        System.out.println("Contains 'Cherry': " + containsCherry);  // 输出: true
+        
+        // 清空列表
+        list.clear();
+        System.out.println("After clear, size: " + list.size());  // 输出: 0
+    }
+}
+
+```
 ## 泛式
 在Java中，\*\*泛型（Generics）\*\*是一种允许在类、接口和方法中使用类型参数的机制。泛型提供了一种强大的方式来提高代码的重用性、类型安全性以及可读性。泛型使得代码可以在不指定具体类型的情况下进行操作，从而在编译时提供类型检查，减少了运行时错误。
 ```java
