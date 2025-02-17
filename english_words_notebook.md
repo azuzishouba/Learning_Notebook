@@ -33,3 +33,4 @@
 14. guilty n.内疚
 15. sucession n.连续,一连串
 16. renovate v.修复
+17. primitive adj.原始的

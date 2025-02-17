@@ -2347,7 +2347,6 @@ public class ArrayListExample {
         System.out.println("After clear, size: " + list.size());  // 输出: 0
     }
 }
-
 ```
 ## 泛式
 在Java中，\*\*泛型（Generics）\*\*是一种允许在类、接口和方法中使用类型参数的机制。泛型提供了一种强大的方式来提高代码的重用性、类型安全性以及可读性。泛型使得代码可以在不指定具体类型的情况下进行操作，从而在编译时提供类型检查，减少了运行时错误。
