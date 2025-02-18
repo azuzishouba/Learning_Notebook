@@ -2309,6 +2309,7 @@ public class WrapperExample {
 Integer num1 = 5; // 自动装箱，将基本类型5转换为Integer对象
 int num2 = num1;  // 自动拆箱，将Integer对象转换为基本类型int
 ```
+##
 ## arraylist
 ArrayList 是 Java 集合框架中的一个类，它提供了一个可变大小的数组，用于存储元素。ArrayList 是基于动态数组实现的，能够自动调整大小，因此在存储元素时非常灵活。它属于 java.util 包，并且实现了 List 接口，意味着它维护元素的插入顺序，允许重复的元素，并提供对元素的访问。
 ```java
@@ -2345,6 +2346,119 @@ public class ArrayListExample {
         // 清空列表
         list.clear();
         System.out.println("After clear, size: " + list.size());  // 输出: 0
+    }
+}
+```
+## 异常处理
+在Java中，异常处理是通过try、catch、finally、throw和throws等关键字来实现的。异常处理机制允许程序在出现错误时进行优雅的处理，而不是直接崩溃。
+1. try-catch 块
+
+try块用于包裹可能会抛出异常的代码，catch块用于捕获并处理异常。
+```java
+try {
+    // 可能会抛出异常的代码
+    int result = 10 / 0; // 这里会抛出 ArithmeticException
+} catch (ArithmeticException e) {
+    // 处理异常
+    System.out.println("捕获到算术异常: " + e.getMessage());
+}
+```
+2. finally 块
+
+finally块中的代码无论是否发生异常都会执行，通常用于释放资源。
+```java
+try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("捕获到算术异常: " + e.getMessage());
+} finally {
+    System.out.println("finally 块执行");
+}
+```
+3. throw 关键字
+
+throw关键字用于手动抛出异常。
+```java
+if (someCondition) {
+    throw new IllegalArgumentException("参数不合法");
+}
+```
+4. throws 关键字
+
+throws关键字用于在方法签名中声明该方法可能会抛出的异常，调用者需要处理这些异常。
+```java
+public void myMethod() throws IOException {
+    // 可能会抛出 IOException 的代码
+    throw new IOException("IO 异常");
+}
+```
+5. 自定义异常
+
+你可以通过继承Exception类或RuntimeException类来创建自定义异常。
+```java
+class MyCustomException extends Exception {
+    public MyCustomException(String message) {
+        super(message);
+    }
+}
+
+public void myMethod() throws MyCustomException {
+    throw new MyCustomException("自定义异常");
+}
+```
+6. 多重 catch 块
+
+你可以使用多个catch块来捕获不同类型的异常。
+```java
+try {
+    // 可能会抛出多种异常的代码
+} catch (ArithmeticException e) {
+    System.out.println("捕获到算术异常: " + e.getMessage());
+} catch (NullPointerException e) {
+    System.out.println("捕获到空指针异常: " + e.getMessage());
+} catch (Exception e) {
+    System.out.println("捕获到其他异常: " + e.getMessage());
+}
+```
+## 读写文件
+1. 使用 FileReader 和 FileWriter（适用于字符文件）
+
+这是用于读取和写入文本文件的最简单方式。
+
+**读取文件**
+```java
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+public class FileReadExample {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+**写入文件**
+```java
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+public class FileWriteExample {
+    public static void main(String[] args) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("example.txt"))) {
+            writer.write("Hello, World!");
+            writer.newLine();
+            writer.write("This is a Java file write example.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 ```

@@ -34,3 +34,17 @@
 15. sucession n.连续,一连串
 16. renovate v.修复
 17. primitive adj.原始的
+## 2025.2.18
+1. panel n.讨论小组
+2. discard v.丢掉
+3. significant adj.有重大意义的
+4. assocation n.协会
+5. curiosity n.好奇心
+6. decisive adj.决定性的
+7. posture n.姿势,看法
+8. illustrate v.说明,解释
+9. interference n.干涉
+10. congress n.国会
+11. fleet n.舰队 adj.迅速的
+12. individual adj.个别的
+13. curb v.勒住 
