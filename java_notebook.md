@@ -2309,7 +2309,6 @@ public class WrapperExample {
 Integer num1 = 5; // 自动装箱，将基本类型5转换为Integer对象
 int num2 = num1;  // 自动拆箱，将Integer对象转换为基本类型int
 ```
-##
 ## arraylist
 ArrayList 是 Java 集合框架中的一个类，它提供了一个可变大小的数组，用于存储元素。ArrayList 是基于动态数组实现的，能够自动调整大小，因此在存储元素时非常灵活。它属于 java.util 包，并且实现了 List 接口，意味着它维护元素的插入顺序，允许重复的元素，并提供对元素的访问。
 ```java
@@ -2462,6 +2461,49 @@ public class FileWriteExample {
     }
 }
 ```
+2. 使用Files类（Java 7及以上）
+
+Java 7引入了java.nio.file.Files类，提供了更简洁的文件读写方式。
+**读取文件**
+```java
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
+
+public class ReadFileWithFilesExample {
+    public static void main(String[] args) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("input.txt"));
+            for (String line : lines) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+**写入文件**
+```java
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+public class WriteFileWithFilesExample {
+    public static void main(String[] args) {
+        List<String> lines = Arrays.asList("Hello, World!", "This is a new line.");
+        try {
+            Files.write(Paths.get("output.txt"), lines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+``` 
 ## 泛式
 在Java中，\*\*泛型（Generics）\*\*是一种允许在类、接口和方法中使用类型参数的机制。泛型提供了一种强大的方式来提高代码的重用性、类型安全性以及可读性。泛型使得代码可以在不指定具体类型的情况下进行操作，从而在编译时提供类型检查，减少了运行时错误。
 ```java
