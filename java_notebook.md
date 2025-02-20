@@ -2504,6 +2504,166 @@ public class WriteFileWithFilesExample {
     }
 }
 ``` 
+## 日期与时间
+现代日期时间类（java.time 包）： 从 Java 8 开始，java.time 包提供了更好的日期和时间处理方式，遵循 ISO-8601 标准。主要的类包括：
+* LocalDate: 表示没有时间的日期（年、月、日）。
+* LocalTime: 表示没有日期的时间（小时、分钟、秒）。
+* LocalDateTime: 包含日期和时间，表示某个时刻（无时区）。
+* ZonedDateTime: 表示带时区的日期和时间。
+* Instant: 精确到纳秒的时间戳。
+* Duration: 表示时间的量度（持续时间）。
+* Period: 表示日期之间的差异（年月日）。
+
+获取当前日期和时间：
+```java
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+
+public class Main {
+    public static void main(String[] args) {
+        LocalDate currentDate = LocalDate.now(); // 获取当前日期
+        LocalTime currentTime = LocalTime.now(); // 获取当前时间
+        LocalDateTime currentDateTime = LocalDateTime.now(); // 获取当前日期时间
+
+        System.out.println("当前日期: " + currentDate);
+        System.out.println("当前时间: " + currentTime);
+        System.out.println("当前日期时间: " + currentDateTime);
+    }
+}
+```
+日期和时间格式化：
+```java
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Main {
+    public static void main(String[] args) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String formattedDateTime = dateTime.format(formatter);
+        System.out.println("格式化后的日期时间: " + formattedDateTime);
+    }
+}
+```
+## 匿名类
+在 Java 中，匿名类（Anonymous Class）是一种没有名字的类，它是在表达式中定义和使用的。匿名类通常用于简化代码，尤其是在只需要一个实现某个接口或继承某个类的实例时，而不必单独定义一个类。
+匿名类的定义
+
+匿名类可以实现接口或继承一个类，并且可以直接在创建对象时进行实现。其语法结构如下：
+```java
+new 接口或类() {
+    // 实现接口或类的方法
+}
+```
+* 如果是实现接口，则可以直接在匿名类中实现接口的所有方法。
+* 如果是继承类，则可以覆盖父类的方法。
+例子
+
+1. 实现接口的匿名类
+
+假设有一个接口 Animal，我们可以使用匿名类来实现这个接口：
+```java
+interface Animal {
+    void sound();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // 使用匿名类实现 Animal 接口
+        Animal dog = new Animal() {
+            @Override
+            public void sound() {
+                System.out.println("Woof!");
+            }
+        };
+
+        dog.sound();  // 输出: Woof!
+    }
+}
+```
+在这个例子中，我们创建了一个匿名类来实现 Animal 接口，并覆盖了 sound() 方法。
+
+2. 继承类的匿名类
+
+我们也可以用匿名类来继承一个类，并覆写其中的方法。比如，假设有一个 Animal 类：
+```java
+class Animal {
+    public void sound() {
+        System.out.println("Some sound");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // 使用匿名类继承 Animal 类
+        Animal dog = new Animal() {
+            @Override
+            public void sound() {
+                System.out.println("Woof!");
+            }
+        };
+
+        dog.sound();  // 输出: Woof!
+    }
+}
+```
+在这个例子中，Animal 是一个类，我们通过匿名类继承了它，并覆写了 sound() 方法。
+
+3. 匿名类作为事件监听器（常见用法）
+
+匿名类常常用于事件监听器的实现，特别是在图形用户界面（GUI）编程中。例如，在 Java Swing 中，我们可以用匿名类来处理按钮点击事件：
+```java
+import javax.swing.*;
+import java.awt.event.ActionListener;
+
+public class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Anonymous Class Example");
+        JButton button = new JButton("Click me");
+
+        // 使用匿名类实现按钮点击事件的监听器
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                System.out.println("Button clicked!");
+            }
+        });
+
+        frame.add(button);
+        frame.setSize(200, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+```
+## timertask
+在Java中，TimerTask 是一个抽象类，继承自 java.util.TimerTask，用于表示一个可以由 Timer 执行的任务。你可以通过继承这个类并重写它的 run() 方法，来定义任务的具体执行内容。
+
+通常，TimerTask 和 Timer 类一起使用，其中 Timer 用于安排定时任务的执行。你可以设置任务在未来某个特定时间点执行，或者周期性地执行。
+
+```java
+public class Main{
+    public static void main[String[] args]{
+        Timer timer=new timer();
+        TimerTask TimerTask=new timertask(){
+            int count=3;
+            @override
+            public void run(){
+                System.out.println("hello!");
+                count--;
+                if(count<=0){
+                    System.out.println("task complete!");
+                    timer.cancel();
+                }
+            }
+        };
+        // 安排任务在延迟 2 秒后执行，每隔 1 秒执行一次
+        timer.schedule(task,2000,1000)
+    }
+}
+```
 ## 泛式
 在Java中，\*\*泛型（Generics）\*\*是一种允许在类、接口和方法中使用类型参数的机制。泛型提供了一种强大的方式来提高代码的重用性、类型安全性以及可读性。泛型使得代码可以在不指定具体类型的情况下进行操作，从而在编译时提供类型检查，减少了运行时错误。
 ```java

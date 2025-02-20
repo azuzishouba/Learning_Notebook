@@ -62,8 +62,20 @@
 10. contemplate v.沉思
 11. ***accord n.协议***
 12. ***conceive v.设想***
-13. ***straight adj.连续的,不断的;直的 ***
+13. ***straight adj.连续的,不断的;直的***
 14. reinforce v.加强
 15. fatigue n.疲劳
 16. sole adj.唯一的
 17. boycott vt. n. 抵制
+## 2025.2.20
+1. ***warrant n.授权令***
+2. warranty n.授权
+3. intrinsic adj. 固有的;内在的
+4. counterpart n.对手
+5. ***incidentally adv.偶然的***
+6. colony n.殖民地
+7. lever n.杠杆
+8. historic adj.有历史意义的
+9. religious adj.宗教的
+10. ***motive n.动机,目的***
+11. refrain vi.克制
