@@ -79,3 +79,20 @@
 9. religious adj.宗教的
 10. ***motive n.动机,目的***
 11. refrain vi.克制
+## 2025.2.21
+1. intention n.目的,意图
+2. occupy v.占据,占领
+3. pledge v.保证,承诺
+4. resistant adj. 有抵抗力的,反抗的
+5. superiority n.优越性
+6. sympathy n.同情;同感
+7. corporate adj.公司的
+8. vital adj.必不可少的,至关重要的
+9. flaw n.瑕疵
+10. complement v.与...相配;n. 补充
+11. competent adj.有能力的
+12. overhead n.企业运营费用 adj.在头顶上的
+13. deem v. 认为
+14. arise vi.由..引起,发生
+15. artificial adj.人造的,人为的;
+16. captive adj.被俘虏的,被捕获的

@@ -458,3 +458,78 @@ actions.perform()
     ```python
     self.driver.get_screenshot_as_file('homepage.png')
     ```
+## Selenium异常处理
+在使用 Selenium 进行自动化测试时，异常处理非常重要。Selenium 提供了多种异常类型来帮助我们处理不同的错误情况。常见的异常包括 <kbd>NoSuchElementException</kbd>、<kbd>TimeoutException</kbd>、<kbd>ElementNotInteractableException</kbd>等。
+1. 捕获元素未找到的异常
+
+NoSuchElementException 在找不到某个元素时会抛出。可以使用 try-except 块来捕获该异常。
+```python
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+
+driver = webdriver.Chrome()
+
+try:
+    element = driver.find_element_by_id("non_existent_id")
+except NoSuchElementException:
+    print("元素未找到")
+```
+2. 元素未可交互异常
+
+ElementNotInteractableException 在元素存在，但无法与之交互时抛出（例如，元素不可见或不可点击）。
+```python
+from selenium import webdriver
+from selenium.common.exceptions import ElementNotInteractableException
+
+driver = webdriver.Chrome()
+
+try:
+    element = driver.find_element_by_id("element_id")
+    element.click()  # 假设元素不可点击
+except ElementNotInteractableException:
+    print("元素不可交互")
+```
+例子:
+(a) 页面元素查找时的异常处理
+
+例如，当页面元素无法找到时，使用 NoSuchElementException 捕获异常。
+```python
+from selenium.common.exceptions import NoSuchElementException
+
+try:
+    loginpage.click_sign_up_button()
+except NoSuchElementException:
+    print("无法找到“注册”按钮，可能是页面未加载完全")
+```
+3. 超时异常
+
+TimeoutException 通常发生在等待某个元素时超出设定的超时时间。例如，当我们使用 WebDriverWait 等待一个元素可见时，若超时未能找到该元素，就会抛出此异常。
+```python
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+
+try:
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "some_id")))
+except TimeoutException:
+    print("超时，未能找到元素")
+```
+(b) 使用 WebDriverWait 进行智能等待
+
+很多情况下，使用 WebDriverWait 来确保元素加载完成可以避免由于加载延迟而导致的异常。
+例子:
+```python
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+try:
+    element = WebDriverWait(self.driver, 10).until(
+        EC.presence_of_element_located((By.ID, "some_element_id"))
+    )
+except TimeoutException:
+    print("等待元素超时，元素未能在指定时间内加载")
+```

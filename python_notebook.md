@@ -1187,6 +1187,23 @@ print(square(3))
 #输出9
 #输出None
 ```
+## yield关键字
+在Python中，yield是一个用于创建生成器的关键字。生成器是一种特殊类型的迭代器，它允许你逐个生成值，而不是一次性生成所有值。使用yield可以让你在一个函数中暂停执行并返回一个值，然后继续从暂停的地方继续执行，直到函数结束。
+
+1. 基本用法
+
+当你在一个函数中使用yield时，该函数不再是一个普通的函数，而变成了一个生成器函数。每次调用生成器时，都会执行到yield语句，并返回一个值，暂停函数的执行，直到下次通过next()重新启动函数。
+```python
+def count_up_to(max):
+    count = 1
+    while count <= max:
+        yield count  # 暂停并返回count
+        count += 1
+
+counter = count_up_to(5)
+print(next(counter))  # 输出 1
+print(next(counter))  # 输出 2
+```
 ## if \_\_name\_\_=='main':
 最直接根本的作用就是判断是否作为主函数运行,当其他文件作为模块导入该文件时不执行代码
 
