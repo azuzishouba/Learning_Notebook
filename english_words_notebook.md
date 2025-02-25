@@ -96,3 +96,32 @@
 14. arise vi.由..引起,发生
 15. artificial adj.人造的,人为的;
 16. captive adj.被俘虏的,被捕获的
+## 2025.2.24
+1. dense adj.密集的
+2. conspiracy n.密谋
+3. henforce adv.今后
+4. ruthless adj.残忍的
+5. bypass v.绕过
+6. guild n.协会
+7. apart adv.分离地 adj.分隔的
+8. resemble vt.像
+9. assimilate v.使同化;吸收
+10. fiscal adj.财政的;会计的
+11. ***interim adj.暂时的***
+12. ***prone adj.易于...的***
+13. manifest v.使显现
+## 2025.2.25
+1. miserable adj.痛苦的
+2. physicist n.物理学者
+3. necessity n.必需品
+4. ***accordance n.符合,一致***
+5. consent n.同意
+6. collapse v.倒塌
+7. ***trivial adj.微不足道的***
+8. encounter vt.邂逅
+9. expertise n.专门知识
+10. compact n.合约
+11. translate vt.转换;翻译
+12. convict n.犯人
+13. thrive vi.茁壮成长
+14. faint vi. n. 晕倒

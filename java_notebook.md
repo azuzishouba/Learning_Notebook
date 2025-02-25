@@ -2785,3 +2785,101 @@ public class BoundedTypeParameter {
 }
 ```
 在这个例子中，<T extends Number> 限制了类型 T 必须是 Number 类及其子类（如 Integer 和 Double）。
+## java的hashmap
+HashMap 是 Java 中最常用的集合类之一，它实现了 Map 接口，基于哈希表存储键值对。HashMap 允许使用 null 作为键和值，并且不保证元素的顺序。
+
+主要特点
+
+1. 键值对存储：HashMap 存储的是键值对（key-value），其中键是唯一的。
+2. 基于哈希表：通过哈希算法快速定位键值对，查找、插入和删除操作的平均时间复杂度为 O(1)。
+3. 非线程安全：HashMap 不是线程安全的，多线程环境下可能会出现数据不一致问题。可以使用 Collections.synchronizedMap 或 ConcurrentHashMap 来实现线程安全。
+4. 允许 null 键和值：HashMap 允许一个 null 键和多个 null 值。
+5. 无序：HashMap 不保证元素的顺序，迭代顺序可能会随时间变化。
+
+常用方法
+
+以下是 HashMap 的常用方法：
+1. put(K key, V value)
+    将指定的键值对插入到 HashMap 中。如果键已存在，则更新对应的值。
+```java
+    HashMap<String, Integer> map = new HashMap<>();
+    map.put("apple", 10);
+    map.put("banana", 20);
+```
+2. get(Object key)
+    根据键获取对应的值。如果键不存在，返回 null。
+```java
+    Integer value = map.get("apple"); // 返回 10
+```
+3. remove(Object key)
+根据键删除对应的键值对。
+```java
+    map.remove("banana");
+```
+4. containsKey(Object key)
+检查 HashMap 中是否包含指定的键。
+```java
+    boolean hasKey = map.containsKey("apple"); // 返回 true
+```
+5. containsValue(Object value)
+检查 HashMap 中是否包含指定的值。
+```java
+    boolean hasValue = map.containsValue(10); // 返回 true
+```
+6. size()
+    返回 HashMap 中键值对的数量。
+```java
+    int size = map.size();
+```
+7. keySet()
+    返回所有键的集合。
+```java
+    Set<String> keys = map.keySet();
+```
+8. values()
+    返回所有值的集合。
+```java
+    Collection<Integer> values = map.values();
+```
+9. entrySet()
+    返回所有键值对的集合。
+```java
+    Set<Map.Entry<String, Integer>> entries = map.entrySet();
+```
+示例:
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        // 创建 HashMap
+        HashMap<String, Integer> map = new HashMap<>();
+
+        // 添加键值对
+        map.put("apple", 10);
+        map.put("banana", 20);
+        map.put("orange", 30);
+
+        // 获取值
+        System.out.println("apple: " + map.get("apple")); // 输出 10
+
+        // 检查键是否存在
+        System.out.println("Contains key 'banana': " + map.containsKey("banana")); // 输出 true
+
+        // 遍历 HashMap
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        // 删除键值对
+        map.remove("orange");
+        System.out.println("After removal, size: " + map.size()); // 输出 2
+    }
+}
+```
+## java enum
+在 Java 中，enum（枚举）是一种特殊的类，用于定义一组固定的常量。枚举类型在 Java 5 中引入，它提供了一种更安全、更易读的方式来表示一组相关的常量。
+
+***需要在创建文件时指定创建enum类***
+

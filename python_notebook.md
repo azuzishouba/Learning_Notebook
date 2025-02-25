@@ -1204,6 +1204,24 @@ counter = count_up_to(5)
 print(next(counter))  # 输出 1
 print(next(counter))  # 输出 2
 ```
+2. yield与return的区别
+
+   * yield会暂停函数的执行，并保存函数的状态，而return会终止函数的执行并返回一个值。
+   * 生成器函数使用yield返回多个值，而return只能返回一个值。
+
+3. 示例：用yield实现斐波那契数列
+```python
+def fibonacci(n):
+    a, b = 0, 1
+    while n > 0:
+        yield a
+        a, b = b, a + b
+        n -= 1
+
+fib = fibonacci(5)
+for num in fib:
+    print(num)  # 输出 0, 1, 1, 2, 3
+```
 ## if \_\_name\_\_=='main':
 最直接根本的作用就是判断是否作为主函数运行,当其他文件作为模块导入该文件时不执行代码
 
