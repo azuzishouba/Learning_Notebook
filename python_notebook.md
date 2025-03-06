@@ -959,6 +959,58 @@ Total sum: 45
     
     ```
     ***在 self.driver.find_element(*MainPageLocators.GO_BUTTON) 中，<kbd>*</kbd>是用于 解包 元组的语法。这个语法将 MainPageLocators.GO_BUTTON 元组中的两个元素 By.ID 和 'submit' 解包并分别传递给 find_element 方法。***
+## map函数
+map() 是 Python 内置的一个函数，用于对可迭代对象（如列表、元组等）中的每个元素应用一个指定的函数，并返回一个迭代器。这个迭代器生成应用该函数后的结果。
+语法：
+```python
+map(function, iterable, ...)
+```
+* function：一个函数，这个函数会被应用到可迭代对象中的每个元素。
+* iterable：一个或多个可迭代对象（如列表、元组等），map 会对每个可迭代对象中的元素依次应用 function。
+
+如果提供多个可迭代对象，function 必须接受多个参数，且 map 会将每个可迭代对象的元素一一对应地传递给 function。
+* 返回值：
+
+map() 返回一个迭代器对象，它是一个惰性求值的对象，意味着它不会立即计算结果，而是当你遍历它时才会计算每个元素。如果你想要得到具体的结果，可以使用 list() 或 tuple() 等函数将其转换为列表或元组。
+示例 1：单个可迭代对象
+```python
+numbers = [1, 2, 3, 4, 5]
+
+# 使用 lambda 表达式对每个元素进行平方运算
+squared_numbers = map(lambda x: x ** 2, numbers)
+
+# 将 map 对象转换为列表并输出
+print(list(squared_numbers))  # 输出 [1, 4, 9, 16, 25]
+```
+在这个示例中，lambda x: x ** 2 对列表 numbers 中的每个元素进行平方处理，最终返回一个新的列表。
+示例 2：多个可迭代对象
+```python
+numbers1 = [1, 2, 3]
+numbers2 = [4, 5, 6]
+
+# 使用 lambda 表达式对两个列表的对应元素进行加法运算
+summed_numbers = map(lambda x, y: x + y, numbers1, numbers2)
+
+# 将 map 对象转换为列表并输出
+print(list(summed_numbers))  # 输出 [5, 7, 9]
+```
+在这个示例中，map() 同时处理两个列表 numbers1 和 numbers2，将它们的对应元素相加。
+
+示例 3：使用函数而非 lambda
+
+你也可以传递一个已经定义的函数，而不是 lambda 表达式：
+```python
+def square(x):
+    return x ** 2
+
+numbers = [1, 2, 3, 4, 5]
+
+# 使用定义好的函数对每个元素进行平方运算
+squared_numbers = map(square, numbers)
+
+# 将 map 对象转换为列表并输出
+print(list(squared_numbers))  # 输出 [1, 4, 9, 16, 25]
+```
 ## 字典
 Python 中的字典(dict)是一种内置的数据结构,它是一个无序的键值对集合。字典中的每个元素都是由一个键(key)和值(value)组成,键是唯一的,而值则可以是任何数据类型。
 1. 字典的创建
