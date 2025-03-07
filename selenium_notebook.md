@@ -458,6 +458,123 @@ actions.perform()
     ```python
     self.driver.get_screenshot_as_file('homepage.png')
     ```
+## Selenium的文件下载与上传
+### 文件上传操作
+
+文件上传是 Web 应用程序中常见的功能之一。
+
+在 Selenium 中，文件上传通常通过\<input type="file">元素实现。
+
+以下是实现文件上传的步骤：
+
+定位文件上传元素：首先，我们需要定位到文件上传的输入框元素。通常，这个元素是一个\<input>标签，类型为file。
+实例
+```python
+file_input = driver.find_element(By.XPATH, "//input[@type='file']")
+```
+发送文件路径：一旦定位到文件上传元素，我们可以使用send_keys()方法将文件的绝对路径发送到该元素。
+```python
+file_input.send_keys("/path/to/your/file.txt")
+```
+这将触发文件选择对话框，并自动选择指定的文件。
+
+提交表单：在某些情况下，文件上传后需要提交表单。你可以通过点击提交按钮来完成这一操作。
+```python
+submit_button = driver.find_element(By.XPATH, "//input[@type='submit']")
+submit_button.click()
+```
+注意事项
+* 确保文件路径是正确的，并且文件存在。
+* 如果文件上传元素是隐藏的，可能需要使用 JavaScript 来使其可见。
+### 文件下载操作
+文件下载操作在 Selenium 中稍微复杂一些，因为涉及到浏览器的下载对话框。
+
+以下是实现文件下载的步骤：
+
+设置下载路径：首先，我们需要设置浏览器的下载路径。这可以通过设置浏览器的首选项来实现。
+```python
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_experimental_option("prefs", {
+    "download.default_directory": "/path/to/download/directory",
+    "download.prompt_for_download": False,
+    "download.directory_upgrade": True,
+    "safebrowsing.enabled": True
+})
+
+driver = webdriver.Chrome(options=chrome_options)
+```
+这将设置浏览器的默认下载路径，并禁用下载提示。
+
+触发下载：接下来，我们需要找到触发下载的链接或按钮，并点击它。
+```python
+download_link = driver.find_element(By.XPATH, "//a[@id='downloadLink']")
+download_link.click()
+```
+这将触发文件下载，并自动保存到之前设置的下载路径中。
+
+等待下载完成：为了确保文件下载完成，我们可以使用time.sleep()或更智能的等待机制。
+```python
+import time
+time.sleep(10)  # 等待10秒，确保文件下载完成
+```
+注意事项
+
+* 确保下载路径是可写的。
+* 如果下载的文件较大，可能需要增加等待时间。
+
+处理下载对话框
+
+在某些情况下，浏览器可能会弹出下载对话框，询问用户是否保存文件。为了自动化处理这种情况，我们可以使用以下方法：
+
+使用浏览器首选项：如上所述，通过设置浏览器的首选项，可以禁用下载对话框。
+```python
+chrome_options.add_experimental_option("prefs", {
+    "download.prompt_for_download": False
+})
+```
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+import time
+import os
+
+# 设置下载路径
+download_dir = "/path/to/download/directory"
+
+# 配置 Chrome 选项
+chrome_options = webdriver.ChromeOptions()
+prefs = {
+    "download.default_directory": download_dir,  # 设置下载路径
+    "download.prompt_for_download": False,       # 禁用下载提示
+    "download.directory_upgrade": True,          # 允许下载到指定目录
+    "safebrowsing.enabled": True                 # 启用安全浏览
+}
+chrome_options.add_experimental_option("prefs", prefs)
+
+# 启动浏览器
+service = ChromeService(executable_path="/path/to/chromedriver")
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+# 打开网页
+driver.get("https://www.example.com/download")
+
+# 点击下载按钮
+download_button = driver.find_element(By.ID, "download-button")
+download_button.click()
+
+# 等待文件下载完成
+time.sleep(10)  # 根据文件大小调整等待时间
+
+# 检查文件是否下载成功
+files = os.listdir(download_dir)
+print("下载的文件列表:", files)
+
+# 关闭浏览器
+driver.quit()
+```
 ## Selenium异常处理
 在使用 Selenium 进行自动化测试时，异常处理非常重要。Selenium 提供了多种异常类型来帮助我们处理不同的错误情况。常见的异常包括 <kbd>NoSuchElementException</kbd>、<kbd>TimeoutException</kbd>、<kbd>ElementNotInteractableException</kbd>等。
 1. 捕获元素未找到的异常

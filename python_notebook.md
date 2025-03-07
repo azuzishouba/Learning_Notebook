@@ -1135,6 +1135,18 @@ Python 中的字典(dict)是一种内置的数据结构,它是一个无序的键
     for value in my_dict.values():
         print(value)
     ```
+## python-random模块
+random 模块方法
+
+random 模块方法如下：
+|方法|描述|
+|:--|:--|
+|randrange() |从 range(start, stop, step) 返回一个随机选择的元素。左闭右开|
+|randint(a, b) |返回随机整数 N 满足 a <= N <= b。|
+|choice(seq) |从非空序列 seq 返回一个随机元素。 如果 seq 为空，则引发 IndexError。|
+|shuffle(x[, random]) |将序列 x 随机打乱位置。|
+|random() |返回 [0.0, 1.0) 范围内的下一个随机浮点数。|
+
 ## python函数
 1. 函数的定义和调用
     ```python
