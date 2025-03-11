@@ -127,7 +127,7 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
   * >rm-rf 强制递归删除,非常危险的选项
 * >mv (filename) (new directory) 移动文件到新目录
   * >mv (filename or directory name) (new filename or new directory name) 重命名文件或目录
-#### Linux文件内容的查看
+#### ***Linux文件内容的查看***
 * >cat (filename) 从第一行显示文件的内容
   * >cat -b 列出行号,仅针对非空白行
   * >cat -n 列出行号,对所有行

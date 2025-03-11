@@ -305,7 +305,7 @@ WHERE order_date < '2019-01-01'
         WHERE payment_date is not null
     ```
 ## 更新数据
-### 更新单行数据
+### ***更新单行数据***
 >UPDATE invoices
 
 >SET payment_total=70,payment_date=null

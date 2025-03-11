@@ -47,10 +47,33 @@
 ### Git检查提交的具体更改
 * git show (commitid) 检查具体提交的更改
     * git show HEAD~1 HEAD代表头指针，1代表从头指针往下数第1个
-### Git中撤销的操作
+### Git中撤销的操作(git restore)
 * git restore (filename) 恢复未暂存的更改
 * git restore --staged (filename) 恢复已暂存的更改，恢复到未暂存状态
 * git restore --source=(commitid) (filename) 特定提交中恢复文件
+### Git中撤销的操作(git reset)
+git reset 主要用于移动 当前分支的指针（即 HEAD），并可以选择性地修改 工作区 和 暂存区 的状态。
+常用选项：
+* --soft：仅移动 HEAD 指针，不修改暂存区和工作区。
+* --mixed（默认）：移动 HEAD 指针并重置暂存区，但不修改工作区。
+* --hard：移动 HEAD 指针并重置暂存区和工作区（慎用，会丢失未提交的更改）。
+
+典型用途：
+* 撤销提交：
+```bash
+git reset HEAD~1
+```
+* 撤销暂存区的文件：
+```bash
+git reset <文件名>
+```
+* 彻底回退到某个提交（包括工作区）：
+```bash
+git reset --hard <commit-hash>
+```
+特点：
+* 会修改提交历史（移动 HEAD 指针）。
+* 可以影响暂存区和工作区。
 ### Git中分支的操作
 * git branch (branch-name) 创建分支
 * ***git switch (branch) 切换到分支***
@@ -373,4 +396,42 @@ git flow release finish v1.0.0
 ```shell
 git flow hotfix start hotfix-1.0.1. # 修复紧急问题
 git flow hotfix finish hotfix-1.0.1
+```
+## 已经git push推送如何撤销推送
+1. 撤销最后一次提交并强制推送
+
+如果你想撤销最后一次提交并同步到远程仓库：
+步骤：
+
+* 使用 git reset 回退到上一个提交：
+```bash
+  git reset --hard HEAD~1
+```
+* HEAD~1 表示回退到上一个提交。
+* --hard 会丢弃工作区和暂存区的所有更改。
+
+* 强制推送到远程仓库：
+```bash
+git push --force
+```
+* --force 会强制覆盖远程仓库的历史记录。
+
+注意：
+  * 强制推送会覆盖远程仓库的历史记录，可能会影响其他开发者的工作。
+
+  * 如果其他人已经基于你的提交进行了开发，可能会导致冲突。
+
+2. 撤销特定提交并保留更改
+
+如果你想撤销某个提交但保留更改（即撤销提交但保留文件修改）：
+步骤：
+* 使用 git revert 创建一个新的提交来撤销之前的提交：
+```bash
+git revert <commit-hash>
+```
+* <commit-hash> 是你想撤销的提交的哈希值（可以通过 git log 查看）。
+
+* 推送到远程仓库：
+```bash
+git push
 ```
