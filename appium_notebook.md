@@ -238,44 +238,101 @@ emulator -avd avdname -wipe-data
    7. pointer down(左点击,触屏一般没右击)
    8. move,虚拟机上选取一个点,设定操作时间
    9. pointer up(左点击,触屏一般没右击)
-   ## 使用python-unittest编写脚本
-   ```python
-   import unittest
-    from appium import webdriver
-    from appium.options.android import UiAutomator2Options
+## Recorder录制
+点击录制按钮后,需要在source资源内进行点击,滑动等操作,生成python脚本
+![recorder界面](/screen_shot/recorder_interface.png)
+## touch-action实现手势操作
+1. 点击操作
+```python
+def tap(driver, x, y):
+    action = TouchAction(driver)
+    action.tap(x=x, y=y).perform()
+```
+2. 滑动操作
+```python
+def swipe(driver, start_x, start_y, end_x, end_y):
+    action = TouchAction(driver)
+    action.press(x=start_x, y=start_y).move_to(x=end_x, y=end_y).release().perform()
+```
+3. 长按操作
+```python
+def long_press(driver, x, y, duration=1000):
+    action = TouchAction(driver)
+    action.long_press(x=x, y=y, duration=duration).release().perform()
+```
+集中调用
+```python
+# 示例调用
+swipe(driver, 100, 500, 100, 100)  # 滑动
+tap(driver, 200, 300)  # 点击
+long_press(driver, 300, 400, duration=1000)  # 长按
+```
+4. 进行zoom in(放大)操作
+```python
+def zoom_in(driver, finger1_start, finger1_end, finger2_start, finger2_end):
+    action1 = TouchAction(driver)
+    action1.press(x=finger1_start[0], y=finger1_start[1]).move_to(x=finger1_end[0], y=finger1_end[1]).release()
 
-    class AppiumTest(unittest.TestCase):
-        def setUp(self):
-            # 配置 Appium 选项
-            options = UiAutomator2Options()
-            options.platform_name = 'Android'
-            options.device_name = 'emulator-5554'
-            options.app = '/path/to/your/app.apk'
-            options.automation_name = 'UiAutomator2'
-            options.app_package = 'com.example.app'
-            options.app_activity = 'com.example.app.MainActivity'
+    action2 = TouchAction(driver)
+    action2.press(x=finger2_start[0], y=finger2_start[1]).move_to(x=finger2_end[0], y=finger2_end[1]).release()
 
-            # 初始化驱动
-            self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
+    MultiAction(driver).add(action1, action2).perform()
+```
+5. 进行zoom out(缩小)操作
+```python
+def zoom_out(driver, finger1_start, finger1_end, finger2_start, finger2_end):
+    action1 = TouchAction(driver)
+    action1.press(x=finger1_start[0], y=finger1_start[1]).move_to(x=finger1_end[0], y=finger1_end[1]).release()
 
-        def test_login(self):
-            # 测试登录功能
-            username_field = self.driver.find_element_by_id('com.example.app:id/username')
-            password_field = self.driver.find_element_by_id('com.example.app:id/password')
-            login_button = self.driver.find_element_by_id('com.example.app:id/login_button')
+    action2 = TouchAction(driver)
+    action2.press(x=finger2_start[0], y=finger2_start[1]).move_to(x=finger2_end[0], y=finger2_end[1]).release()
 
-            username_field.send_keys('testuser')
-            password_field.send_keys('password123')
-            login_button.click()
+    MultiAction(driver).add(action1, action2).perform()
+```
+集中调用
+```python
+# 示例调用
+zoom_in(driver, (200, 500), (100, 400), (400, 500), (500, 600))
+zoom_out(driver, (100, 400), (200, 500), (500, 600), (400, 500))
+```
+## 使用python-unittest编写脚本
+```python
+import unittest
+from appium import webdriver
+from appium.options.android import UiAutomator2Options
 
-            # 验证登录是否成功
-            welcome_message = self.driver.find_element_by_id('com.example.app:id/welcome_message')
+class AppiumTest(unittest.TestCase):
+    def setUp(self):
+        # 配置 Appium 选项
+        options = UiAutomator2Options()
+        options.platform_name = 'Android'
+        options.device_name = 'emulator-5554'
+        options.app = '/path/to/your/app.apk'
+        options.automation_name = 'UiAutomator2'
+        options.app_package = 'com.example.app'
+        options.app_activity = 'com.example.app.MainActivity'
+
+        # 初始化驱动
+        self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
+
+    def test_login(self):
+        # 测试登录功能
+        username_field = self.driver.find_element_by_id('com.example.app:id/username')
+        password_field = self.driver.find_element_by_id('com.example.app:id/password')
+        login_button = self.driver.find_element_by_id('com.example.app:id/login_button')
+
+        username_field.send_keys('testuser')
+        password_field.send_keys('password123')
+        login_button.click()
+
+        # 验证登录是否成功
+        welcome_message = self.driver.find_element_by_id('com.example.app:id/welcome_message')
             self.assertEqual(welcome_message.text, 'Welcome, testuser!')
 
-        def tearDown(self):
-            # 关闭驱动
-            self.driver.quit()
+    def tearDown(self):
+        # 关闭驱动
+        self.driver.quit()
 
-    if __name__ == '__main__':
-        unittest.main()
-   ```
+if __name__ == '__main__':
+    unittest.main()
+```
