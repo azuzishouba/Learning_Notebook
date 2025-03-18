@@ -137,6 +137,34 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
 * >head (filename) 只看头十行
 * >tail (filename) 只看尾十行
   * -n:选择查看行数的参数例如(head -n 20 filename) 
+#### ***Linux改变文件的权限***
+还有一个改变权限的方法，从之前的介绍中我们可以发现，基本上就九个权限分别是：
+  * user：用户
+  * group：组
+  * others：其他
+
+那么我们就可以使用 u, g, o 来代表三种身份的权限。
+
+此外， a 则代表 all，即全部的身份。读写的权限可以写成 r, w, x，也就是可以使用下表的方式来看：
+|命令|用户级别| 权限操作 |读写执行|文件|
+|:--|:--|:--|:--|:--|
+|chmod|u g o a |+(加入) -(除去) =(设定) |rwx|文件或目录|
+
+如果我们需要将文件权限设置为 -rwxr-xr-- ，可以使用 chmod u=rwx,g=rx,o=r 文件名 来设定:
+```bash
+#  touch test1    // 创建 test1 文件
+# ls -al test1    // 查看 test1 默认权限
+-rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+# chmod u=rwx,g=rx,o=r  test1    // 修改 test1 权限
+# ls -al test1
+-rwxr-xr-- 1 root root 0 Nov 15 10:32 test1
+```
+而如果是要将权限去掉而不改变其他已存在的权限呢？例如要拿掉全部人的可执行权限，则：
+```bash
+#  chmod  a-x test1
+# ls -al test1
+-rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+```
 ### 改变文件时间戳
 * >touch (filename) 修改文件时间戳为当前系统时间戳,如果没有该文件将创建文件
 ### 硬链接和软链接(符号链接)

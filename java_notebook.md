@@ -2883,3 +2883,174 @@ public class HashMapExample {
 
 ***需要在创建文件时指定创建enum类***
 
+枚举类型可以像普通类一样定义方法和构造函数。
+
+```java
+public enum Day {//基本语法
+    SUNDAY("休息日"),
+    MONDAY("工作日"),
+    TUESDAY("工作日"),
+    WEDNESDAY("工作日"),
+    THURSDAY("工作日"),
+    FRIDAY("工作日"),
+    SATURDAY("休息日");
+
+    private String description;
+
+    // 构造方法
+    Day(String description) {
+        this.description = description;
+    }
+
+    // 方法
+    public String getDescription() {
+        return this.description;
+    }
+}
+
+public class TestEnum {
+    public static void main(String[] args) {
+        Day day = Day.MONDAY;//使用枚举类型
+        System.out.println(day + ": " + day.getDescription());  // 输出 MONDAY: 工作日
+    }
+}
+```
+
+遍历枚举值
+
+枚举类型可以使用 values() 方法遍历所有常量值：
+```java
+public class TestEnum {
+    public static void main(String[] args) {
+        for (Day day : Day.values()) {
+            System.out.println(day + ": " + day.getDescription());
+        }
+    }
+}
+```
+
+枚举类型通常与 switch 语句配合使用：
+```java
+public class TestEnum {
+    public static void main(String[] args) {
+        Day day = Day.SUNDAY;
+        
+        switch (day) {
+            case MONDAY:
+                System.out.println("开始工作");
+                break;
+            case SUNDAY:
+                System.out.println("休息一下");
+                break;
+            default:
+                System.out.println("正常工作日");
+                break;
+        }
+    }
+}
+```
+枚举可以实现接口：
+
+```java
+public enum Day implements Workable {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY;
+
+    @Override
+    public void work() {
+        System.out.println("工作中...");
+    }
+}
+
+public interface Workable {
+    void work();
+}
+```
+## final关键字
+在 Java 中，final 是一个关键字，用于声明常量、方法、类等，表示该元素不能被修改。final 关键字在不同的上下文中有不同的用途：
+
+1. final 变量（常量）
+
+当一个变量被声明为 final 时，意味着该变量只能赋值一次，一旦初始化之后，它的值不能再改变。
+示例：
+```java
+public class TestFinal {
+    public static void main(String[] args) {
+        final int x = 10;
+        // x = 20;  // 编译错误，x 不能被修改
+        System.out.println(x);  // 输出 10
+    }
+}
+```
+* final 修饰的变量：一旦赋值，它的值不能再改变。对基本数据类型来说，它的值不可以修改；对于引用类型来说，它的引用地址不可以改变，但对象的内容是可以修改的。
+
+示例（引用类型）：
+```java
+public class TestFinal {
+    public static void main(String[] args) {
+        final int[] arr = {1, 2, 3};
+        // arr = new int[]{4, 5, 6};  // 编译错误，arr 引用不能修改
+        arr[0] = 10;  // 合法，数组内容可以修改
+        System.out.println(arr[0]);  // 输出 10
+    }
+}
+```
+2. final 方法
+
+当一个方法被声明为 final 时，表示该方法不能被子类重写。这样可以避免子类更改该方法的行为。
+
+示例：
+```java
+class Parent {
+    public final void show() {
+        System.out.println("Parent show method");
+    }
+}
+
+class Child extends Parent {
+    // 编译错误，无法重写父类的 final 方法
+    // public void show() {
+    //     System.out.println("Child show method");
+    // }
+}
+
+public class TestFinal {
+    public static void main(String[] args) {
+        Parent obj = new Parent();
+        obj.show();  // 输出 Parent show method
+    }
+}
+```
+3. final 类
+
+当一个类被声明为 final 时，表示该类不能被继承。final 类通常用于保护类不被修改，确保其行为的稳定性。
+
+示例：
+```java
+final class FinalClass {
+    public void display() {
+        System.out.println("This is a final class.");
+    }
+}
+
+class SubClass extends FinalClass {  // 编译错误，无法继承 final 类
+    // ...
+}
+```
+4. final 参数
+
+当一个方法的参数被声明为 final 时，表示该参数的值在方法体内不能被修改。这有助于提高代码的可读性，并防止在方法内部误修改参数。
+
+示例：
+```java
+public class TestFinal {
+    public void display(final int x) {
+        // x = 10;  // 编译错误，参数 x 不能修改
+        System.out.println(x);
+    }
+
+    public static void main(String[] args) {
+        TestFinal obj = new TestFinal();
+        obj.display(5);  // 输出 5
+    }
+}
+```
