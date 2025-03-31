@@ -50,7 +50,15 @@ mvn -version
             <artifactId>selenium-manager</artifactId>
             <version>4.30.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.11.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
@@ -150,4 +158,133 @@ select2.select_by_visible_text('January')
    3. 通过索引index选择选项
 ```java
         select.selectByIndex(3);
+```
+## 创建面向对象的maven-selenium项目
+1. 创建maven project
+![maven project interface](/screen_shot/maven_project_interface.png)
+2. 安装selenium-java selenium-manager(selenium-java在4.6.0后无需安装) testng依赖
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.test.automation</groupId>
+    <artifactId>selenium-framework</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-manager -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-manager</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.11.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
+```
+3. 项目结构
+![project_structure](/screen_shot/project_structure.png)
+* base包表示主函数测试类
+* pages包表示页面类
+* utils包表示工具类
+* tests包表示测试函数
+4. 创建basetest.java
+```java
+package base;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class BaseTest {
+    protected WebDriver driver;
+    @BeforeMethod //注解向解释器解释执行过程
+    public void setUp(){
+        driver=new FirefoxDriver();
+        driver.get("http://admin-demo.nopcommerce.com/login");
+        driver.manage().window().maximize();
+    }
+    @AfterMethod
+    public void tearDown(){
+        if (driver!=null){
+            driver.quit();
+        }
+    }
+}
+```
+5. 创建loginpage.java(设计思想是在page包中一个页面视为一个类)
+```java
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class LoginPage{
+    private WebDriver driver;
+    public LoginPage(WebDriver driver){//每个页面需要使用构造方法初始化driver
+        this.driver=driver;
+    }
+    public void input_email(){
+        WebElement emailbox = driver.findElement(By.id("Email"));//在Java中元素前面需要声明WebElement
+        emailbox.clear();
+        emailbox.sendKeys("admin@yourstore.com");
+    }
+    public void input_password(){
+        WebElement passwordbox=driver.findElement(By.id("Password"));
+        passwordbox.clear();
+        passwordbox.sendKeys("admin");
+    }
+    public void click_login_button(){
+        WebElement loginbutton=driver.findElement(By.xpath("//button[contains(text(), 'Log in')]"));
+        loginbutton.click();
+    }
+}
+
+```
+6. 创建LoginTest.java
+```java
+package tests;
+
+import base.BaseTest;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import pages.LoginPage;
+
+import java.time.Duration;
+
+public class LoginTest extends BaseTest {
+    @Test//需要注解为Test
+    public void test_valid_login(){
+        LoginPage loginPage=new LoginPage(driver);
+        loginPage.input_email();
+        loginPage.input_password();
+        loginPage.click_login_button();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8));
+        Assert.assertEquals(driver.getTitle(),"Dashboard / nopCommerce administration");
+    }
+}
 ```
