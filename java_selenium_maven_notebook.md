@@ -288,3 +288,177 @@ public class LoginTest extends BaseTest {
     }
 }
 ```
+## 使用extent reports输出个性化报告
+1. 安装extent reports依赖
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.test.automation</groupId>
+    <artifactId>selenium-framework</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-manager -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-manager</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.2</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
+```
+2. 编写报告输出ExtentReportManager
+```java
+package utils;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class ExtentReportManager {
+    private static ExtentReports extent;
+    private static ExtentTest test;
+    public static String reportPath;
+    public static ExtentReports getReportInstance(){
+        if(extent==null){
+            String timestamp=new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            reportPath = "reports/ExtentReport_"+timestamp+".html";
+            ExtentSparkReporter reporter = new ExtentSparkReporter(reportPath);
+            reporter.config().setDocumentTitle("Automation Test Report");
+            reporter.config().setReportName("Test Execution Report");
+            extent = new ExtentReports();
+            extent.attachReporter(reporter);
+        }
+        return extent;
+    }
+    public  static ExtentTest createTest(String testName){
+        test = getReportInstance().createTest(testName);
+        return test;
+    }
+
+}
+
+```
+3. 编写基准测试文件BaseTest.java
+```java
+package base;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import utils.ExtentReportManager;
+
+public class BaseTest {
+    protected WebDriver driver;
+    protected static ExtentReports extent;
+    protected ExtentTest test;
+    @BeforeSuite
+    public void setupReport(){
+        extent= ExtentReportManager.getReportInstance();
+    }
+    @AfterSuite
+    public void teardownReport(){
+        extent.flush();
+    }
+    @BeforeMethod
+    public void setUp(){
+        driver=new FirefoxDriver();
+        driver.get("http://admin-demo.nopcommerce.com/login");
+        driver.manage().window().maximize();
+    }
+    @AfterMethod
+    public void tearDown(){
+        if (driver!=null){
+            driver.quit();
+        }
+    }
+}
+```
+4. 编写登录页面测试文件LoginTest.java
+```java
+package tests;
+
+import base.BaseTest;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import pages.LoginPage;
+import utils.ExtentReportManager;
+
+import java.time.Duration;
+
+public class LoginTest extends BaseTest {
+    @Test
+    public void test_valid_login(){
+        test= ExtentReportManager.createTest("Login test");
+        LoginPage loginPage=new LoginPage(driver);
+        test.info("navigate to website");
+        loginPage.input_email();
+        loginPage.input_password();
+        loginPage.click_login_button();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8));
+        test.info("verify index title");
+        Assert.assertEquals(driver.getTitle(),"Dashboard / nopCommerce administration");
+        test.info("test pass!");
+    }
+}
+```
+## 使用pagefactory简化元素的定位
+1. 安装selenium依赖
+2. 将原本find方法变为注解
+```java
+@FindBy(id="Email")
+WebElement emailbox;
+@FindBy(id="Password")
+WebElement passwordbox;
+@FindBy(xpath = "//button[@type='submit']")
+WebElement loginbutton;
+```
+3. 在页面进行pagefactory初始化
+```java
+public LoginPage(WebDriver driver){
+        this.driver=driver;
+        PageFactory.initElements(driver, this);
+    }
+```
