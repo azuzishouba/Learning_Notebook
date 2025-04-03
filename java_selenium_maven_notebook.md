@@ -462,3 +462,78 @@ public LoginPage(WebDriver driver){
         PageFactory.initElements(driver, this);
     }
 ```
+## 数据驱动自动化测试
+1. 安装poi依赖
+```xml
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.24.0</version>
+        </dependency>
+```
+2. 创建并编写ExcelUtils
+```java
+package utils;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ExcelUtils {
+
+	private static Workbook workbook;
+	private static Sheet sheet;
+
+	public static void loadExcel(String filePath, String sheetName) throws IOException {
+
+		FileInputStream file = new FileInputStream(filePath);
+		workbook = new XSSFWorkbook(file);
+		sheet = workbook.getSheet(sheetName);
+	}
+
+	public static String getCellData(int row, int col) {
+		Cell cell = sheet.getRow(row).getCell(col);
+		if (cell.getCellType() == CellType.STRING) {
+			return cell.getStringCellValue();
+		} else if (cell.getCellType() == CellType.NUMERIC) {
+			return String.valueOf((int) cell.getNumericCellValue());
+		}
+		return "";
+	}
+
+	public static int getRowCount() {
+		return sheet.getPhysicalNumberOfRows();
+	}
+
+	public static void closeExcel() throws IOException {
+		workbook.close();
+	}
+
+}
+```
+## 注解的使用
+|注解|触发时机|适用场景|推荐使用时机|
+|--|--|--|--|
+|@BeforeSuite|在整个测试套件执行前|用于全局初始化（如数据库连接、启动服务器等）|需要在所有测试之前做一次性准备工作，比如启动服务器或配置全局变量。
+|@BeforeTest|在 <test> 标签下的所有测试方法执行前|用于为 <test> 标签下的所有测试做准备工作|需要对 <test> 标签下的所有测试方法进行初始化。|
+|@BeforeClass|在当前类中的第一个测试方法执行前|用于类级别的初始化，如 WebDriver 或数据库连接|需要为整个测试类进行初始化工作，并且不需要在每个方法前执行。
+|@BeforeMethod|在每个 @Test 方法执行前|用于方法级别的初始化，如每个测试方法前都要清理或初始化	|需要在每个测试方法前进行独立的初始化，确保测试之间互不干扰。|
+|@BeforeGroups|在特定测试组执行前|用于对特定测试组的初始化操作|	需要对某个特定的测试组进行初始化，通常适用于功能分组的情况。|
