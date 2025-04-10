@@ -18,7 +18,7 @@ OS模块提供了非常丰富的方法用来处理文件和目录。常用的方
 |os.chmod(path, mode)|更改权限|
 |os.chown(path, uid, gid)|更改文件所有者|
 |os.chroot(path)|改变当前进程的根目录|
-|os.getcwd()|返回当前工作目录 |
+|os.getcwd()|(get current directory)返回当前工作目录 |
 |os.listdir(path)|返回path指定的文件夹包含的文件或文件夹的名字的列表|
 |os.open(file, flags[, mode])|打开一个文件，并且设置需要的打开选项，mode参数是可选的|
 |os.remove(path)|删除路径为path的文件。如果path 是一个文件夹，将抛出OSError; 查看下面的rmdir()删除一个 directory。|
