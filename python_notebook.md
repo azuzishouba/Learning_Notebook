@@ -1236,6 +1236,41 @@ lambda 参数: 表达式
 multiply = lambda x, y: x * y
 print(multiply(3, 4))  # 输出: 12
 ```
+## python装饰器
+装饰器（decorators）是 Python 中的一种高级功能，它允许你动态地修改函数或类的行为。
+
+***简单来说就是在函数前注解的时候(即使用装饰器的时候),装饰器能够作为一个整体函数作为使用装饰器的此函数的参数***
+
+举个直观的例子：
+```python
+def decorator(func):  # func 就是被 @ 装饰的函数
+    def wrapper():
+        print("调用前")
+        func()   # 调用原始函数
+        print("调用后")
+    return wrapper
+
+@decorator
+def greet():
+    print("Hello!")
+
+# 相当于：
+# greet = decorator(greet)
+
+greet()
+```
+
+输出：
+```python
+调用前
+Hello!
+调用后
+```
+所以你说的没错，@decorator 就是把 greet 传给 decorator 函数，相当于：
+```python
+greet = decorator(greet)
+```
+而 decorator 函数返回了 wrapper 这个函数对象，它替代了原始的 greet 函数。
 ## 函数的返回(return)
 在 Python 中,函数的返回值是指函数执行完毕后,将结果返回到函数,以便下次继续调用.
 ```python
