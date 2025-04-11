@@ -2349,6 +2349,175 @@ public class ArrayListExample {
     }
 }
 ```
+## Linkedlist
+链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的地址。
+
+LinkedList 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList; 
+
+LinkedList<E> list = new LinkedList<E>();   // 普通创建方法
+或者
+LinkedList<E> list = new LinkedList(Collection<? extends E> c); // 使用集合创建链表
+```
+创建一个简单的链表实例：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        System.out.println(sites);
+    }
+}
+```
+以上实例，执行输出结果为：
+```java
+[Google, Runoob, Taobao, Weibo]
+```
+在列表结尾移除元素：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        // 使用 removeLast() 移除尾部元素
+        sites.removeLast();
+        System.out.println(sites);
+    }
+}
+```
+以上实例，执行输出结果为：
+```java
+[Google, Runoob, Taobao]
+```
+获取列表开头的元素：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        // 使用 getFirst() 获取头部元素
+        System.out.println(sites.getFirst());
+    }
+}
+```
+以上实例，执行输出结果为：
+```java
+Google
+```
+获取列表结尾的元素：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        // 使用 getLast() 获取尾部元素
+        System.out.println(sites.getLast());
+    }
+}
+```
+以上实例，执行输出结果为：
+```java
+Weibo
+```
+### 迭代元素
+
+我们可以使用 for 配合 size() 方法来迭代列表中的元素：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        for (int size = sites.size(), i = 0; i < size; i++) {
+            System.out.println(sites.get(i));
+        }
+    }
+}
+```
+size() 方法用于计算链表的大小。
+
+以上实例，执行输出结果为：
+```java
+Google
+Runoob
+Taobao
+Weibo
+```
+也可以使用 for-each 来迭代元素：
+
+实例
+```java
+// 引入 LinkedList 类
+import java.util.LinkedList;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        LinkedList<String> sites = new LinkedList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        for (String i : sites) {
+            System.out.println(i);
+        }
+    }
+}
+```
+以上实例，执行输出结果为：
+```java
+Google
+Runoob
+Taobao
+Weibo
+```
+以下情况使用 ArrayList :
+* 频繁访问列表中的某一个元素。
+* 只需要在列表末尾进行添加和删除元素操作。
+
+以下情况使用 LinkedList :
+* 你需要通过循环迭代来访问列表中的某些元素。
+* 需要频繁的在列表开头、中间、末尾等位置进行添加和删除元素操作。
 ## 异常处理
 在Java中，异常处理是通过try、catch、finally、throw和throws等关键字来实现的。异常处理机制允许程序在出现错误时进行优雅的处理，而不是直接崩溃。
 1. try-catch 块
@@ -2885,6 +3054,174 @@ public class HashMapExample {
         System.out.println("After removal, size: " + map.size()); // 输出 2
     }
 }
+```
+## java hashset
+HashSet 基于 HashMap 来实现的，是一个不允许有重复元素的集合。
+
+HashSet 允许有 null 值。
+
+HashSet 是无序的，即不会记录插入的顺序。
+
+HashSet 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+```java
+import java.util.HashSet; // 引入 HashSet 类
+```
+以下实例我们创建一个 HashSet 对象 sites，用于保存字符串元素：
+```java
+HashSet<String> sites = new HashSet<String>();
+```
+### 添加元素
+
+HashSet 类提供了很多有用的方法，添加元素可以使用 add() 方法:
+
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");  // 重复的元素不会被添加
+        System.out.println(sites);
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+[Google, Runoob, Zhihu, Taobao]
+```
+在上面的实例中，Runoob 被添加了两次，它在集合中也只会出现一次，因为集合中的每个元素都必须是唯一的。
+
+### 判断元素是否存在
+
+我们可以使用 contains() 方法来判断元素是否存在于集合当中:
+
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");  // 重复的元素不会被添加
+        System.out.println(sites.contains("Taobao"));
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+true
+```
+### 删除元素
+
+我们可以使用 remove() 方法来删除集合中的元素:
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");     // 重复的元素不会被添加
+        sites.remove("Taobao");  // 删除元素，删除成功返回 true，否则为 false
+        System.out.println(sites);
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+[Google, Runoob, Zhihu]
+```
+删除集合中所有元素可以使用 clear 方法：
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");     // 重复的元素不会被添加
+        sites.clear();  
+        System.out.println(sites);
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+[]
+```
+### 计算大小
+
+如果要计算 HashSet 中的元素数量可以使用 size() 方法：
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");     // 重复的元素不会被添加
+        System.out.println(sites.size());  
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+4
+```
+### 迭代 HashSet
+
+可以使用 for-each 来迭代 HashSet 中的元素。
+实例
+```java
+// 引入 HashSet 类      
+import java.util.HashSet;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+    HashSet<String> sites = new HashSet<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+        sites.add("Runoob");     // 重复的元素不会被添加
+        for (String i : sites) {
+            System.out.println(i);
+        }
+    }
+}
+```
+执行以上代码，输出结果如下：
+```java
+Google
+Runoob
+Zhihu
+Taobao
 ```
 ## java enum
 在 Java 中，enum（枚举）是一种特殊的类，用于定义一组固定的常量。枚举类型在 Java 5 中引入，它提供了一种更安全、更易读的方式来表示一组相关的常量。
