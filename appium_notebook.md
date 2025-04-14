@@ -5,39 +5,40 @@
     node -v
     npm -v
 ```
-2. 没有安装需要安装nodejs
+2. 安装appium前需要安装jdk,配置JAVA_HOME和PATH
+3. 没有安装需要安装nodejs
     >https://nodejs.org/en/download/prebuilt-installer
-3. 安装appium
+4. 安装appium
 ```shell
     npm install -g appium
 ```
-4. 检查是否成功安装appium
+5. 检查是否成功安装appium
 ```shell
    appium --version
    which appium(查看appium位置)
 ```
-5. 运行appium服务器(ctrl+c停止)
+6. 运行appium服务器(ctrl+c停止)
 ```shell
     appium 
 ```
-6. 安装appium-doctor,检查依赖是否安装完全
+7. 安装appium-doctor,检查依赖是否安装完全
 ```shell
 npm install -g appium-doctor
 ```
-7. 检查是否安装成功
+8. 检查是否安装成功
 ```shell
 appium-doctor --version
 ```
-8. 运行appium-doctor
+9. 运行appium-doctor
 ```shell
 #查看运行帮助
-appium doctor -h
+appium-doctor -h
 #查看Android运行环境
-appium doctor --android
+appium-doctor --android
 # 查看iOS运行环境
-appium doctor --ios 
+appium-doctor --ios 
 ```
-9. 检查驱动是否安装
+10. 检查驱动是否安装
 ```shell
 #查看安装的驱动
 appium driver list
@@ -48,7 +49,7 @@ appium driver install xcuitest
 #查看可更新的驱动
 appium driver list --updates
 ```
-10. 运行appium server
+11. 运行appium server
 ```shell
 appium
 #需要跨域时

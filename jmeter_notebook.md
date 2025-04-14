@@ -60,11 +60,18 @@
   2. 选择response code,add pattern to text,状态码设为200
 * duration assertion
 1. 在线程组或者请求下添加duration assertion断言
-![duration_assertion_interface](duration_assertion_interface.png)
+![duration_assertion_interface](/screen_shot/duration_assertion_interface.png)
 2. 在duration in milliseconds(ms)里填写最多的时间
 * size assertion
 1. 填写最大byte,再选择比较关系
-![size_assertion_interface](size_assertion_interface.png)
+![size_assertion_interface](/screen_shot/size_assertion_interface.png)
+## CSV数据驱动测试
+1. 创建csv数据配置
+  ![csv_interface](/screen_shot/csv_interface.png)
+2. 创建csv数据集并添加数据
+3. 对照数据集设置参数
+4. 对照数据集的值使用${}来传参
+![java_response](/screen_shot/java_response.png)
 ## CMD命令行
 1. 在bin目录下执行cmd,并在指定位置生成测试报告(须在bin目录下执行cmd)
 ```shell
@@ -74,7 +81,7 @@ eg:
 ```shell
 jmeter -n -t "D:\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\HTTP Request 1.jmx" -l "D:\360MoveData\Users\YAN\Desktop\reports\result.csv"
 ```
-2. 在生成报告后,根据报告生成html报告(须在bin目录下执行cmd)
+1. 在生成报告后,根据报告生成html报告(须在bin目录下执行cmd)
 
 eg：
 ```shell
