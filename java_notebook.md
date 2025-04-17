@@ -20,8 +20,8 @@
 3. 验证安装
 在命令提示符中输入:
 ```bash
-java *version
-javac *version
+java --version
+javac --version
 ```
 如显示版本信息则配置成功
 ## 第一个java程序

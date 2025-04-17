@@ -251,3 +251,42 @@ Windows 系统
 ```bash
     allure serve ./allure-results
 ```
+## allure报告的详细使用
+### 常用allure标注
+1. @allure.feature("模块/功能")
+
+表示这个测试用例属于哪个功能模块，报告中会以模块为维度进行分组。
+
+```python
+@allure.feature("Sign Up Flow")
+```
+2. @allure.story("用户故事 / 场景")
+
+表示测试用例背后的用户行为或功能场景，更细粒度地划分。
+```python
+@allure.story("User Sign Up")
+```
+3. @allure.severity(...)
+
+标记这个测试用例的重要程度（对业务或系统影响），用于优先级分类。
+
+可选等级：
+```python
+allure.severity_level.BLOCKER      # 阻塞整个功能
+allure.severity_level.CRITICAL     # 关键功能出错
+allure.severity_level.NORMAL       # 正常优先级
+allure.severity_level.MINOR        # 次要问题
+allure.severity_level.TRIVIAL      # 可忽略的小问题
+```
+例子：
+```python
+@allure.severity(allure.severity_level.CRITICAL)
+```
+4. @allure.step("步骤说明")
+
+这个可以包裹你测试代码中的逻辑步骤，让报告里显示出你执行的详细操作步骤（一步步展开看，非常清晰）。
+```python
+with allure.step("填写注册表单"):
+    loginpage.input_name()
+    loginpage.input_email()
+```
