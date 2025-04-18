@@ -437,6 +437,44 @@ actions.perform()
     * Args:
 
         * keys_to_send: The keys to send. Modifier keys constants can be found in the ‘Keys’ class.
+## window句柄
+应用情况:一般新开了窗口需要切换到新开的窗口进行操作
+1. 获取当前页面的句柄
+```python
+handles = driver.window_handles
+```
+2. 切换到新开的窗口(一般是最后一个)
+```python
+driver.switch_to.window(handles[-1])
+```
+示例:
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+driver = webdriver.Chrome()
+
+driver.get("https://example.com")
+
+# 1. 点击一个会打开新窗口的按钮
+driver.find_element(By.ID, "open-new-tab").click()
+
+# 2. 获取当前所有窗口句柄
+handles = driver.window_handles
+
+# 3. 切换到最新打开的窗口（一般是最后一个）
+driver.switch_to.window(handles[-1])
+
+# 4. 操作新窗口里的元素
+driver.find_element(By.ID, "search").send_keys("自动化测试")
+
+# 5. 切回原窗口（如果需要）
+driver.switch_to.window(handles[0])
+
+# 6. 最后关闭
+driver.quit()
+```
 ## alert(警告框)
 1. 接受,取消警示
     ```python
