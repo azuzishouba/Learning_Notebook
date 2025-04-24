@@ -1146,7 +1146,35 @@ random 模块方法如下：
 |choice(seq) |从非空序列 seq 返回一个随机元素。 如果 seq 为空，则引发 IndexError。|
 |shuffle(x[, random]) |将序列 x 随机打乱位置。|
 |random() |返回 [0.0, 1.0) 范围内的下一个随机浮点数。|
+## python-counter函数
+Counter 其实不是一个独立的库，而是 Python 内置模块 collections 里的一个类，专门用来计数的！
 
+基本用法：
+```python
+from collections import Counter
+
+# 举个栗子
+words = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple']
+counter = Counter(words)
+
+print(counter)
+# 输出：Counter({'apple': 3, 'banana': 2, 'orange': 1})
+```
+常用方法&属性：
+|方法/属性|作用说明
+|<kdb>counter.items()</kbd>|获取所有键值对
+|<kbd>counter.most_common(n)</kbd>|获取出现频率最高的前 n 个元素
+|<kbd>counter.update(iterable)</kbd>|更新计数（可以是另一个 Counter 或列表等可迭代对象）
+|<kbd>counter.subtract(iterable)</kbd>|相反操作，减少计数
+
+小菜一碟示例：
+```python
+# 最常见的单词
+text = "spam spam eggs spam bacon eggs spam"
+word_counts = Counter(text.split())
+print(word_counts.most_common(2))
+# 输出：[('spam', 4), ('eggs', 2)]
+```
 ## python函数
 1. 函数的定义和调用
     ```python
@@ -1235,6 +1263,35 @@ lambda 参数: 表达式
 # 定义一个lambda函数
 multiply = lambda x, y: x * y
 print(multiply(3, 4))  # 输出: 12
+```
+## with关键字
+在Python中，with语句用于简化资源管理的过程，比如打开文件、连接数据库或操作其他需要关闭或清理的资源。使用with语句可以确保即使发生错误，资源也会被正确地清理。
+
+基本用法
+```python
+with open('file.txt', 'r') as file:
+    content = file.read()
+    print(content)
+```
+工作原理
+* with语句会自动调用对象的\_\_enter__方法，执行进入代码块前的准备工作。
+* 代码块执行完毕后，不管是否发生异常，with会自动调用\_\_exit__方法，进行清理工作。
+
+例子：自定义上下文管理器
+
+你也可以自己定义一个上下文管理器，来控制资源的打开和关闭。
+```python
+class MyContextManager:
+    def __enter__(self):
+        print("Entering the context")
+        return self  # 可以返回自定义的对象
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("Exiting the context")
+
+# 使用自定义上下文管理器
+with MyContextManager():
+    print("Inside the context")
 ```
 ## python装饰器
 装饰器（decorators）是 Python 中的一种高级功能，它允许你动态地修改函数或类的行为。
