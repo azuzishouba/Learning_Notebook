@@ -87,3 +87,88 @@ file 对象使用 open 函数来创建，下表列出了 file 对象常用的函
 |10|file.truncate([size])从文件的首行首字符开始截断，截断文件为 size 个字符，无 size 表示从当前位置截断；截断之后后面的所有字符被删除，其中 windows 系统下的换行代表2个字符大小。
 |11|***file.write(str)将字符串写入文件，返回的是写入的字符长度。***
 |12|file.writelines(sequence)向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。
+## python-tenacity库
+tenacity 是一个 Python 库，用于实现重试机制，通常用于处理可能会失败的操作，比如网络请求、数据库操作等。它的核心功能是通过设置重试次数、间隔时间和其他策略，帮助你自动重试失败的操作，从而提高程序的可靠性。
+
+安装：
+```python
+pip install tenacity
+```
+基本使用：
+
+1. 最简单的重试： 默认情况下，tenacity 会重试失败的函数，直到成功为止。
+```python
+from tenacity import retry
+
+@retry
+def test_function():
+    print("尝试中...")
+    raise Exception("发生错误")
+
+test_function()
+```
+这个代码会反复尝试调用 test_function()，直到没有错误为止。
+
+2. 控制最大重试次数： 你可以指定最多重试多少次，之后抛出异常。
+```python
+from tenacity import retry, stop_after_attempt
+
+@retry(stop=stop_after_attempt(3))
+def test_function():
+    print("尝试中...")
+    raise Exception("发生错误")
+
+test_function()
+```
+3. 设置重试间隔： 可以自定义重试之间的间隔时间，支持固定间隔、指数回退等。
+```python
+from tenacity import retry, wait_fixed
+
+@retry(wait=wait_fixed(2))  # 每次重试等待2秒
+def test_function():
+    print("尝试中...")
+    raise Exception("发生错误")
+
+test_function()
+```
+4. 根据异常类型进行重试： 你可以指定哪些异常类型触发重试。
+```python
+from tenacity import retry, retry_if_exception_type
+
+@retry(retry=retry_if_exception_type(ValueError))
+def test_function():
+    print("尝试中...")
+    raise ValueError("发生错误")
+
+test_function()
+```
+5. 自定义重试逻辑： tenacity 还允许你定义复杂的重试逻辑，控制何时重试以及如何处理不同的情况。
+```python
+from tenacity import retry, wait_exponential, stop_after_attempt
+
+@retry(wait=wait_exponential(multiplier=1, min=4, max=10), stop=stop_after_attempt(5))
+def test_function():
+    print("尝试中...")
+    raise Exception("发生错误")
+
+test_function()
+```
+Selenium应用示例：
+
+* 等待页面完全加载： 如果页面加载非常缓慢，可以使用 tenacity 重试等待页面加载，直到某个标志性元素（如页面标题或某个特定的 DOM 元素）加载完成。
+```python
+@retry(wait=wait_fixed(3), stop=stop_after_attempt(5))
+def wait_for_page_to_load():
+    driver.get('https://www.example.com')
+    element = driver.find_element(By.TAG_NAME, 'h1')  # 假设页面有一个 h1 标签
+    assert element.text == '欢迎访问 Example 页面'  # 确保页面加载完成
+```
+等待元素可见并进行交互： 假设页面上的某些元素只有在 AJAX 请求完成后才会可见。可以通过 tenacity 重试查找元素直到它出现。
+```python
+@retry(wait=wait_fixed(1), stop=stop_after_attempt(10))
+def wait_for_element_to_be_visible():
+    driver.get('https://www.example.com')
+    element = driver.find_element(By.ID, 'dynamic_element')
+    assert element.is_displayed()  # 确保元素可见
+    element.click()  # 执行点击
+```

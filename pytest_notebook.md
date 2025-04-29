@@ -290,3 +290,8 @@ with allure.step("填写注册表单"):
     loginpage.input_name()
     loginpage.input_email()
 ```
+5. @allure.title("报告标题")
+配置当前报告的标题
+```python
+@allure.title("测试报告")
+```
