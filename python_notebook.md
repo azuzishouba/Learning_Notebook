@@ -616,6 +616,41 @@ else:
 1
 2
 ```
+### for _ in range(0)
+<kbd>✅ for _ in range(n) 的意思:</kbd>
+* range(n) 表示循环 n 次
+* _ 是占位符，代表“我不打算使用这个变量”
+
+<kbd>🔍 所以这句话其实相当于：</kbd>
+```python
+for i in range(n):
+    # 只是我不打算用 i，所以就写 _
+```
+<kbd>🧠 为什么用 _ 而不是 i？</kbd>
+
+* 如果你写了：
+```python
+    for i in range(5):
+        print(input())
+```
+但你 根本没有用 i，那它只是个“摆设”
+
+* 所以 Python 有个小技巧：用 _ 表示“我知道这里有个变量，但我不用它”
+
+🌟 举个例子：让它更直观
+```python
+# 示例：输入 3 个单词
+words = []
+
+for _ in range(3):  # 我循环三次，但不关心“第几次”
+    words.append(input())  # 每次读一个单词，加入列表
+
+print(words)
+```
+你可以理解成：
+* _ 是“变量界的临时工”
+
+* “我用你来走流程，但不会记得你叫什么”
 ## 循环嵌套
 ```python
 for i in range(start1, stop1, step1):
