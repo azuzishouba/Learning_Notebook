@@ -1197,7 +1197,8 @@ print(counter)
 ```
 常用方法&属性：
 |方法/属性|作用说明
-|<kdb>counter.items()</kbd>|获取所有键值对
+|:--|:--|
+|<kbd>counter.items()</kbd>|获取所有键值对
 |<kbd>counter.most_common(n)</kbd>|获取出现频率最高的前 n 个元素
 |<kbd>counter.update(iterable)</kbd>|更新计数（可以是另一个 Counter 或列表等可迭代对象）
 |<kbd>counter.subtract(iterable)</kbd>|相反操作，减少计数
