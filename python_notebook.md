@@ -229,6 +229,12 @@ print(s.islower())  # 输出: True
 s = "HELLO"
 print(s.isupper())  # 输出: True
 ```
+* ***str.isspace()
+判断字符串是否为空***
+```python
+s=""
+print(s) #输出:True
+```
 * ***str.startswith(prefix)
 判断字符串是否以指定的 prefix 开头。***
 ```python
