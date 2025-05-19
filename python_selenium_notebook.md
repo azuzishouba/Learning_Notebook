@@ -496,6 +496,92 @@ driver.quit()
     ```python
     self.driver.get_screenshot_as_file('homepage.png')
     ```
+## Selenium cookies的获取
+Selenium 提供了 get_cookies()、add_cookie()、delete_cookie() 等方法来操作浏览器的 Cookies。
+1. 获取 Cookies
+实例
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+
+# 设置正确的驱动路径
+service = ChromeService(executable_path="./chromedriver-mac-arm64/chromedriver")
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(service=service, options=options)
+
+# 打开网页
+driver.get("https://example.com")
+
+# 获取所有 Cookies
+cookies = driver.get_cookies()
+print(cookies)
+
+# 关闭浏览器
+driver.quit()
+```
+***获取cookies不仅可以通过selenium 通过python-requests一样也可以***
+```python
+ # 导入 requests 包
+import requests
+
+# 发送请求
+x = requests.get('https://www.runoob.com/')
+
+# 返回 http 的cookies
+print(x.cookies)
+```
+2. 添加 Cookie
+实例
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+
+# 设置正确的驱动路径
+service = ChromeService(executable_path="./chromedriver-mac-arm64/chromedriver")
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(service=service, options=options)
+
+
+# 打开网页
+driver.get("https://example.com")
+
+# 添加 Cookie
+driver.add_cookie({"name": "test", "value": "123"})
+
+# 获取所有 Cookies
+cookies = driver.get_cookies()
+print(cookies)
+
+# 关闭浏览器
+driver.quit()
+```
+3. 删除 Cookie
+实例
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+
+# 设置正确的驱动路径
+service = ChromeService(executable_path="./chromedriver-mac-arm64/chromedriver")
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(service=service, options=options)
+
+# 打开网页
+driver.get("https://example.com")
+
+# 添加 Cookie
+driver.add_cookie({"name": "test", "value": "123"})
+
+# 删除 Cookie
+driver.delete_cookie("test")
+
+# 获取所有 Cookies
+cookies = driver.get_cookies()
+print(cookies)
+
+# 关闭浏览器
+driver.quit()
+```
 ## Selenium的文件下载与上传
 ### 文件上传操作
 
