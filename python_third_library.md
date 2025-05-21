@@ -93,6 +93,101 @@ file 对象使用 open 函数来创建，下表列出了 file 对象常用的函
 |10|file.truncate([size])从文件的首行首字符开始截断，截断文件为 size 个字符，无 size 表示从当前位置截断；截断之后后面的所有字符被删除，其中 windows 系统下的换行代表2个字符大小。
 |11|***file.write(str)将字符串写入文件，返回的是写入的字符长度。***
 |12|***file.writelines(sequence)向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。***
+## python-csv模块
+CSV（Comma-Separated Values）文件是一种常见的文件格式，用于存储表格数据。
+
+CSV 文件由纯文本组成，每一行代表表格中的一行数据，而每一列则通过逗号（或其他分隔符）分隔。
+
+CSV 文件通常用于数据交换，因为它简单且易于处理。
+
+Python 提供了一个内置的 csv 模块，用于读取和写入 CSV 文件。这个模块简化了处理 CSV 文件的过程，使得开发者可以轻松地操作表格数据。
+1. 读取 CSV 文件
+
+要读取 CSV 文件，可以使用 csv.reader 对象。以下是一个简单的示例：
+实例
+```python
+import csv
+# 打开 CSV 文件
+with open('data.csv', mode='r', encoding='utf-8') as file:
+    # 创建 csv.reader 对象
+    csv_reader = csv.reader(file)
+   
+    # 逐行读取数据
+    for row in csv_reader:
+        print(row)
+```
+代码解释：
+
+* open('data.csv', mode='r', encoding='utf-8')：以只读模式打开名为 data.csv 的文件，并指定编码为 UTF-8。
+* csv.reader(file)：创建一个 csv.reader 对象，用于读取文件内容。
+* for row in csv_reader：逐行读取文件内容，每一行数据会被解析为一个列表。
+
+2. 写入 CSV 文件
+
+要写入 CSV 文件，可以使用 csv.writer 对象。以下是一个示例：
+实例
+```python
+import csv
+
+# 要写入的数据
+data = [
+    ['Name', 'Age', 'City'],
+    ['Alice', '30', 'New York'],
+    ['Bob', '25', 'Los Angeles']
+]
+
+# 打开 CSV 文件
+with open('output.csv', mode='w', encoding='utf-8', newline='') as file:
+    # 创建 csv.writer 对象
+    csv_writer = csv.writer(file)
+   
+    # 写入数据
+    for row in data:
+        csv_writer.writerow(row)
+```
+代码解释：
+* open('output.csv', mode='w', encoding='utf-8', newline='')：以写入模式打开名为 output.csv 的文件，并指定编码为 UTF-8。newline='' 用于避免在 Windows 系统中出现空行。
+* csv.writer(file)：创建一个 csv.writer 对象，用于写入文件内容。
+* csv_writer.writerow(row)：将每一行数据写入文件。
+
+3. 使用字典读取和写入 CSV 文件
+
+csv 模块还提供了 DictReader 和 DictWriter 类，它们可以将 CSV 文件的每一行解析为字典，或者将字典写入 CSV 文件。
+
+**使用 DictReader 读取 CSV 文件：**
+
+实例
+```python
+import csv
+
+with open('data.csv', mode='r', encoding='utf-8') as file:
+    csv_dict_reader = csv.DictReader(file)
+   
+    for row in csv_dict_reader:
+        print(row)
+```
+**使用 DictWriter 写入 CSV 文件：**
+
+实例
+```python
+import csv
+
+data = [
+    {'Name': 'Alice', 'Age': '30', 'City': 'New York'},
+    {'Name': 'Bob', 'Age': '25', 'City': 'Los Angeles'}
+]
+
+with open('output.csv', mode='w', encoding='utf-8', newline='') as file:
+    fieldnames = ['Name', 'Age', 'City']
+    csv_dict_writer = csv.DictWriter(file, fieldnames=fieldnames)
+   
+    # 写入表头
+    csv_dict_writer.writeheader()
+   
+    # 写入数据
+    for row in data:
+        csv_dict_writer.writerow(row)
+```
 ## python-tenacity库
 tenacity 是一个 Python 库，用于实现重试机制，通常用于处理可能会失败的操作，比如网络请求、数据库操作等。它的核心功能是通过设置重试次数、间隔时间和其他策略，帮助你自动重试失败的操作，从而提高程序的可靠性。
 
