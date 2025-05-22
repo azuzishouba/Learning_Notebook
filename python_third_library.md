@@ -188,6 +188,34 @@ with open('output.csv', mode='w', encoding='utf-8', newline='') as file:
     for row in data:
         csv_dict_writer.writerow(row)
 ```
+**常用的属性和方法**
+
+**csv 模块核心方法**
+
+|方法|说明|示例
+|:--|:--|:--
+csv.reader()|从文件对象读取 CSV 数据|reader = csv.reader(file)
+csv.writer()|将数据写入 CSV 文件|writer = csv.writer(file)
+csv.DictReader()|将 CSV 行读取为字典（带表头）	|dict_reader = csv.DictReader(file)
+csv.DictWriter()|将字典写入 CSV 文件（需指定字段名）|dict_writer = csv.DictWriter(file, fieldnames)
+csv.register_dialect()|注册自定义 CSV 格式（如分隔符）	|csv.register_dialect('mydialect', delimiter='|')
+csv.unregister_dialect()|删除已注册的方言|csv.unregister_dialect('mydialect')
+csv.list_dialects()|列出所有已注册的方言|print(csv.list_dialects())
+
+**csv.reader 和 csv.writer 对象常用方法**
+
+方法|说明|适用对象
+|:--|:--|:--
+__next__()|迭代读取下一行（或使用 for 循环）|reader
+writerow(row)|写入单行数据|writer
+writerows(rows)|写入多行数据（列表的列表）|writer
+
+**csv.DictReader 和 csv.DictWriter 对象特性**
+
+特性/方法|说明|示例
+:--|:--|:--
+fieldnames|字段名列表（DictReader 自动从首行获取）|dict_reader.fieldnames
+writeheader()|写入表头行（DictWriter 专用）	|dict_writer.writeheader()
 ## python-tenacity库
 tenacity 是一个 Python 库，用于实现重试机制，通常用于处理可能会失败的操作，比如网络请求、数据库操作等。它的核心功能是通过设置重试次数、间隔时间和其他策略，帮助你自动重试失败的操作，从而提高程序的可靠性。
 
