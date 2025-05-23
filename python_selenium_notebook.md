@@ -582,6 +582,43 @@ print(cookies)
 # 关闭浏览器
 driver.quit()
 ```
+## Selenium的iframe
+iframe 是嵌入在网页中的另一个网页。Selenium 提供了 switch_to.frame() 方法来切换到 iframe。
+1. 切换到 iframe
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+
+# 设置正确的驱动路径
+service = ChromeService(executable_path="./chromedriver-mac-arm64/chromedriver")
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(service=service, options=options)
+
+# 打开网页
+driver.get("https://example.com")
+
+# 切换到 iframe
+iframe = driver.find_element_by_tag_name("iframe")
+driver.switch_to.frame(iframe)
+
+# 在 iframe 中操作,就像主页面正常定位元素就行
+print(driver.page_source)
+
+# 切换回主页面
+driver.switch_to.default_content()
+
+# 关闭浏览器
+driver.quit()
+```
+2. 切换回主页面
+
+在 iframe 中操作完成后，可以使用 switch_to.default_content() 方法切换回主页面。
+实例
+```python
+# 切换回主页面
+driver.switch_to.default_content()
+```
 ## Selenium的文件下载与上传
 ### 文件上传操作
 
