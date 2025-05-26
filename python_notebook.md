@@ -1335,6 +1335,38 @@ class MyContextManager:
 with MyContextManager():
     print("Inside the context")
 ```
+## python闭包
+闭包是Python中一个重要的概念，它指的是能够访问自由变量的函数（在函数内部引用外部函数作用域中的变量）。
+
+闭包的基本概念
+
+闭包需要满足三个条件：
+
+* 必须有一个嵌套函数（函数内部定义函数）
+
+* 嵌套函数必须引用外部函数中的变量
+
+* 外部函数必须返回嵌套函数
+
+简单示例
+```python
+
+def outer_func(x):
+    def inner_func(y):
+        return x + y
+    return inner_func
+
+closure = outer_func(10)  # x被设置为10
+print(closure(5))  # 输出15 (10 + 5)
+print(closure(10))  # 输出20 (10 + 10)
+```
+闭包的特点
+
+* 记住外部变量：闭包可以记住并访问外部函数的变量，即使外部函数已经执行完毕
+
+* 数据封装：可以用于实现数据隐藏和封装
+
+* 延迟计算：可以延迟变量的计算
 ## python装饰器
 装饰器（decorators）是 Python 中的一种高级功能，它允许你动态地修改函数或类的行为。
 
