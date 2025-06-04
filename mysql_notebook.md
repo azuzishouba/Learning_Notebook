@@ -33,14 +33,14 @@
 * BETWEEN...AND,IN,表示在两者值之间，是否在对象里
 ## LIKE 关键字
 * LIKE '查询内容'
-    * LIKE '%field' 表示以查询内容开头
-    * LIKE 'field%' 表示以查询内容结尾
-    * LIKE '%field%' 表示查询内容在中间
+    * LIKE '%alice' 表示以alice结尾,%为任意字符
+    * LIKE 'alice%' 表示以alice内容开头,%为任意内容
+    * LIKE '%alice%' 表示alice内容在中间,%为任意内容
 ## REGEXP正则表达式
 * REGEXP 等同于LIKE,但是比LIKE功能更强
 * REGEXP 'field' = LIKE 'field'
-* REGEXP '^field' = LIKE '%field' 
-* REGEXP 'field$' = LIKE 'field%' 
+* REGEXP '^field' = LIKE 'field%' 
+* REGEXP 'field$' = LIKE '%field' 
 * REGEXP 'field|mac|rose'  | 可以表示或,查询只要符合三者中任意一个即可
 * REGEXP '[gim]e' 表示只要符合方括号中的一个即可,ge,ie,me都可。REGEXP 'e[fmq]' 同理表示ef，em，eq都可
 * REGEXP '[a-h]e' 符合a到h中的一个就可以
