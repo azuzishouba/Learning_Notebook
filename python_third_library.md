@@ -320,6 +320,324 @@ with open('data.json', 'w') as f:
 with open('data.json', 'r') as f:
     data = json.load(f)
 ```
+## python 正则表达式
+正则表达式是一个特殊的字符序列，它能帮助你方便的检查一个字符串是否与某种模式匹配。
+
+在 Python 中，使用 re 模块来处理正则表达式。
+
+re 模块提供了一组函数，允许你在字符串中进行模式匹配、搜索和替换操作。
+
+re 模块使 Python 语言拥有完整的正则表达式功能。
+1. 元字符
+
+| 元字符  | 含义 | 示例|
+|:--|:--|:--
+| `.`  | 匹配除换行符外的任意一个字符| `a.b` 匹配 `acb`, `a9b`|||
+| `^`  | 匹配字符串的开头| `^abc` 匹配 `abc123`|||
+| `$`  | 匹配字符串的结尾         | `abc$` 匹配 `123abc`|||
+| `*`  | 匹配前一个字符 0 次或1次或多次   | `ab*c` 匹配 `ac`, `abc`, `abbbc` |       |                    |
+| `+`  | 匹配前一个字符 1 次或多次   | `ab+c` 匹配 `abc`, `abbbc`|       | |
+| `?`  | 匹配前一个字符 0 次或 1 次 | `ab?c` 匹配 `ac`, `abc`|||
+|`{3}`|匹配前一个字符的次数|`abc{2}`匹配`abcc`|
+|`{2,4}` |匹配前一个字符最少的次数和最多的次数|`abc{2,4}`表示前面2到4个
+| `[]` | 匹配括号内的任意一个字符     | `[abc]` 匹配 `a`, `b`, `c`|||
+|`[^]`| 匹配不在括号内的字符|`[^abc]`匹配的字符非abc|
+| \`   | \`| 表示“或” | \`abc | def`匹配`abc`或`def\` |
+| `()` | 分组（可用于提取）| `(abc)+` 匹配 `abc`, `abcabc`|||
+2. 转义字符
+
+| 转义字符 | 含义          | 示例                 |
+| ---- | ----------- | ------------------ |
+| `\d` | 匹配任意数字（0-9） | `\d+` 匹配 `123`     |
+| `\D` | 匹配非数字字符     | `\D+` 匹配 `abc`     |
+| `\w` | 匹配字母数字下划线   | `\w+` 匹配 `hello_1` |
+| `\W` | 匹配非 \w 的字符  | `\W+` 匹配 `@#$`     |
+| `\s` | 匹配任意空白字符    | `\s+` 匹配空格、制表      |
+| `\S` | 匹配非空白字符     | `\S+` 匹配 `abc123`  |
+
+```python
+import re
+
+# 1. re.match：从字符串开头匹配
+re.match(r"\d+", "123abc")  # ✅匹配成功
+
+# 2. re.search：从任意位置查找第一个匹配
+re.search(r"\d+", "abc123")  # ✅匹配成功
+
+# 3. re.findall：找出所有匹配
+re.findall(r"\d+", "a1b22c333")  # ['1', '22', '333']
+
+# 4. re.sub：替换匹配内容
+re.sub(r"\d+", "X", "abc123def456")  # 'abcXdefX'
+
+# 5. 分组提取
+m = re.search(r"(\d{4})-(\d{2})-(\d{2})", "今天是 2025-06-04")
+print(m.group(1), m.group(2), m.group(3))  # 2025 06 04
+```
+### re.match函数
+
+re.match 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match() 就返回 None。
+
+函数语法：
+```python
+re.match(pattern, string, flags=0)
+```
+函数参数说明：
+参数|描述
+|:--|:--|
+pattern|匹配的正则表达式
+string|要匹配的字符串。
+flags|标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。参见：正则表达式修饰符 - 可选标志
+
+匹配成功 re.match 方法返回一个匹配的对象，否则返回 None。
+
+我们可以使用 group(num) 或 groups() 匹配对象函数来获取匹配表达式。
+匹配对象方法|描述
+|:--|:--|
+group(num=0)|匹配的整个表达式的字符串，group() 可以一次输入多个组号，在这种情况下它将返回一个包含那些组所对应值的元组。
+groups()|返回一个包含所有小组字符串的元组，从 1 到 所含的小组号。
+
+实例
+```python
+#!/usr/bin/python
+ 
+import re
+print(re.match('www', 'www.runoob.com').span())  # 在起始位置匹配
+print(re.match('com', 'www.runoob.com'))         # 不在起始位置匹配
+```
+以上实例运行输出结果为：
+```python
+(0, 3)
+None
+```
+实例
+```python
+#!/usr/bin/python3
+import re
+ 
+line = "Cats are smarter than dogs"
+# .* 表示任意匹配除换行符（\n、\r）之外的任何单个或多个字符
+# (.*?) 表示"非贪婪"模式，只保存第一个匹配到的子串
+matchObj = re.match( r'(.*) are (.*?) .*', line, re.M|re.I)
+ 
+if matchObj:
+   print ("matchObj.group() : ", matchObj.group())
+   print ("matchObj.group(1) : ", matchObj.group(1))
+   print ("matchObj.group(2) : ", matchObj.group(2))
+else:
+   print ("No match!!")
+```
+以上实例执行结果如下：
+```python
+matchObj.group() :  Cats are smarter than dogs
+matchObj.group(1) :  Cats
+matchObj.group(2) :  smarter
+```
+### re.search方法
+
+re.search 扫描整个字符串并返回第一个成功的匹配。
+
+函数语法：
+```python
+re.search(pattern, string, flags=0)
+```
+函数参数说明：
+参数|描述
+|:--|:--|
+pattern|匹配的正则表达式
+string|要匹配的字符串。
+flags|标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。参见：正则表达式修饰符 - 可选标志
+
+匹配成功re.search方法返回一个匹配的对象，否则返回None。
+
+我们可以使用group(num) 或 groups() 匹配对象函数来获取匹配表达式。
+匹配对象方法|描述
+|:--|:--|
+group(num=0)|匹配的整个表达式的字符串，group() 可以一次输入多个组号，在这种情况下它将返回一个包含那些组所对应值的元组。
+groups()|返回一个包含所有小组字符串的元组，从 1 到 所含的小组号。
+实例
+```python
+#!/usr/bin/python3
+ 
+import re
+ 
+print(re.search('www', 'www.runoob.com').span())  # 在起始位置匹配
+print(re.search('com', 'www.runoob.com').span())         # 不在起始位置匹配
+```
+以上实例运行输出结果为：
+```python
+(0, 3)
+(11, 14)
+```
+实例
+```python
+#!/usr/bin/python3
+ 
+import re
+ 
+line = "Cats are smarter than dogs"
+ 
+searchObj = re.search( r'(.*) are (.*?) .*', line, re.M|re.I)
+ 
+if searchObj:
+   print ("searchObj.group() : ", searchObj.group())
+   print ("searchObj.group(1) : ", searchObj.group(1))
+   print ("searchObj.group(2) : ", searchObj.group(2))
+else:
+   print ("Nothing found!!")
+```
+以上实例执行结果如下：
+```python
+searchObj.group() :  Cats are smarter than dogs
+searchObj.group(1) :  Cats
+searchObj.group(2) :  smarter
+```
+### re.match 与 re.search的区别
+
+re.match 只匹配字符串的开始，如果字符串开始不符合正则表达式，则匹配失败，函数返回 None，而 re.search 匹配整个字符串，直到找到一个匹配。
+
+实例
+```python
+#!/usr/bin/python3
+ 
+import re
+ 
+line = "Cats are smarter than dogs"
+ 
+matchObj = re.match( r'dogs', line, re.M|re.I)
+if matchObj:
+   print ("match --> matchObj.group() : ", matchObj.group())
+else:
+   print ("No match!!")
+ 
+matchObj = re.search( r'dogs', line, re.M|re.I)
+if matchObj:
+   print ("search --> matchObj.group() : ", matchObj.group())
+else:
+   print ("No match!!")
+```
+以上实例运行结果如下：
+```python
+No match!!
+search --> matchObj.group() :  dogs
+```
+### compile 函数
+
+compile 函数用于编译正则表达式，生成一个正则表达式（ Pattern ）对象，供 match() 和 search() 这两个函数使用。
+
+语法格式为：
+```python
+re.compile(pattern[, flags])
+```
+参数：
+* pattern : 一个字符串形式的正则表达式
+* flags 可选，表示匹配模式，比如忽略大小写，多行模式等，具体参数为：
+    * re.IGNORECASE 或 re.I - 使匹配对大小写不敏感
+    re.L 表示特殊字符集 \w, \W, \b, \B, \s, \S 依赖于当前环境
+    * re.MULTILINE 或 re.M - 多行模式，改变 ^ 和 $ 的行为，使它们匹配字符串的每一行的开头和结尾。
+    * re.DOTALL 或 re.S - 使 . 匹配包括换行符在内的任意字符。
+    * re.ASCII - 使 \w, \W, \b, \B, \d, \D, \s, \S 仅匹配 ASCII 字符。
+    * re.VERBOSE 或 re.X - 忽略空格和注释，可以更清晰地组织复杂的正则表达式。
+
+    这些标志可以单独使用，也可以通过按位或（|）组合使用。例如，re.IGNORECASE | re.MULTILINE 表示同时启用忽略大小写和多行模式。
+
+实例
+```python
+>>>import re
+>>> pattern = re.compile(r'\d+')                    # 用于匹配至少一个数字
+>>> m = pattern.match('one12twothree34four')        # 查找头部，没有匹配
+>>> print( m )
+None
+>>> m = pattern.match('one12twothree34four', 2, 10) # 从'e'的位置开始匹配，没有匹配
+>>> print( m )
+None
+>>> m = pattern.match('one12twothree34four', 3, 10) # 从'1'的位置开始匹配，正好匹配
+>>> print( m )                                        # 返回一个 Match 对象
+<_sre.SRE_Match object at 0x10a42aac0>
+>>> m.group(0)   # 可省略 0
+'12'
+>>> m.start(0)   # 可省略 0
+3
+>>> m.end(0)     # 可省略 0
+5
+>>> m.span(0)    # 可省略 0
+(3, 5)
+```
+### findall
+
+在字符串中找到正则表达式所匹配的所有子串，并返回一个列表，如果有多个匹配模式，则返回元组列表，如果没有找到匹配的，则返回空列表。
+
+注意： match 和 search 是匹配一次 findall 匹配所有。
+
+语法格式为：
+```python
+re.findall(pattern, string, flags=0)
+或
+pattern.findall(string[, pos[, endpos]])
+```
+参数：
+
+* pattern 匹配模式。
+* string 待匹配的字符串。
+* pos 可选参数，指定字符串的起始位置，默认为 0。
+* endpos 可选参数，指定字符串的结束位置，默认为字符串的长度。
+
+查找字符串中的所有数字：
+```python
+import re
+ 
+result1 = re.findall(r'\d+','runoob 123 google 456')
+ 
+pattern = re.compile(r'\d+')   # 查找数字
+result2 = pattern.findall('runoob 123 google 456')
+result3 = pattern.findall('run88oob123google456', 0, 10)
+ 
+print(result1)
+print(result2)
+print(result3)
+```
+输出结果：
+```python
+['123', '456']
+['123', '456']
+['88', '12']
+```
+多个匹配模式，返回元组列表：
+```python
+import re
+
+result = re.findall(r'(\w+)=(\d+)', 'set width=20 and height=10')
+print(result)
+
+[('width', '20'), ('height', '10')]
+```
+### re.finditer
+
+和 findall 类似，在字符串中找到正则表达式所匹配的所有子串，并把它们作为一个迭代器返回。
+
+re.finditer(pattern, string, flags=0)
+
+参数：
+参数|描述
+|:--|:--
+pattern|匹配的正则表达式
+string|要匹配的字符串。
+flags|标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。参见：正则表达式修饰符 - 可选标志
+
+```python
+import re
+ 
+it = re.finditer(r"\d+","12a32bc43jf3") 
+for match in it: 
+    print (match.group() )
+```
+输出结果：
+```python
+12 
+32 
+43 
+3
+```
 ## python-tenacity库
 tenacity 是一个 Python 库，用于实现重试机制，通常用于处理可能会失败的操作，比如网络请求、数据库操作等。它的核心功能是通过设置重试次数、间隔时间和其他策略，帮助你自动重试失败的操作，从而提高程序的可靠性。
 
@@ -404,59 +722,4 @@ def wait_for_element_to_be_visible():
     element = driver.find_element(By.ID, 'dynamic_element')
     assert element.is_displayed()  # 确保元素可见
     element.click()  # 执行点击
-```
-## python 正则表达式
-正则表达式是一个特殊的字符序列，它能帮助你方便的检查一个字符串是否与某种模式匹配。
-
-在 Python 中，使用 re 模块来处理正则表达式。
-
-re 模块提供了一组函数，允许你在字符串中进行模式匹配、搜索和替换操作。
-
-re 模块使 Python 语言拥有完整的正则表达式功能。
-1. 元字符
-
-| 元字符  | 含义 | 示例|
-|:--|:--|:--
-| `.`  | 匹配除换行符外的任意一个字符| `a.b` 匹配 `acb`, `a9b`|||
-| `^`  | 匹配字符串的开头| `^abc` 匹配 `abc123`|||
-| `$`  | 匹配字符串的结尾         | `abc$` 匹配 `123abc`|||
-| `*`  | 匹配前一个字符 0 次或1次或多次   | `ab*c` 匹配 `ac`, `abc`, `abbbc` |       |                    |
-| `+`  | 匹配前一个字符 1 次或多次   | `ab+c` 匹配 `abc`, `abbbc`|       | |
-| `?`  | 匹配前一个字符 0 次或 1 次 | `ab?c` 匹配 `ac`, `abc`|||
-|`{3}`|匹配前一个字符的次数|`abc{2}`匹配`abcc`|
-|`{2,4}` |匹配前一个字符最少的次数和最多的次数|`abc{2,4}`表示前面2到4个
-| `[]` | 匹配括号内的任意一个字符     | `[abc]` 匹配 `a`, `b`, `c`|||
-|`[^]`| 匹配不在括号内的字符|`[^abc]`匹配的字符非abc|
-| \`   | \`| 表示“或” | \`abc | def`匹配`abc`或`def\` |
-| `()` | 分组（可用于提取）| `(abc)+` 匹配 `abc`, `abcabc`|||
-2. 转义字符
-
-| 转义字符 | 含义          | 示例                 |
-| ---- | ----------- | ------------------ |
-| `\d` | 匹配任意数字（0-9） | `\d+` 匹配 `123`     |
-| `\D` | 匹配非数字字符     | `\D+` 匹配 `abc`     |
-| `\w` | 匹配字母数字下划线   | `\w+` 匹配 `hello_1` |
-| `\W` | 匹配非 \w 的字符  | `\W+` 匹配 `@#$`     |
-| `\s` | 匹配任意空白字符    | `\s+` 匹配空格、制表      |
-| `\S` | 匹配非空白字符     | `\S+` 匹配 `abc123`  |
-
-```python
-import re
-
-# 1. re.match：从字符串开头匹配
-re.match(r"\d+", "123abc")  # ✅匹配成功
-
-# 2. re.search：从任意位置查找第一个匹配
-re.search(r"\d+", "abc123")  # ✅匹配成功
-
-# 3. re.findall：找出所有匹配
-re.findall(r"\d+", "a1b22c333")  # ['1', '22', '333']
-
-# 4. re.sub：替换匹配内容
-re.sub(r"\d+", "X", "abc123def456")  # 'abcXdefX'
-
-# 5. 分组提取
-m = re.search(r"(\d{4})-(\d{2})-(\d{2})", "今天是 2025-06-04")
-print(m.group(1), m.group(2), m.group(3))  # 2025 06 04
-
 ```
