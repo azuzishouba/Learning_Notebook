@@ -136,7 +136,9 @@ Linux发行版是基于Linux内核的操作系统版本,通常包含内核、系
 * >less (filename) 一页一页显示内容可以往前翻页,按q退出
 * >head (filename) 只看头十行
 * >tail (filename) 只看尾十行
-  * -n:选择查看行数的参数例如(head -n 20 filename) 
+  * -n:选择查看行数的参数例如(head -n 20 filename)
+  * -f:表示持续侦测后面所接的档名，要等到按下[ctrl]-c才会结束tail的侦测
+  >tail -f log.txt  代表实时查看文件日志  
 #### ***Linux改变文件的权限***
 还有一个改变权限的方法，从之前的介绍中我们可以发现，基本上就九个权限分别是：
   * user：用户
