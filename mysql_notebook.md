@@ -411,6 +411,56 @@ MySQL 索引的建立对于 MySQL 的高效运行是很重要的，索引可以�
     ```sql
     DROP INDEX idx_column_name ON table_name;
     ```
+### 索引的类型
+UNIQUE唯一索引
+
+* 不可以出现相同的值，可以有NULL值。
+
+INDEX普通索引
+
+* 允许出现相同的索引内容。
+
+PRIMARY KEY主键索引
+
+* 不允许出现相同的值，且不能为NULL值，一个表只能有一个primary_key索引。
+
+组合索引	
+
+* 覆盖多个列的索引，按顺序生效（重点是“最左前缀原则”）。
+fulltext index 全文索引
+
+上述三种索引都是针对列的值发挥作用，但全文索引，可以针对值中的某个单词，比如一篇文章中的某个词，然而并没有什么卵用，因为只有myisam以及英文支持，并且效率让人不敢恭维，但是可以用coreseek和xunsearch等第三方应用来完成这个需求。
+
+### 什么样的sql不走索引
+
+要尽量避免这些不走索引的sql
+```sql
+SELECT `sname` FROM `stu` WHERE `age`+10=30;-- 不会使用索引，因为所有索引列参与了计算 
+
+SELECT `sname` FROM `stu` WHERE LEFT(`date`,4) <1990; -- 不会使用索引，因为使用了函数运算，原理与上面相同 
+
+SELECT * FROM `houdunwang` WHERE `uname` LIKE'后盾%' -- 走索引 
+
+SELECT * FROM `houdunwang` WHERE `uname` LIKE "%后盾%" -- 不走索引 
+
+-- 正则表达式不使用索引，这应该很好理解，所以为什么在SQL中很难看到regexp关键字的原因 
+
+-- 字符串与数字比较不使用索引; 
+CREATE TABLE `a` (`a` char(10)); 
+EXPLAIN SELECT * FROM `a` WHERE `a`="1" -- 走索引 
+EXPLAIN SELECT * FROM `a` WHERE `a`=1 -- 不走索引 
+
+select * from dept where dname='xxx' or loc='xx' or deptno=45 --如果条件中有or，即使其中有条件带索引也不会使用。换言之，就是要求使用的所有字段，都必须建立索引，我们建议大家尽量避免使用or 关键字 
+
+-- 如果mysql估计使用全表扫描要比使用索引快，则不使用索引
+```
+![](https://www.runoob.com/wp-content/uploads/2015/06/9dc0c2bc09374310718f0dbfd1d2ec54.jpg)
+
+从上图可以看出，所有表的type为all，表示全表索引。也就是6 6 6，共遍历查询了216次。
+
+除第一张表示全表索引（必须的，要以此关联其他表），其余的为range（索引区间获得），也就是6+1+1+1，共遍历查询9次即可。
+
+所以我们建议在多表join的时候尽量少join几张表，因为一不小心就是一个笛卡尔乘积的恐怖扫描，另外，我们还建议尽量使用left join，以少关联多。因为使用join 的话，第一张表是必须的全扫描的，以少关联多就可以减少这个扫描次数。
 ### 索引的优化
 * 选择性高的列建索引：索引的效率与列的选择性（列的唯一值数目）有关，选择性越高的列越适合建立索引。
 * 避免在低选择性列上创建索引：例如，在性别或布尔类型的字段上创建索引可能会导致性能下降。
