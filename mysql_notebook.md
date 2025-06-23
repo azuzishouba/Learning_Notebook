@@ -430,7 +430,65 @@ PRIMARY KEY主键索引
 fulltext index 全文索引
 
 上述三种索引都是针对列的值发挥作用，但全文索引，可以针对值中的某个单词，比如一篇文章中的某个词，然而并没有什么卵用，因为只有myisam以及英文支持，并且效率让人不敢恭维，但是可以用coreseek和xunsearch等第三方应用来完成这个需求。
+### 组合索引与前缀索引
 
+注意，这两种称呼是对建立索引技巧的一种称呼，并非索引的类型。
+
+组合索引
+
+MySQL单列索引和组合索引究竟有何区别呢？
+
+为了形象地对比两者，先建一个表：
+```sql
+CREATE TABLE `myIndex` ( 
+  `i_testID` INT NOT NULL AUTO_INCREMENT,  
+  `vc_Name` VARCHAR(50) NOT NULL,  
+  `vc_City` VARCHAR(50) NOT NULL,  
+  `i_Age` INT NOT NULL,  
+  `i_SchoolID` INT NOT NULL,  
+  PRIMARY KEY (`i_testID`)  
+);
+```
+假设表内已有1000条数据，在这 10000 条记录里面 7 上 8 下地分布了 5 条 vc_Name=”erquan” 的记录，只不过 city,age,school 的组合各不相同。来看这条 T-SQL：
+```sql
+SELECT `i_testID` FROM `myIndex` WHERE `vc_Name`='erquan' AND `vc_City`='郑州' AND `i_Age`=25; -- 关联搜索;
+```
+首先考虑建MySQL单列索引：
+
+在 vc_Name 列上建立了索引。执行 T-SQL 时，MYSQL 很快将目标锁定在了 vc_Name=erquan 的 5 条记录上，取出来放到一中间结果集。在这个结果集里，先排除掉 vc_City 不等于”郑州”的记录，再排除 i_Age 不等于 25 的记录，最后筛选出唯一的符合条件的记录。虽然在 vc_Name 上建立了索引，查询时MYSQL不用扫描整张表，效率有所提高，但离我们的要求还有一定的距离。同样的,在 vc_City 和 i_Age 分别建立的MySQL单列索引的效率相似。
+
+为了进一步榨取 MySQL 的效率，就要考虑建立组合索引。就是将 vc_Name,vc_City,i_Age 建到一个索引里：
+```sql
+ALTER TABLE `myIndex` ADD INDEX `name_city_age` (vc_Name(10),vc_City,i_Age);
+```
+建表时，vc_Name 长度为 50，这里为什么用 10 呢？这就是下文要说到的前缀索引，因为一般情况下名字的长度不会超过 10，这样会加速索引查询速度，还会减少索引文件的大小，提高 INSERT 的更新速度。
+
+执行 T-SQL 时，MySQL 无须扫描任何记录就到找到唯一的记录！
+
+如果分别在 vc_Name,vc_City,i_Age 上建立单列索引，让该表有 3 个单列索引，查询时和上述的组合索引效率一样吗？答案是大不一样，远远低于我们的组合索引。虽然此时有了三个索引，但 MySQL 只能用到其中的那个它认为似乎是最有效率的单列索引，另外两个是用不到的，也就是说还是一个全表扫描的过程。
+
+建立这样的组合索引，其实是相当于分别建立了：
+
+    vc_Name,vc_City,i_Age
+    vc_Name,vc_City
+    vc_Name
+
+这样的三个组合索引！为什么没有 vc_City,i_Age 等这样的组合索引呢？这是因为 mysql 组合索引 “最左前缀” 的结果。简单的理解就是只从最左面的开始组合。并不是只要包含这三列的查询都会用到该组合索引，下面的几个 T-SQL 会用到：
+```sql
+SELECT * FROM myIndex WHREE vc_Name=”erquan” AND vc_City=”郑州” SELECT * FROM myIndex WHREE vc_Name=”erquan”
+```
+而下面几个则不会用到：
+```sql
+SELECT * FROM myIndex WHREE i_Age=20 AND vc_City=”郑州” SELECT * FROM myIndex WHREE vc_City=”郑州”
+```
+也就是，name_city_age(vc_Name(10),vc_City,i_Age) 从左到右进行索引，如果没有左前索引Mysql不执行索引查询。
+
+前缀索引
+
+如果索引列长度过长，这种列索引时将会产生很大的索引文件，不便于操作，可以使用前缀索引方式进行索引前缀索引应该控制在一个合适的点，控制在0.31黄金值即可（大于这个值就可以创建）。
+```sql
+SELECT COUNT(DISTINCT(LEFT(`title`,10)))/COUNT(*) FROM Arctic; — 这个值大于0.31就可以创建前缀索引，Distinct去重复 ALTER TABLE `user` ADD INDEX `uname`(title(10)); — 增加前缀索引SQL，将人名的索引建立在10，这样可以减少索引文件大小，加快索引查询速度。
+```
 ### 什么样的sql不走索引
 
 要尽量避免这些不走索引的sql
