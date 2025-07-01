@@ -213,15 +213,57 @@ def test_parametrize(a, b, expected):
 ```
 ### 参数化测试
 
-你可以使用 @pytest.mark.parametrize 在类中实现参数化测试。
-示例：
+1. 基本语法
 ```python
 import pytest
 
-class TestMath:
-    @pytest.mark.parametrize("a, b, expected", [(1, 2, 3), (4, 5, 9)])
-    def test_addition(self, a, b, expected):
-        assert a + b == expected
+@pytest.mark.parametrize("输入参数", [值1, 值2, 值3])
+def test_func(输入参数):
+    assert 输入参数 < 10
+```
+2. 多个参数组合
+```python
+@pytest.mark.parametrize("a,b,expected", [
+    (1, 2, 3),
+    (5, 5, 10),
+    (10, -1, 9),
+])
+def test_add(a, b, expected):
+    assert a + b == expected
+
+等价于运行了 3 个测试函数，分别传入不同的参数组合。
+```
+3. 嵌套参数化（多层次）
+```python
+@pytest.mark.parametrize("x", [1, 2])
+@pytest.mark.parametrize("y", [10, 20])
+def test_multi(x, y):
+    assert x * y < 50
+
+这会生成 2 × 2 = 4 组测试，像网格一样全排列组合。
+```
+4. 参数加 ID（给每组参数起名字）
+```python
+@pytest.mark.parametrize(
+    "a,b",
+    [(1, 2), (3, 4)],
+    ids=["加法一组", "加法二组"]
+)
+def test_add_with_id(a, b):
+    assert a + b < 10
+
+ID 就像给测试上了标签，Allure 报告里也会更清晰。
+```
+5. 进阶玩法：从函数或外部文件读取参数
+```python
+test_data = [
+    (1, 1, 2),
+    (2, 3, 5)
+]
+
+@pytest.mark.parametrize("a,b,expected", test_data)
+def test_add_data(a, b, expected):
+    assert a + b == expected
 ```
 ### hook函数
 pytest 的 hook 函数就是一套“事件监听器”，让你能在测试执行的各个阶段“挂钩干预”，比如：启动前、用例执行前后、生成报告等。
