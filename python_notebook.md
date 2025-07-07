@@ -1187,6 +1187,104 @@ random 模块方法如下：
 |choice(seq) |从非空序列 seq 返回一个随机元素。 如果 seq 为空，则引发 IndexError。|
 |shuffle(x[, random]) |将序列 x 随机打乱位置。|
 |random() |返回 [0.0, 1.0) 范围内的下一个随机浮点数。|
+## python变量作用域
+变量的作用域(scope)指的是一个变量在程序中可以被访问的范围。Python中的变量作用域大致分为以下几种:
+1. 局部作用域(LocalScope):函数内部定义的变量，它们只能在该函数内部使用。
+2. 局部作用域-嵌套(Enclosing Scope):在嵌套函数中，外层函数的局部变量对内层函数是可见的。
+3. 全局作用域(Global Scope):在整个模块或程序中都能访问的变量。它们通常在函数外部定义。
+4. 内置作用域(Built-in Scope):Python语言内置的作用域，包含了内置函数和库，比如print()、 len() 等。
+
+1. 局部作用域(Local Scope)
+```python
+def my_function( ):
+    x=10#局部变量	
+    print(x)	
+    my_function() #输出 105 print(x) #报错，x未定义
+```
+在上面的代码中，变量x定义在my_function 内，它只能在这个函数内部访问。函数执行完后，这个变量就不再存在了。
+2. 局部作用域-嵌套(Enclosing Scope)
+```python
+def outer_function():
+    y=20	
+
+def inner_function( ):
+    print(y) # 输出 20，因为y定义在外
+
+inner_function()	
+outer_function( )
+```
+在这个例子中，inner_functioni可以访问它的外层函数
+outer_function	中的变量y，这体现了嵌套作用域的特	
+点。
+
+3. 全局作用域(Global Scope)
+```python
+z=30#全局变量
+def another_function( ):
+    print(z) # 输出 30，因为z是全局变量	
+    another_function( )
+    print(z)# 输出 30，全局变量可以在任何地方访问
+```
+这里的是一个全局变量，可以在模块中的任意函数中访问。
+
+4. 内置作用域(Built-in Scope)
+```python
+print(len("Hello, World!")) #内置函数 len()
+```
+在这里，我们使用了Python内置的1en()函数，它属于内置作用域。
+此外，global和	nonlocal关键字用来调整变量的作用	
+域。
+
+* 使用	global	关键字:	
+```python
+a=100#全局变量
+def modify_global_variable():
+    global a	
+    a=200	
+modify_global_variable()
+print(a) #输出 200，表明全局变量a被修改
+```
+* 使用 nonlocal关键字:
+```python
+def outer_function():
+    b=50	
+    def inner_function():	
+        nonlocal b	
+        b=60	
+        inner_function()	
+print(b) #输出 60，内层函数修改了外层函 outer_function()
+```
+## python 浅拷贝与深拷贝
+* 浅拷贝:修改内层对象时候另一个也会跟着修改，修改外层对象时候则不变
+* 深拷贝:无论怎么修改都无法修改另一个，两者完全独立
+```python
+#浅拷贝
+import copy
+
+lst1 = [[1, 2], [3, 4]]
+lst2 = copy.copy(lst1)
+
+lst2[0][0] = 999
+
+print(lst1)   # [[999, 2], [3, 4]]
+print(lst2)   # [[999, 2], [3, 4]]
+
+lst2.append(['new'])
+
+print(lst1)   # [[999, 2], [3, 4]]
+print(lst2)   # [[999, 2], [3, 4], ['new']]
+```
+```python
+import copy
+
+lst1 = [[1, 2], [3, 4]]
+lst2 = copy.deepcopy(lst1)
+
+lst2[0][0] = 999
+
+print(lst1)   # [[1, 2], [3, 4]]
+print(lst2)   # [[999, 2], [3, 4]]
+```
 ## python-counter函数
 Counter 其实不是一个独立的库，而是 Python 内置模块 collections 里的一个类，专门用来计数的！
 
