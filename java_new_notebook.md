@@ -3760,6 +3760,1608 @@ java.util.Arrays 类能方便地操作数组，它提供的所有方法都是静
 3 |public static void fill(int[] a, int val)将指定的 int 值分配给指定 int 型数组指定范围中的每个元素。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。
 4|public static void sort(Object[] a)对指定对象数组根据其元素的自然顺序进行升序排列。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。
 
+## Java 日期时间
+
+Java 提供了多套日期时间 API，以下是主要类别的对比和常用方法总结：
+
+类别 |主要类|	线程安全 |可变性|	Java 版本 	|特点
+--|--|--|--|--|--
+传统日期 |Date, Calendar，GregorianCalendar |否|	可变 |1.0+|	设计缺陷多，不推荐使用
+新日期时间 |LocalDate, LocalTime, LocalDateTime, ZonedDateTime, ChronoUnit |是|	不可变|	8+ |设计良好，推荐使用
+时间戳 |Instant |是|	不可变|	8+ |机器时间，精确到纳秒
+格式化 |DateTimeFormatter|	是 |不可变 |8+ |线程安全的格式化类|
+### LocalDate/DateTimeFormatter
+
+LocalDate/DateTimeFormatter 是 Java 8 引入的日期类，LocalDate 用于表示不带时间的日期（年-月-日），DateTimeFormatter 用于格式化和解析日期时间对象。
+```java
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        // 获取当前日期
+        LocalDate today = LocalDate.now();
+        System.out.println("当前日期: " + today);
+       
+        // 创建特定日期
+        LocalDate nationalDay = LocalDate.of(2025, 10, 1);
+        System.out.println("国庆节: " + nationalDay);
+       
+        // 日期加减
+        LocalDate tomorrow = today.plusDays(1);
+        LocalDate nextMonth = today.plusMonths(1);
+        LocalDate lastYear = today.minusYears(1);
+       
+        System.out.println("明天: " + tomorrow);
+        System.out.println("下个月: " + nextMonth);
+        System.out.println("去年今天: " + lastYear);
+    }
+}
+```
+以上实例输出结果为：
+```java
+当前日期: 2025-05-01
+国庆节: 2025-10-01
+明天: 2025-05-02
+下个月: 2025-06-01
+去年今天: 2024-05-01
+```
+* 新项目优先使用 java.time 包 (Java 8+)
+
+* 避免使用老旧的 Date 和 Calendar 类
+
+* 明确区分使用时区：
+
+   * 不需要时区：LocalDate/LocalTime/LocalDateTime
+
+   * 需要时区：ZonedDateTime
+
+* 格式化时考虑线程安全：使用 DateTimeFormatter 而非 SimpleDateFormat
+
+* 数据库交互：
+
+   * JDBC 4.2+ 直接支持 java.time 类型
+
+   * 旧版本可转换为 java.sql.Date/Timestamp
+
+1. LocalDate (日期)
+```java
+LocalDate today = LocalDate.now();
+LocalDate date = LocalDate.of(2023, Month.JUNE, 15);
+int year = date.getYear();  // 2023
+Month month = date.getMonth();  // JUNE
+int day = date.getDayOfMonth();  // 15
+LocalDate nextWeek = today.plusWeeks(1);
+boolean isLeap = date.isLeapYear();  // 是否闰年
+```
+2. LocalTime (时间)
+```java
+LocalTime now = LocalTime.now();
+LocalTime time = LocalTime.of(14, 30, 45);  // 14:30:45
+int hour = time.getHour();  // 14
+int minute = time.getMinute();  // 30
+LocalTime nextHour = time.plusHours(1);
+```
+3. LocalDateTime (日期时间)
+```java
+LocalDateTime ldt = LocalDateTime.now();
+LocalDateTime dt = LocalDateTime.of(2023, 6, 15, 14, 30);
+LocalDateTime nextMonth = dt.plusMonths(1);
+```
+4. ZonedDateTime (带时区日期时间)
+```java
+ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+ZonedDateTime nyTime = zdt.withZoneSameInstant(ZoneId.of("America/New_York"));
+ZoneId zone = zdt.getZone();  // 获取时区
+```
+5. Instant (时间戳)
+```java
+Instant now = Instant.now();  // 获取当前时间戳
+Instant later = now.plusSeconds(60);  // 60秒后
+long epochMilli = now.toEpochMilli();  // 获取毫秒时间戳
+```
+## Java 正则表达式
+
+正则表达式定义了字符串的模式。
+
+正则表达式可以用来搜索、编辑或处理文本。
+
+正则表达式并不仅限于某一种语言，但是在每种语言中有细微的差别。
+
+Java 提供了 java.util.regex 包，它包含了 Pattern 和 Matcher 类，用于处理正则表达式的匹配操作。
+### 正则表达式实例
+
+一个字符串其实就是一个简单的正则表达式，例如 Hello World 正则表达式匹配 "Hello World" 字符串。
+
+.（点号）也是一个正则表达式，它匹配任何一个字符如："a" 或 "1"。
+
+下表列出了一些正则表达式的实例及描述：
+正则表达式 |描述
+--|--
+this is text|匹配字符串 "this is text"
+this\s+is\s+text|注意字符串中的 \s+。匹配单词 "this" 后面的 \s+ 可以匹配多个空格，之后匹配 is 字符串，再之后 \s+ 匹配多个格然后再跟上 text 字符串。可以匹配这个实例：this is text
+^\d+(\.\d+)?|^ 定义了以什么开始\d+ 匹配一个或多个数字? 设置括号内的选项是可选的\. 匹配 "."
+
+可以匹配的实例："5", "1.5" 和 "2.21"。
+
+更多正则表达式内容可以参考：[正则表达式 - 教程](regular_expression_notebook.md#正则表达式笔记)
+
+### java.util.regex 包
+
+java.util.regex 包是 Java 标准库中用于支持正则表达式操作的包。
+
+java.util.regex 包主要包括以下三个类：
+
+* Pattern 类：
+
+   * pattern 对象是一个正则表达式的编译表示。Pattern 类没有公共构造方法。要创建一个 Pattern 对象，你必须首先调用其公共静态编译方法，它返回一个 Pattern 对象。该方法接受一个正则表达式作为它的第一个参数。
+* Matcher 类：
+
+   * Matcher 对象是对输入字符串进行解释和匹配操作的引擎。与Pattern 类一样，Matcher 也没有公共构造方法。你需要调用 Pattern 对象的 matcher 方法来获得一个 Matcher 对象。
+* PatternSyntaxException：
+
+   * PatternSyntaxException 是一个非强制异常类，它表示一个正则表达式模式中的语法错误。
+
+以下实例中使用了正则表达式 .*runoob.* 用于查找字符串中是否包了 runoob 子串：
+### 实例
+```java
+import java.util.regex.*;
+ 
+class RegexExample1{
+   public static void main(String[] args){
+      String content = "I am noob " +
+        "from runoob.com.";
+ 
+      String pattern = ".*runoob.*";
+ 
+      boolean isMatch = Pattern.matches(pattern, content);
+      System.out.println("字符串中是否包含了 'runoob' 子字符串? " + isMatch);
+   }
+}
+```
+实例输出结果为：
+字符串中是否包含了 'runoob' 子字符串? true
+### 捕获组
+
+捕获组是把多个字符当一个单独单元进行处理的方法，它通过对括号内的字符分组来创建。
+
+例如，正则表达式 (dog) 创建了单一分组，组里包含"d"，"o"，和"g"。
+
+捕获组是通过从左至右计算其开括号来编号。例如，在表达式（（A）（B（C））），有四个这样的组：
+
+* ((A)(B(C)))
+* (A)
+* (B(C))
+* (C)
+
+可以通过调用 matcher 对象的 groupCount 方法来查看表达式有多少个分组。groupCount 方法返回一个 int 值，表示matcher对象当前有多个捕获组。
+
+还有一个特殊的组（group(0)），它总是代表整个表达式。该组不包括在 groupCount 的返回值中。
+### 实例
+
+下面的例子说明如何从一个给定的字符串中找到数字串：
+
+RegexMatches.java 文件代码：
+```java
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+ 
+public class RegexMatches
+{
+    public static void main( String[] args ){
+ 
+      // 按指定模式在字符串查找
+      String line = "This order was placed for QT3000! OK?";
+      String pattern = "(\\D*)(\\d+)(.*)";
+ 
+      // 创建 Pattern 对象
+      Pattern r = Pattern.compile(pattern);
+ 
+      // 现在创建 matcher 对象
+      Matcher m = r.matcher(line);
+      if (m.find( )) {
+         System.out.println("Found value: " + m.group(0) );
+         System.out.println("Found value: " + m.group(1) );
+         System.out.println("Found value: " + m.group(2) );
+         System.out.println("Found value: " + m.group(3) ); 
+      } else {
+         System.out.println("NO MATCH");
+      }
+   }
+}
+```
+以上实例编译运行结果如下：
+```java
+Found value: This order was placed for QT3000! OK?
+Found value: This order was placed for QT
+Found value: 3000
+Found value: ! OK?
+```
+### 正则表达式语法
+
+在其他语言中，\\\ 表示：我想要在正则表达式中插入一个普通的（字面上的）反斜杠，请不要给它任何特殊的意义。
+
+在 Java 中，\\\ 表示：我要插入一个正则表达式的反斜线，所以其后的字符具有特殊的意义。
+
+所以，在其他的语言中（如 Perl），一个反斜杠 \ 就足以具有转义的作用，而在 Java 中正则表达式中则需要有两个反斜杠才能被解析为其他语言中的转义作用。也可以简单的理解在 Java 的正则表达式中，两个 \\\ 代表其他语言中的一个 \，这也就是为什么表示一位数字的正则表达式是 \\\d，而表示一个普通的反斜杠是 \\\。
+
+
+```java
+System.out.print("\\");    // 输出为 \
+System.out.print("\\\\");  // 输出为 \\
+```
+更多正则表达式内容可以参考：[正则表达式 - 教程](regular_expression_notebook.md#正则表达式笔记)
+
+
+### Matcher 类的方法
+#### 索引方法
+
+索引方法提供了有用的索引值，精确表明输入字符串中在哪能找到匹配：
+序号 |方法及说明
+--|--
+1 |public int start()返回以前匹配的初始索引。
+2 |public int start(int group)返回在以前的匹配操作期间，由给定组所捕获的子序列的初始索引
+3 |public int end()返回最后匹配字符之后的偏移量。
+4 |public int end(int group)返回在以前的匹配操作期间，由给定组所捕获子序列的最后字符之后的偏移量。
+#### 查找方法
+
+查找方法用来检查输入字符串并返回一个布尔值，表示是否找到该模式：
+序号 |方法及说明
+--|--
+1 |public boolean lookingAt()尝试将从区域开头开始的输入序列与该模式匹配。
+2 |public boolean find()尝试查找与该模式匹配的输入序列的下一个子序列。
+3 |public boolean find(int start）重置此匹配器，然后尝试查找匹配该模式、从指定索引开始的输入序列的下一个子序列。
+4 |public boolean matches()尝试将整个区域与模式匹配。
+#### 替换方法
+
+替换方法是替换输入字符串里文本的方法：
+序号|	方法及说明
+--|--
+1 |public Matcher appendReplacement(StringBuffer sb, String replacement)实现非终端添加和替换步骤。
+2 |public StringBuffer appendTail(StringBuffer sb)实现终端添加和替换步骤。
+3 |public String replaceAll(String replacement)替换模式与给定替换字符串相匹配的输入序列的每个子序列。
+4 |public String replaceFirst(String replacement)替换模式与给定替换字符串匹配的输入序列的第一个子序列。
+5 |public static String quoteReplacement(String s)返回指定字符串的字面替换字符串。这个方法返回一个字符串，就像传递给Matcher类的appendReplacement 方法一个字面字符串一样工作。
+### Java Matcher 类
+
+Java 中的 Matcher 类是 java.util.regex 包中的一个重要类，它用于对字符串执行各种匹配操作。Matcher 类本身不能直接实例化，而是需要通过 Pattern 类的 matcher() 方法来创建。
+
+Matcher 类的主要功能包括：
+
+* 执行正则表达式的匹配操作
+* 查找字符串中与模式匹配的子序列
+* 替换匹配到的文本
+
+#### 创建 Matcher 对象
+
+要使用 Matcher 类，首先需要创建一个 Pattern 对象，然后通过它来创建 Matcher 对象：
+
+实例
+```java
+import java.util.regex.*;
+
+// 创建 Pattern 对象
+Pattern pattern = Pattern.compile("a*b");
+
+// 创建 Matcher 对象
+Matcher matcher = pattern.matcher("aaaaab");
+```
+**Matcher 类的常用方法**
+***
+#### 匹配操作方法
+##### matches() 方法
+
+matches() 方法尝试将整个输入序列与模式进行匹配：
+
+实例
+```java
+boolean result = matcher.matches(); // 返回 true 或 false
+```
+##### lookingAt() 方法
+
+lookingAt() 方法尝试从输入序列的开头开始匹配模式：
+
+实例
+```java
+boolean result = matcher.lookingAt(); // 不需要匹配整个字符串
+```
+##### find() 方法
+
+find() 方法在输入序列中查找下一个匹配的子序列：
+
+实例
+```java
+while(matcher.find()) {
+    System.out.println("找到匹配: " + matcher.group());
+}
+```
+#### 获取匹配信息的方法
+##### group() 方法
+group() 方法返回前一次匹配操作所匹配的输入子序列：
+
+实例
+
+```java
+String matchedText = matcher.group();
+```
+##### start() 和 end() 方法
+
+start() 和 end() 方法返回前一次匹配的开始和结束索引：
+
+实例
+```java
+int start = matcher.start(); // 匹配开始位置
+int end = matcher.end();     // 匹配结束位置
+```
+##### groupCount() 方法
+
+groupCount() 返回此匹配器模式中的捕获组数：
+
+实例
+```java
+int count = matcher.groupCount();
+```
+#### 替换操作方法
+##### replaceAll() 方法
+
+replaceAll() 方法替换输入序列中与模式匹配的每个子序列：
+
+实例
+```java
+String result = matcher.replaceAll("replacement");
+```
+##### replaceFirst() 方法
+
+replaceFirst() 方法替换输入序列中与模式匹配的第一个子序列：
+
+实例
+```java
+String result = matcher.replaceFirst("replacement");
+```
+#### 实例
+
+下面是一个完整的示例，展示如何使用 Matcher 类：
+
+实例
+```java
+import java.util.regex.*;
+
+public class MatcherExample {
+    public static void main(String[] args) {
+        String text = "The quick brown fox jumps over the lazy dog";
+        Pattern pattern = Pattern.compile("\\b\\w{4}\\b"); // 匹配4字母单词
+        Matcher matcher = pattern.matcher(text);
+       
+        System.out.println("原始文本: " + text);
+        System.out.println("匹配4字母单词:");
+       
+        while(matcher.find()) {
+            System.out.println("找到 '" + matcher.group() +
+                              "' 在位置 " + matcher.start() + "-" + (matcher.end()-1));
+        }
+       
+        // 替换所有4字母单词为"****"
+        String replaced = matcher.replaceAll("****");
+        System.out.println("\n替换后的文本: " + replaced);
+    }
+}
+```
+输出结果
+```java
+原始文本: The quick brown fox jumps over the lazy dog
+匹配4字母单词:
+找到 'quick' 在位置 4-8
+找到 'brown' 在位置 10-14
+找到 'jumps' 在位置 20-24
+找到 'over' 在位置 26-29
+找到 'lazy' 在位置 35-38
+
+替换后的文本: The **** **** fox **** **** the **** dog
+```
+### 总结
+
+Java 的 Matcher 类提供了强大的正则表达式匹配功能，通过它可以：
+
+* 检查字符串是否匹配特定模式
+* 查找字符串中的模式匹配
+* 提取匹配的子字符串
+* 替换匹配的文本
+
+掌握 Matcher 类对于处理字符串和文本模式匹配非常重要，是 Java 编程中一个非常实用的工具。
+
+## Java 方法
+
+在前面几个章节中我们经常使用到 System.out.println()，那么它是什么呢？
+
+* println() 是一个方法。
+* System 是系统类。
+* out 是标准输出对象。
+
+这句话的用法是调用系统类 System 中的标准输出对象 out 中的方法 println()。
+
+#### 那么什么是方法呢？
+
+Java方法是语句的集合，它们在一起执行一个功能。
+
+* 方法是解决一类问题的步骤的有序组合
+* 方法包含于类或对象中
+* 方法在程序中被创建，在其他地方被引用
+
+#### 方法的优点
+
+1. 使程序变得更简短而清晰。
+2. 有利于程序维护。
+3. 可以提高程序开发的效率。
+4. 提高了代码的重用性。
+
+#### 方法的命名规则
+
+1. 方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头写，不使用连接符。例如：addPerson。
+2. 下划线可能出现在 JUnit 测试方法名称中用以分隔名称的逻辑组件。一个典型的模式是：test<MethodUnderTest>_<state>，例如 testPop_emptyStack。 
+
+### 方法的定义
+
+一般情况下，定义一个方法包含以下语法：
+```java
+修饰符 返回值类型 方法名(参数类型 参数名){
+    ...
+    方法体
+    ...
+    return 返回值;
+}
+```
+方法包含一个方法头和一个方法体。下面是一个方法的所有部分：
+
+* 修饰符：修饰符，这是可选的，告诉编译器如何调用该方法。定义了该方法的访问类型。
+* 返回值类型 ：方法可能会返回值。returnValueType 是方法返回值的数据类型。有些方法执行所需的操作，但没有返回值。在这种情况下，returnValueType 是关键字void。
+* 方法名：是方法的实际名称。方法名和参数表共同构成方法签名。
+* 参数类型：参数像是一个占位符。当方法被调用时，传递值给参数。这个值被称为实参或变量。参数列表是指方法的参数类型、顺序和参数的个数。参数是可选的，方法可以不包含任何参数。
+* 方法体：方法体包含具体的语句，定义该方法的功能。
+
+![](https://www.runoob.com/wp-content/uploads/2013/12/D53C92B3-9643-4871-8A72-33D491299653.jpg)
+
+
+如：
+```java
+public static int age(int birthday){...}
+```
+参数可以有多个：
+```java
+static float interest(float principal, int year){...}
+```
+注意： 在一些其它语言中方法指过程和函数。一个返回非void类型返回值的方法称为函数；一个返回void类型返回值的方法叫做过程。
+
+#### 实例
+
+下面的方法包含 2 个参数 num1 和 num2，它返回这两个参数的最大值。
+```java
+/** 返回两个整型变量数据的较大值 */
+public static int max(int num1, int num2) {
+   int result;
+   if (num1 > num2)
+      result = num1;
+   else
+      result = num2;
+ 
+   return result; 
+}
+```
+更简略的写法（三元运算符）：
+```java
+public static int max(int num1, int num2) {
+  return num1 > num2 ? num1 : num2;
+}
+```
+### 方法调用
+
+Java 支持两种调用方法的方式，根据方法是否返回值来选择。
+
+当程序调用一个方法时，程序的控制权交给了被调用的方法。当被调用方法的返回语句执行或者到达方法体闭括号时候交还控制权给程序。
+
+当方法返回一个值的时候，方法调用通常被当做一个值。例如：
+```java
+int larger = max(30, 40);
+```
+如果方法返回值是void，方法调用一定是一条语句。例如，方法println返回void。下面的调用是个语句：
+```java
+System.out.println("欢迎访问菜鸟教程！");
+```
+实例
+
+下面的例子演示了如何定义一个方法，以及如何调用它：
+TestMax.java 文件代码：
+```java
+public class TestMax {
+   /** 主方法 */
+   public static void main(String[] args) {
+      int i = 5;
+      int j = 2;
+      int k = max(i, j);
+      System.out.println( i + " 和 " + j + " 比较，最大值是：" + k);
+   }
+ 
+   /** 返回两个整数变量较大的值 */
+   public static int max(int num1, int num2) {
+      int result;
+      if (num1 > num2)
+         result = num1;
+      else
+         result = num2;
+ 
+      return result; 
+   }
+}
+```
+以上实例编译运行结果如下：
+```java
+5 和 2 比较，最大值是：5
+```
+这个程序包含 main 方法和 max 方法。main 方法是被 JVM 调用的，除此之外，main 方法和其它方法没什么区别。
+
+main 方法的头部是不变的，如例子所示，带修饰符 public 和 static,返回 void 类型值，方法名字是 main,此外带个一个 String[] 类型参数。String[] 表明参数是字符串数组。
+### void 关键字
+
+本节说明如何声明和调用一个 void 方法。
+
+下面的例子声明了一个名为 printGrade 的方法，并且调用它来打印给定的分数。
+
+#### 示例
+
+TestVoidMethod.java 文件代码：
+```java
+public class TestVoidMethod {
+  public static void main(String[] args) {
+    printGrade(78.5);
+  }
+ 
+  public static void printGrade(double score) {
+    if (score >= 90.0) {
+       System.out.println('A');
+    }
+    else if (score >= 80.0) {
+       System.out.println('B');
+    }
+    else if (score >= 70.0) {
+       System.out.println('C');
+    }
+    else if (score >= 60.0) {
+       System.out.println('D');
+    }
+    else {
+       System.out.println('F');
+    }
+  }
+}
+```
+以上实例编译运行结果如下：
+```java
+C
+```
+这里printGrade方法是一个void类型方法，它不返回值。
+
+一个void方法的调用一定是一个语句。 所以，它被在main方法第三行以语句形式调用。就像任何以分号结束的语句一样。
+### 通过值传递参数
+
+调用一个方法时候需要提供参数，你必须按照参数列表指定的顺序提供。
+
+例如，下面的方法连续n次打印一个消息：
+TestVoidMethod.java 文件代码：
+```java
+public static void nPrintln(String message, int n) {
+  for (int i = 0; i < n; i++) {
+    System.out.println(message);
+  }
+}
+```
+#### 示例
+
+下面的例子演示按值传递的效果。
+
+该程序创建一个方法，该方法用于交换两个变量。
+TestPassByValue.java 文件代码：
+```java
+public class TestPassByValue {
+  public static void main(String[] args) {
+    int num1 = 1;
+    int num2 = 2;
+ 
+    System.out.println("交换前 num1 的值为：" +
+                        num1 + " ，num2 的值为：" + num2);
+ 
+    // 调用swap方法
+    swap(num1, num2);
+    System.out.println("交换后 num1 的值为：" +
+                       num1 + " ，num2 的值为：" + num2);
+  }
+  /** 交换两个变量的方法 */
+  public static void swap(int n1, int n2) {
+    System.out.println("\t进入 swap 方法");
+    System.out.println("\t\t交换前 n1 的值为：" + n1
+                         + "，n2 的值：" + n2);
+    // 交换 n1 与 n2的值
+    int temp = n1;
+    n1 = n2;
+    n2 = temp;
+ 
+    System.out.println("\t\t交换后 n1 的值为 " + n1
+                         + "，n2 的值：" + n2);
+  }
+}
+```
+以上实例编译运行结果如下：
+```java
+交换前 num1 的值为：1 ，num2 的值为：2
+    进入 swap 方法
+        交换前 n1 的值为：1，n2 的值：2
+        交换后 n1 的值为 2，n2 的值：1
+交换后 num1 的值为：1 ，num2 的值为：2
+```
+传递两个参数调用swap方法。有趣的是，方法被调用后，实参的值并没有改变。
+### 方法的重载
+
+上面使用的max方法仅仅适用于int型数据。但如果你想得到两个浮点类型数据的最大值呢？
+
+解决方法是创建另一个有相同名字但参数不同的方法，如下面代码所示：
+```java
+public static double max(double num1, double num2) {
+  if (num1 > num2)
+    return num1;
+  else
+    return num2;
+}
+```
+如果你调用max方法时传递的是int型参数，则 int型参数的max方法就会被调用；
+
+如果传递的是double型参数，则double类型的max方法体会被调用，这叫做方法重载；
+
+就是说一个类的两个方法拥有相同的名字，但是有不同的参数列表。
+
+Java编译器根据方法签名判断哪个方法应该被调用。
+
+方法重载可以让程序更清晰易读。执行密切相关任务的方法应该使用相同的名字。
+
+重载的方法必须拥有不同的参数列表。你不能仅仅依据修饰符或者返回类型的不同来重载方法。 
+
+### 变量作用域
+
+变量的范围是程序中该变量可以被引用的部分。
+
+方法内定义的变量被称为局部变量。
+
+局部变量的作用范围从声明开始，直到包含它的块结束。
+
+局部变量必须声明才可以使用。
+
+方法的参数范围涵盖整个方法。参数实际上是一个局部变量。
+
+for循环的初始化部分声明的变量，其作用范围在整个循环。
+
+但循环体内声明的变量其适用范围是从它声明到循环体结束。它包含如下所示的变量声明： 
+
+![](https://www.runoob.com/wp-content/uploads/2013/12/12-130Q1221013F0.jpg)
+你可以在一个方法里，不同的非嵌套块中多次声明一个具有相同的名称局部变量，但你不能在嵌套块内两次声明局部变量。 
+
+
+### 命令行参数的使用
+
+有时候你希望运行一个程序时候再传递给它消息。这要靠传递命令行参数给main()函数实现。
+
+命令行参数是在执行程序时候紧跟在程序名字后面的信息。
+#### 实例
+
+下面的程序打印所有的命令行参数：
+CommandLine.java 文件代码：
+```java
+public class CommandLine {
+   public static void main(String[] args){ 
+      for(int i=0; i<args.length; i++){
+         System.out.println("args[" + i + "]: " + args[i]);
+      }
+   }
+}
+```
+如下所示，运行这个程序：
+```java
+$ javac CommandLine.java 
+$ java CommandLine this is a command line 200 -100
+args[0]: this
+args[1]: is
+args[2]: a
+args[3]: command
+args[4]: line
+args[5]: 200
+args[6]: -100
+```
+### 构造方法
+
+构造方法（Constructor）是用于创建类的对象的特殊方法。当使用 new 关键字创建对象时，构造方法会自动调用，用来初始化对象的属性。
+
+**构造方法特点：**
+
+* 方法名与类名相同：构造方法的名字必须和类名一致。
+* 没有返回类型：构造方法没有返回类型，连 void 也不能写。
+* 在创建对象时自动调用：每次使用 new 创建对象时，都会自动调用构造方法。
+* 可以重载：可以为同一个类定义多个构造方法，但这些构造方法的参数列表必须不同（即构成重载）。
+
+不管你是否自定义构造方法，所有的类都有构造方法，因为 Java 自动提供了一个默认构造方法，默认构造方法的访问修饰符和类的访问修饰符相同(类为 public，构造函数也为 public；类改为 protected，构造函数也改为 protected)。
+
+一旦你定义了自己的构造方法，默认构造方法就会失效。
+#### 实例
+
+下面是一个使用构造方法的例子：
+```java
+// 一个简单的构造函数
+class MyClass {
+  int x;
+ 
+  // 以下是构造函数
+  MyClass(int i ) {
+    x = i;
+  }
+}
+```
+你可以像下面这样调用构造方法来初始化一个对象：
+ConsDemo.java 文件代码：
+```java
+public class ConsDemo {
+  public static void main(String[] args) {
+    MyClass t1 = new MyClass( 10 );
+    MyClass t2 = new MyClass( 20 );
+    System.out.println(t1.x + " " + t2.x);
+  }
+}
+```
+运行结果如下：
+```java
+10 20
+```
+更多内容参考下一章节：[Java 构造方法](#Java构造方法)。
+
+### 可变参数
+
+JDK 1.5 开始，Java支持传递同类型的可变参数给一个方法。
+
+方法的可变参数的声明如下所示：
+```java
+typeName... parameterName
+```
+在方法声明中，在指定参数类型后加一个省略号(...) 。
+
+一个方法中只能指定一个可变参数，它必须是方法的最后一个参数。任何普通的参数必须在它之前声明。
+
+#### 实例
+```java
+VarargsDemo.java 文件代码：
+public class VarargsDemo {
+    public static void main(String[] args) {
+        // 调用可变参数的方法
+        printMax(34, 3, 3, 2, 56.5);
+        printMax(new double[]{1, 2, 3});
+    }
+ 
+    public static void printMax( double... numbers) {
+        if (numbers.length == 0) {
+            System.out.println("No argument passed");
+            return;
+        }
+ 
+        double result = numbers[0];
+ 
+        for (int i = 1; i <  numbers.length; i++){
+            if (numbers[i] >  result) {
+                result = numbers[i];
+            }
+        }
+        System.out.println("The max value is " + result);
+    }
+}
+```
+以上实例编译运行结果如下：
+```java
+The max value is 56.5
+The max value is 3.0
+```
+### Java try-with-resources 语句(类似于python中的with)
+
+try-with-resources 是 Java 7 引入的一种简洁的资源管理方式，适用于需要在使用后自动关闭的资源（如文件、数据库连接、网络连接等）。
+
+try-with-resources 能够很容易地关闭在 try-catch 语句块中使用的资源，所谓的资源（resource）是指在程序完成后，必须关闭的对象。
+
+try-with-resources 语句确保了每个资源在语句结束时关闭。
+
+所有实现了 java.lang.AutoCloseable 接口（其中，它包括实现了 java.io.Closeable 的所有对象），可以使用作为资源。
+
+优势：
+
+* 简化代码：省去手动关闭资源的代码，逻辑更清晰。
+* 减少错误：自动处理资源关闭，避免忘记关闭资源或处理 finally 块中出现的异常。
+* 提升性能：减少资源泄露，节约系统资源。
+
+基本语法
+```java
+try-with-resources 语法如下：
+
+try (ResourceType resource = new ResourceType()) {
+    // 使用资源
+} catch (ExceptionType e) {
+    // 处理异常
+}
+```
+在 try 块中声明的资源会在代码执行完毕后自动关闭，甚至在发生异常时也会安全关闭。
+使用 AutoCloseable 接口
+
+为了使资源能够被 try-with-resources 使用，该资源必须实现 AutoCloseable 接口
+
+。AutoCloseable 定义了 close() 方法，系统在 try 块结束后会自动调用这个方法关闭资源。
+```java
+public class Resource implements AutoCloseable {
+    public void doSomething() {
+        System.out.println("Using resource...");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Closing resource...");
+    }
+}
+```
+在使用时，只需将资源放在 try 块中：
+```java
+try (Resource res = new Resource()) {
+    res.doSomething();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+输出：
+```java
+Using resource...
+Closing resource...
+```
+无论是否发生异常，资源都会在 try 块结束后自动调用 close() 方法。
+多个资源管理
+
+try-with-resources 可以同时管理多个资源，只需用分号分隔各资源声明即可：
+```java
+try (Resource res1 = new Resource();
+     Resource res2 = new Resource()) {
+    res1.doSomething();
+    res2.doSomething();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+#### 异常处理
+
+优雅处理异常：当多个资源在 close() 时发生异常，try-with-resources 会将第一个异常抛出，而把其他异常作为 Suppressed Exception 附加。可以通过 Throwable.getSuppressed() 方法获取所有被抑制的异常。
+
+实例
+```java
+public class ResourceWithException implements AutoCloseable {
+    public ResourceWithException() throws Exception {
+        System.out.println("Creating resource...");
+    }
+
+    public void doSomething() throws Exception {
+        System.out.println("Doing something with resource...");
+        throw new Exception("Exception in doSomething");
+    }
+
+    @Override
+    public void close() throws Exception {
+        System.out.println("Closing resource...");
+        throw new Exception("Exception in close");
+    }
+}
+
+try (ResourceWithException res = new ResourceWithException()) {
+    res.doSomething();
+} catch (Exception e) {
+    System.out.println("Caught exception: " + e.getMessage());
+    for (Throwable suppressed : e.getSuppressed()) {
+        System.out.println("Suppressed exception: " + suppressed);
+    }
+}
+```
+输出：
+```java
+Creating resource...
+Doing something with resource...
+Closing resource...
+Caught exception: Exception in doSomething
+Suppressed exception: java.lang.Exception: Exception in close
+```
+#### 使用场景
+
+try-with-resources 主要用于需要显式关闭的资源管理，常见的场景包括：
+
+* 文件操作：FileInputStream、FileOutputStream、BufferedReader 等。
+* 数据库连接：Connection、Statement、ResultSet 等。
+* 网络通信：Socket、ServerSocket、HttpURLConnection 等。
+
+例如，使用 try-with-resources 读取文件：
+
+实例
+```java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TryWithResourcesExample {
+    public static void main(String[] args) {
+        try (BufferedReader br = new BufferedReader(new FileReader("test.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+#### 实例
+
+try-with-resources 声明在 JDK 9 已得到改进。如果你已经有一个资源是 final 或等效于 final 变量,您可以在 try-with-resources 语句中使用该变量，而无需在 try-with-resources 语句中声明一个新变量。
+
+实例
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+ 
+public class Tester {
+   public static void main(String[] args) throws IOException {
+      System.out.println(readData("test"));
+   } 
+   static String readData(String message) throws IOException {
+      Reader inputString = new StringReader(message);
+      BufferedReader br = new BufferedReader(inputString);
+      try (BufferedReader br1 = br) {
+         return br1.readLine();
+      }
+   }
+}
+```
+输出结果为：
+```java
+test
+```
+以上实例中我们需要在 try 语句块中声明资源 br1，然后才能使用它。
+
+在 Java 9 中，我们不需要声明资源 br1 就可以使用它，并得到相同的结果。
+
+
+实例
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+ 
+public class Tester {
+   public static void main(String[] args) throws IOException {
+      System.out.println(readData("test"));
+   } 
+   static String readData(String message) throws IOException {
+      Reader inputString = new StringReader(message);
+      BufferedReader br = new BufferedReader(inputString);
+      try (br) {
+         return br.readLine();
+      }
+   }
+}
+```
+执行输出结果为：
+```java
+test
+```
+在处理必须关闭的资源时，使用 try-with-resources 语句替 代try-finally 语句。 生成的代码更简洁，更清晰，并且生成的异常更有用。 try-with-resources 语句在编写必须关闭资源的代码时会更容易，也不会出错，而使用 try-finally 语句实际上是不可能的。 
+
+
+<a id="Java构造方法"></a>
+
+## Java 构造方法
+
+在 Java 中，构造方法（Constructor）是用于创建类的对象的特殊方法。
+
+当使用 new 关键字创建对象时，构造方法会自动调用，用来初始化对象的属性。
+
+**构造方法具有以下几个特点：**
+
+* 与类名相同：构造方法的名称必须与类名完全一致，包括大小写。这是构造方法的一个基本要求。
+
+* 没有返回类型：构造方法没有返回类型声明，即使是 void 也不写。这使得它与普通方法区分开来。
+
+* 自动调用：每次使用 new 创建对象时，构造方法会自动调用，以初始化对象的属性和状态。
+
+* 不能直接调用：构造方法只能通过 new 关键字在创建对象时调用，不能像普通方法那样直接调用。
+
+* 支持重载：可以为一个类定义多个构造方法，只要它们的参数列表不同。通过重载，可以创建不同的构造方法以适应不同的初始化需求。
+
+* 默认构造方法：如果没有定义任何构造方法，Java 会提供一个无参的默认构造方法。但一旦定义了任何其他构造方法，Java 不再提供默认构造方法。
+
+* this 关键字的使用：在构造方法中可以使用 this 来引用当前对象的属性、方法，或调用另一个构造方法（必须是构造方法的第一行），以避免重复代码。
+
+* 不能被继承，但可以被调用：构造方法不能被子类继承，但子类可以使用 super() 来调用父类的构造方法，以便初始化继承的属性。
+
+* 对象初始化保障：构造方法的主要作用是初始化对象的属性和状态，保证对象在创建时处于一个合法的初始状态。
+
+**构造方法的作用：**
+
+* 初始化对象属性：构造方法的主要作用是为对象的属性赋初值。
+* 保证对象初始化的完整性：在构造方法中可以设置默认值或必要参数，从而避免对象未完全初始化的问题。
+
+### 构造方法的类型
+
+Java 中的构造方法分为两种类型：无参构造方法和有参构造方法。
+1. 无参构造方法（默认构造方法）
+
+如果一个类中没有定义任何构造方法，Java 会默认提供一个无参构造方法。例如：
+
+实例
+```java
+public class Person {
+    public Person() {
+        System.out.println("Person对象已创建");
+    }
+}
+```
+* 在没有显式定义构造方法时，Java 自动提供一个默认的无参构造方法。
+* 一旦定义了其他构造方法，Java 将不再提供默认构造方法。
+
+2. 有参构造方法
+
+可以定义带有参数的构造方法，用来在创建对象时为属性赋值：
+
+实例
+```java
+public class Person {
+    String name;
+    int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+调用有参构造方法时，可以为对象的属性进行初始化：
+```java
+Person p = new Person("Alice", 25);
+```
+### 构造方法的重载
+
+Java 支持构造方法的重载，即可以在同一个类中定义多个构造方法，只要参数列表不同即可。例如：
+
+实例
+```java
+public class Person {
+    String name;
+    int age;
+
+    public Person() {
+        this.name = "Unknown";
+        this.age = 0;
+    }
+
+    public Person(String name) {
+        this.name = name;
+        this.age = 0;
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+创建对象时，Java 会根据传入的参数数量和类型自动选择匹配的构造方法：
+```java
+Person p1 = new Person(); // 调用无参构造方法
+Person p2 = new Person("Alice"); // 调用单参数构造方法
+Person p3 = new Person("Bob", 30); // 调用双参数构造方法
+```
+### 构造方法中的 this 关键字
+
+在构造方法中，this 关键字通常用于两种情况：
+
+1. 引用当前对象的属性或方法：当构造方法的参数名与类属性名相同时，使用 this 来区分类属性和参数。例如：
+
+实例
+```java
+public Person(String name, int age) {
+    this.name = name; // this.name 表示类的属性
+    this.age = age;
+}
+```
+2. 调用另一个构造方法：可以使用 this() 调用当前类的其他构造方法，常用于避免重复代码，但必须放在构造方法的第一行。
+
+实例
+```java
+public Person(String name) {
+    this(name, 0); // 调用另一个双参数的构造方法
+}
+
+public Person(String name, int age) {
+    this.name = name;
+    this.age = age;
+}
+```
+构造方法是 Java 面向对象编程中非常重要的部分，通过使用构造方法可以有效控制对象的初始化过程，保证创建出的对象状态的完整性和一致性。
+
+## Java 流(Stream)、文件(File)和IO
+
+Java 中的流（Stream）、文件（File）和 IO（输入输出）是处理数据读取和写入的基础设施，它们允许程序与外部数据（如文件、网络、系统输入等）进行交互。
+
+java.io 包是 Java 标准库中的一个核心包，提供了用于系统输入和输出的类，它包含了处理数据流（字节流和字符流）、文件读写、序列化以及数据格式化的工具。
+
+java.io 是处理文件操作、流操作以及低级别 IO 操作的基础包。
+
+java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。
+
+一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。
+### 读取控制台输入
+
+Java 的控制台输入由 System.in 完成。
+
+为了获得一个绑定到控制台的字符流，你可以把 System.in 包装在一个 BufferedReader 对象中来创建一个字符流。
+
+下面是创建 BufferedReader 的基本语法：
+```java
+BufferedReader br = new BufferedReader(new 
+                      InputStreamReader(System.in));
+```
+BufferedReader 对象创建后，我们便可以使用 read() 方法从控制台读取一个字符，或者用 readLine() 方法读取一个字符串。
+从控制台读取多字符输入
+
+从 BufferedReader 对象读取一个字符要使用 read() 方法，它的语法如下：
+```java
+int read( ) throws IOException
+```
+每次调用 read() 方法，它从输入流读取一个字符并把该字符作为整数值返回。 当流结束的时候返回 -1。该方法抛出 IOException。
+
+下面的程序示范了用 read() 方法从控制台不断读取字符直到用户输入 q。
+BRRead.java 文件代码：
+```java
+//使用 BufferedReader 在控制台读取字符
+ 
+import java.io.*;
+ 
+public class BRRead {
+    public static void main(String[] args) throws IOException {
+        char c;
+        // 使用 System.in 创建 BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("输入字符, 按下 'q' 键退出。");
+        // 读取字符
+        do {
+            c = (char) br.read();
+            System.out.println(c);
+        } while (c != 'q');
+    }
+}
+```
+以上实例编译运行结果如下:
+```java
+输入字符, 按下 'q' 键退出。
+runoob
+r
+u
+n
+o
+o
+b
+
+
+q
+q
+```
+### 从控制台读取字符串
+
+从标准输入读取一个字符串需要使用 BufferedReader 的 readLine() 方法。
+
+它的一般格式是：
+```java
+String readLine( ) throws IOException
+```
+下面的程序读取和显示字符行直到你输入了单词"end"。
+
+BRReadLines.java 文件代码：
+```java
+//使用 BufferedReader 在控制台读取字符
+import java.io.*;
+ 
+public class BRReadLines {
+    public static void main(String[] args) throws IOException {
+        // 使用 System.in 创建 BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str;
+        System.out.println("Enter lines of text.");
+        System.out.println("Enter 'end' to quit.");
+        do {
+            str = br.readLine();
+            System.out.println(str);
+        } while (!str.equals("end"));
+    }
+}
+```
+以上实例编译运行结果如下:
+```java
+Enter lines of text.
+Enter 'end' to quit.
+This is line one
+This is line one
+This is line two
+This is line two
+end
+end
+```
+JDK 5 后的版本我们也可以使用 Java Scanner 类来获取控制台的输入。
+### 控制台输出
+
+在此前已经介绍过，控制台的输出由 print( ) 和 println() 完成。这些方法都由类 PrintStream 定义，System.out 是该类对象的一个引用。
+
+PrintStream 继承了 OutputStream类，并且实现了方法 write()。这样，write() 也可以用来往控制台写操作。
+
+PrintStream 定义 write() 的最简单格式如下所示：
+```java
+void write(int byteval)
+```
+该方法将 byteval 的低八位字节写到流中。
+
+实例
+
+下面的例子用 write() 把字符 "A" 和紧跟着的换行符输出到屏幕：
+
+WriteDemo.java 文件代码：
+```java
+import java.io.*;
+ 
+//演示 System.out.write().
+public class WriteDemo {
+    public static void main(String[] args) {
+        int b;
+        b = 'A';
+        System.out.write(b);
+        System.out.write('\n');
+    }
+}
+```
+运行以上实例在输出窗口输出 "A" 字符
+```java
+A
+```
+**注意：write() 方法不经常使用，因为 print() 和 println() 方法用起来更为方便。** 
+
+### 读写文件
+
+如前所述，一个流被定义为一个数据序列。输入流用于从源读取数据，输出流用于向目标写数据。
+
+下图是一个描述输入流和输出流的类层次图。
+
+![](https://www.runoob.com/wp-content/uploads/2013/12/iostream2xx.png)
+
+
+#### 字节流（处理二进制数据）
+
+字节流用于处理二进制数据，例如文件、图像、视频等。
+类名|类型|描述
+--|--|--
+InputStream|抽象类 (输入流)|所有字节输入流的超类，处理字节的输入操作。
+OutputStream|抽象类 (输出流)|所有字节输出流的超类，处理字节的输出操作。
+FileInputStream|输入流|从文件中读取字节数据。
+FileOutputStream|输出流|将字节数据写入文件。
+BufferedInputStream|输入流|为字节输入流提供缓冲功能，提高读取效率。
+BufferedOutputStream|输出流|为字节输出流提供缓冲功能，提高写入效率。
+ByteArrayInputStream|输入流|将内存中的字节数组作为输入源。
+ByteArrayOutputStream|输出流|将数据写入到内存中的字节数组。
+DataInputStream|输入流|允许从输入流中读取 Java 原生数据类型（如 int、float、boolean）。
+DataOutputStream|输出流|允许向输出流中写入 Java 原生数据类型。
+ObjectInputStream|输入流|从输入流中读取序列化对象。
+ObjectOutputStream|输出流|将对象序列化并写入输出流中。
+PipedInputStream|输入流|用于在管道中读取字节数据，通常与 PipedOutputStream 配合使用。
+PipedOutputStream|输出流|用于在管道中写入字节数据，通常与 PipedInputStream 配合使用。
+FilterInputStream|输入流|字节输入流的包装类，用于对其他输入流进行过滤处理。
+FilterOutputStream|输出流|字节输出流的包装类，用于对其他输出流进行过滤处理。
+SequenceInputStream|输入流|将多个输入流串联为一个输入流进行处理。
+#### 字符流（处理文本数据）
+
+字符流用于处理文本数据，例如读取和写入字符串或文件。
+类名|类型|描述
+--|--|--
+Reader|抽象类 (输入流)|所有字符输入流的超类，处理字符的输入操作。
+Writer|抽象类 (输出流)|所有字符输出流的超类，处理字符的输出操作。
+FileReader|输入流|从文件中读取字符数据。
+FileWriter|输出流|将字符数据写入文件。
+BufferedReader|输入流|为字符输入流提供缓冲功能，支持按行读取，提高读取效率。
+BufferedWriter|输出流|为字符输出流提供缓冲功能，支持按行写入，提高写入效率。
+CharArrayReader|输入流|将字符数组作为输入源。
+CharArrayWriter|输出流|将数据写入到字符数组。
+StringReader|输入流|将字符串作为输入源。
+StringWriter|输出流|将数据写入到字符串缓冲区。
+PrintWriter|输出流|便捷的字符输出流，支持自动刷新和格式化输出。
+PipedReader|输入流|用于在管道中读取字符数据，通常与 PipedWriter 配合使用。
+PipedWriter	|输出流|用于在管道中写入字符数据，通常与 PipedReader 配合使用。
+LineNumberReader|输入流|带行号的缓冲字符输入流，允许跟踪读取的行号。
+PushbackReader|输入流|允许在读取字符后将字符推回流中，以便再次读取。
+#### 辅助类（其他重要类）
+
+辅助类提供对文件、目录以及随机文件访问的支持。
+类名|类型|描述
+--|--|--
+File|文件和目录操作|用于表示文件或目录，并提供文件操作，如创建、删除、重命名等。
+RandomAccessFile|随机访问文件|支持文件的随机访问，可以从文件的任意位置读写数据。
+Console|控制台输入输出|提供对系统控制台的输入和输出支持。
+
+下面将要讨论的两个重要的流是 FileInputStream 和 FileOutputStream。
+
+### FileInputStream
+
+该流用于从文件读取数据，它的对象可以用关键字 new 来创建。
+
+有多种构造方法可用来创建对象。
+
+可以使用字符串类型的文件名来创建一个输入流对象来读取文件：
+```java
+InputStream f = new FileInputStream("C:/java/hello");
+```
+也可以使用一个文件对象来创建一个输入流对象来读取文件。我们首先得使用 File() 方法来创建一个文件对象：
+```java
+File f = new File("C:/java/hello");
+InputStream in = new FileInputStream(f);
+```
+创建了 InputStream 对象，就可以使用下面的方法来读取流或者进行其他的流操作。
+方法|描述|示例代码
+--|--|--
+int read()|读取一个字节的数据，返回值为 0 到 255 之间的整数。如果到达流的末尾，返回 -1。|int data = inputStream.read();
+int read(byte[] b)|从输入流中读取字节，并将其存储在字节数组 b 中，返回实际读取的字节数。如果到达流的末尾，返回 -1。|byte[] buffer = new byte[1024]; int bytesRead = inputStream.read(buffer);
+int read(byte[] b, int off, int len)|从输入流中读取最多 len 个字节，并将它们存储在字节数组 b 的 off 偏移位置，返回实际读取的字节数。如果到达流的末尾，返回 -1。	|byte[] buffer = new byte[1024]; int bytesRead = inputStream.read(buffer, 0, buffer.length);
+long skip(long n)|跳过并丢弃输入流中的 n 个字节，返回实际跳过的字节数。|long skippedBytes = inputStream.skip(100);
+int available()|返回可以读取的字节数（不阻塞）。	|int availableBytes = inputStream.available();
+void close()|关闭输入流并释放与该流相关的所有资源。|inputStream.close();
+void mark(int readlimit)|在流中的当前位置设置标记，readlimit 是可以读取的字节数上限。|	inputStream.mark(1024);
+void reset()|将流重新定位到上次标记的位置，如果没有标记或标记失效，抛出 IOException。	|inputStream.reset();
+boolean markSupported()|检查当前输入流是否支持 mark() 和 reset() 操作。|	boolean isMarkSupported = inputStream.markSupported();
+
+除了 InputStream 外，还有一些其他的输入流，更多的细节参考下面链接：
+
+* ByteArrayInputStream
+* DataInputStream
+
+### FileOutputStream
+
+该类用来创建一个文件并向文件中写数据。
+
+如果该流在打开文件进行输出前，目标文件不存在，那么该流会创建该文件。
+
+有两个构造方法可以用来创建 FileOutputStream 对象。
+
+使用字符串类型的文件名来创建一个输出流对象：
+```java
+OutputStream f = new FileOutputStream("C:/java/hello")
+```
+也可以使用一个文件对象来创建一个输出流来写文件。我们首先得使用File()方法来创建一个文件对象：
+```java
+File f = new File("C:/java/hello");
+OutputStream fOut = new FileOutputStream(f);
+```
+创建 OutputStream 对象完成后，就可以使用下面的方法来写入流或者进行其他的流操作。
+方法|描述|示例代码
+--|--|--
+void write(int b)|将指定的字节写入输出流，b 的低 8 位将被写入流中。|outputStream.write(255);
+void write(byte[] b)|将字节数组 b 中的所有字节写入输出流。|byte[] data = "Hello".getBytes(); outputStream.write(data);
+void write(byte[] b, int off, int len)|将字节数组 b 中从偏移量 off 开始的 len 个字节写入输出流。|byte[] data = "Hello".getBytes(); outputStream.write(data, 0, data.length);
+void flush()|刷新输出流并强制写出所有缓冲的数据，确保数据被立即写入目标输出。|outputStream.flush();
+void close()|关闭输出流并释放与该流相关的所有资源。关闭后不能再写入。|outputStream.close();
+
+除了 OutputStream 外，还有一些其他的输出流，更多的细节参考下面链接：
+
+* ByteArrayOutputStream
+* DataOutputStream
+
+#### 实例
+
+下面是一个演示 InputStream 和 OutputStream 用法的例子：
+fileStreamTest.java 文件代码：
+```java
+import java.io.*;
+ 
+public class fileStreamTest {
+    public static void main(String[] args) {
+        try {
+            byte bWrite[] = { 11, 21, 3, 40, 5 };
+            OutputStream os = new FileOutputStream("test.txt");
+            for (int x = 0; x < bWrite.length; x++) {
+                os.write(bWrite[x]); // writes the bytes
+            }
+            os.close();
+ 
+            InputStream is = new FileInputStream("test.txt");
+            int size = is.available();
+ 
+            for (int i = 0; i < size; i++) {
+                System.out.print((char) is.read() + "  ");
+            }
+            is.close();
+        } catch (IOException e) {
+            System.out.print("Exception");
+        }
+    }
+}
+```
+上面的程序首先创建文件test.txt，并把给定的数字以二进制形式写进该文件，同时输出到控制台上。
+
+以上代码由于是二进制写入，可能存在乱码，你可以使用以下代码实例来解决乱码问题：
+fileStreamTest2.java 文件代码：
+```java
+//文件名 :fileStreamTest2.java
+import java.io.*;
+ 
+public class fileStreamTest2 {
+    public static void main(String[] args) throws IOException {
+ 
+        File f = new File("a.txt");
+        FileOutputStream fop = new FileOutputStream(f);
+        // 构建FileOutputStream对象,文件不存在会自动新建
+ 
+        OutputStreamWriter writer = new OutputStreamWriter(fop, "UTF-8");
+        // 构建OutputStreamWriter对象,参数可以指定编码,默认为操作系统默认编码,windows上是gbk
+ 
+        writer.append("中文输入");
+        // 写入到缓冲区
+ 
+        writer.append("\r\n");
+        // 换行
+ 
+        writer.append("English");
+        // 刷新缓存冲,写入到文件,如果下面已经没有写入的内容了,直接close也会写入
+ 
+        writer.close();
+        // 关闭写入流,同时会把缓冲区内容写入文件,所以上面的注释掉
+ 
+        fop.close();
+        // 关闭输出流,释放系统资源
+ 
+        FileInputStream fip = new FileInputStream(f);
+        // 构建FileInputStream对象
+ 
+        InputStreamReader reader = new InputStreamReader(fip, "UTF-8");
+        // 构建InputStreamReader对象,编码与写入相同
+ 
+        StringBuffer sb = new StringBuffer();
+        while (reader.ready()) {
+            sb.append((char) reader.read());
+            // 转成char加到StringBuffer对象中
+        }
+        System.out.println(sb.toString());
+        reader.close();
+        // 关闭读取流
+ 
+        fip.close();
+        // 关闭输入流,释放系统资源
+ 
+    }
+}
+```
+### 文件和I/O
+
+还有一些关于文件和I/O的类，我们也需要知道：
+
+* File Class(类)
+* FileReader Class(类)
+* FileWriter Class(类)
+
+### Java中的目录
+#### 创建目录：
+
+File类中有两个方法可以用来创建文件夹：
+
+* mkdir( )方法创建一个文件夹，成功则返回true，失败则返回false。失败表明File对象指定的路径已经存在，或者由于整个路径还不存在，该文件夹不能被创建。
+* mkdirs()方法创建一个文件夹和它的所有父文件夹。
+
+下面的例子创建 "/tmp/user/java/bin"文件夹：
+CreateDir.java 文件代码：
+```java
+import java.io.File;
+ 
+public class CreateDir {
+    public static void main(String[] args) {
+        String dirname = "/tmp/user/java/bin";
+        File d = new File(dirname);
+        // 现在创建目录
+        d.mkdirs();
+    }
+}
+```
+编译并执行上面代码来创建目录 "/tmp/user/java/bin"。
+
+注意： Java 在 UNIX 和 Windows 自动按约定分辨文件路径分隔符。如果你在 Windows 版本的 Java 中使用分隔符 (/) ，路径依然能够被正确解析。
+#### 读取目录
+
+一个目录其实就是一个 File 对象，它包含其他文件和文件夹。
+
+如果创建一个 File 对象并且它是一个目录，那么调用 isDirectory() 方法会返回 true。
+
+可以通过调用该对象上的 list() 方法，来提取它包含的文件和文件夹的列表。
+
+下面展示的例子说明如何使用 list() 方法来检查一个文件夹中包含的内容：
+DirList.java 文件代码：
+```java
+import java.io.File;
+ 
+public class DirList {
+    public static void main(String args[]) {
+        String dirname = "/tmp";
+        File f1 = new File(dirname);
+        if (f1.isDirectory()) {
+            System.out.println("目录 " + dirname);
+            String s[] = f1.list();
+            for (int i = 0; i < s.length; i++) {
+                File f = new File(dirname + "/" + s[i]);
+                if (f.isDirectory()) {
+                    System.out.println(s[i] + " 是一个目录");
+                } else {
+                    System.out.println(s[i] + " 是一个文件");
+                }
+            }
+        } else {
+            System.out.println(dirname + " 不是一个目录");
+        }
+    }
+}
+```
+以上实例编译运行结果如下：
+```java
+目录 /tmp
+bin 是一个目录
+lib 是一个目录
+demo 是一个目录
+test.txt 是一个文件
+README 是一个文件
+index.html 是一个文件
+include 是一个目录
+```
+### 删除目录或文件
+
+删除文件可以使用 java.io.File.delete() 方法。
+
+以下代码会删除目录 /tmp/java/，需要注意的是当删除某一目录时，必须保证该目录下没有其他文件才能正确删除，否则将删除失败。
+
+测试目录结构：
+```java
+/tmp/java/
+|-- 1.log
+|-- test
+```
+DeleteFileDemo.java 文件代码：
+```java
+import java.io.File;
+ 
+public class DeleteFileDemo {
+    public static void main(String[] args) {
+        // 这里修改为自己的测试目录
+        File folder = new File("/tmp/java/");
+        deleteFolder(folder);
+    }
+ 
+    // 删除文件及目录
+    public static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        folder.delete();
+    }
+}
+```
 <a id="Java-protected-关键字详解"></a>
 
 ## Java protected 关键字详解
